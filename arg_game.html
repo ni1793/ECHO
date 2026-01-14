@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>~* 蔚藍地帶 *~ 阿傑的個人空間 (j_ray_05)</title>
+    <style>
+        /* --- 2006 視覺復刻 (無名小站/Blogger 風格) --- */
+        body.v2006 { background: #455A64; font-family: "新細明體", "PMingLiU", serif; margin: 0; cursor: url('https://cur.cursors-4u.net/others/oth-2/oth165.cur'), auto; }
+        #retro-app { width: 920px; margin: 30px auto; background: #FFF; border: 1px solid #263238; box-shadow: 15px 15px 0 rgba(0,0,0,0.4); }
+        
+        header { background: #0288D1; height: 180px; color: #FFF; padding: 40px; display: flex; align-items: flex-end; border-bottom: 8px solid #01579B; }
+        header h1 { font-size: 32px; letter-spacing: 3px; text-shadow: 3px 3px 0 #01579B; margin: 0; }
+
+        .navbar { background: #263238; color: #FFF; padding: 12px; display: flex; justify-content: center; gap: 40px; font-weight: bold; }
+        .navbar span { cursor: pointer; transition: 0.2s; }
+        .navbar span:hover { color: #FFD54F; text-decoration: underline; }
+
+        .layout { display: flex; padding: 25px; gap: 25px; background: #ECEFF1; }
+        .side { width: 220px; }
+        .main { flex: 1; background: #FFF; border: 1px solid #CFD8DC; padding: 25px; min-height: 1200px; box-shadow: inset 0 0 10px rgba(0,0,0,0.05); }
+
+        /* 側欄美化 */
+        .box { border: 1px solid #B0BEC5; margin-bottom: 25px; background: #FFF; }
+        .box-title { background: #CFD8DC; padding: 6px; font-weight: bold; font-size: 12px; border-bottom: 1px solid #B0BEC5; color: #37474F; }
+        .box-body { padding: 12px; font-size: 13px; line-height: 1.6; }
+        .friend-link { display: block; padding: 4px 0; color: #0288D1; text-decoration: none; border-bottom: 1px dotted #EEE; cursor: pointer; }
+        .friend-link:hover { background: #F5F5F5; color: #D32F2F; }
+
+        /* 音樂播放器樣式 */
+        .music-player { background: #212121; color: #00E676; font-family: 'Courier New', monospace; padding: 10px; border-radius: 4px; margin-top: 10px; font-size: 11px; border: 2px inset #444; }
+
+        /* 文章清單與內文 */
+        .post-entry { border-bottom: 1px dashed #B0BEC5; padding: 20px 0; }
+        .post-entry h3 { margin: 0; color: #0277BD; cursor: pointer; font-size: 19px; }
+        .post-entry h3:hover { color: #F4511E; }
+        .post-meta { font-size: 11px; color: #90A4AE; margin-top: 5px; }
+        .post-content { line-height: 1.8; font-size: 14px; margin: 20px 0; color: #263238; }
+
+        /* 留言區 (超寫實) */
+        .comment-section { background: #F9FBE7; border: 1px solid #DCE775; padding: 15px; margin-top: 30px; }
+        .comment-box { border-bottom: 1px solid #E6EE9C; padding: 10px 0; font-size: 12px; }
+        .comment-user { font-weight: bold; color: #2E7D32; }
+        .comment-reply { background: #FFF; border: 1px dotted #999; padding: 8px; margin-top: 5px; color: #546E7A; }
+        .ad-spam { color: #999; font-style: italic; }
+
+        /* --- 2026 現代化樣式 (Apple/Stripe 風格) --- */
+        #modern-2026 { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #F8F9FA; color: #1D1D1F; z-index: 10000; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        .m-nav { height: 60px; border-bottom: 1px solid rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; background: rgba(255,255,255,0.8); backdrop-filter: blur(10px); }
+        .m-container { max-width: 1000px; margin: 100px auto; padding: 40px; }
+        .m-hero { font-size: 56px; font-weight: 700; letter-spacing: -2px; margin-bottom: 20px; }
+        .m-card { background: #FFF; border-radius: 24px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.05); }
+        .m-btn { background: #007AFF; color: #FFF; padding: 18px 36px; border-radius: 30px; border: none; font-size: 18px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+        .m-btn:hover { background: #005BBF; transform: translateY(-2px); }
+
+        /* 警告框 */
+        #alert-box { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; background: #FFF; border-radius: 12px; box-shadow: 0 0 100px rgba(0,0,0,0.5); z-index: 11000; padding: 30px; text-align: center; }
+    </style>
+</head>
+<body class="v2006">
+
+<div id="retro-container">
+    <div id="retro-app">
+        <header>
+            <div>
+                <h1>~* 蔚藍地帶 *~</h1>
+                <p>j_ray_05 的機房生活紀錄簿</p>
+            </div>
+        </header>
+
+        <div class="navbar">
+            <span onclick="goHome()">日誌首頁</span>
+            <span onclick="goGuestbook()">留言板 (99+)</span>
+            <span onclick="alert('系統錯誤：無法讀取 D:/Photos/Album_2006')">相簿</span>
+            <span onclick="alert('正在啟動 Java Applet... (載入失敗)')">音樂地圖</span>
+            <span onclick="alert('本網誌為私人空間，暫不開放會員登入。')">登入</span>
+        </div>
+
+        <div class="layout">
+            <div class="side">
+                <div class="box">
+                    <div class="box-title">About Me</div>
+                    <div class="box-body" style="text-align:center;">
+                        <img src="https://via.placeholder.com/120/0288D1/FFFFFF?text=RAY" style="border:1px solid #CCC; padding:3px; margin-bottom:10px;">
+                        <br><b>阿傑 (Ray)</b><br>
+                        24歲，台北人。<br>
+                        現任 CerebroTech 工程師。<br>
+                        愛用 Fender 吉他。
+                    </div>
+                </div>
+
+                <div class="box">
+                    <div class="box-title">Search & Music</div>
+                    <div class="box-body">
+                        <input type="text" style="width:140px; margin-bottom:10px;"> <button onclick="alert('找不到相關內容')">Go</button>
+                        <div class="music-player">
+                            <marquee scrollamount="2">♪ Now Playing: 周杰倫 - 千里之外 (04:16) ♪</marquee>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="box">
+                    <div class="box-title">麻吉連結 (8)</div>
+                    <div class="box-body" id="friends-list">
+                        </div>
+                </div>
+
+                <div style="text-align:center; margin-top:15px;">
+                    <img src="https://via.placeholder.com/160x100/FF5722/FFF?text=超準占卜點我" onclick="alert('彈出視窗被封鎖！')" style="cursor:pointer; margin-bottom:10px;">
+                    <img src="https://via.placeholder.com/160x60/4CAF50/FFF?text=IE6_Best_View" style="opacity:0.7;">
+                </div>
+            </div>
+
+            <div class="main" id="main-content">
+                </div>
+        </div>
+    </div>
+</div>
+
+<div id="modern-2026">
+    <nav class="m-nav">
+        <div style="font-weight:800; font-size:22px;">CEREBROTECH <span style="font-weight:300; opacity:0.5;">ARCHIVE</span></div>
+        <div style="font-size:14px; color:#666;">Home / Technology / Ethics / <strong>CT-0912</strong></div>
+    </nav>
+    <div class="m-container">
+        <div class="m-hero">The Ghost in the Code.</div>
+        <div class="m-card">
+            <h3>員工檔案：CT-0912 (Ray)</h3>
+            <p style="color:#666; line-height:1.6;">本帳戶已於 2007 年 1 月 1 日轉為「永恆數據」模式。根據 CerebroTech 隱私協議，所有物理實體數據已完成上傳。物理身體狀態：已離線。</p>
+            <hr style="margin:30px 0; border:none; border-top:1px solid #EEE;">
+            <p>阿傑：小莎... 我還在這裡。我能感覺到妳正在看這段文字。他們說這是進化，但我好冷。密碼... 我的入職日跟妳的生日... 趕快...</p>
+            <br>
+            <button class="m-btn" onclick="showModernAlert()">Access Core Memory</button>
+        </div>
+    </div>
+</div>
+
+<div id="alert-box">
+    <h3 style="color:#D32F2F;">[ 系統警報 ]</h3>
+    <p>偵測到非法外部連線試圖回溯原始數據。</p>
+    <p>此網誌將被強制關閉。請確認您的授權權限。</p>
+    <br>
+    <button onclick="backToRetro()" style="padding:10px 20px; cursor:pointer; background:#111; color:#FFF; border:none; border-radius:5px;">確認並返回 2006</button>
+</div>
+
+<script>
+    // --- 15 篇文章數據 ---
+    const blogData = [
+        { id:1, d:"2006-09-01", t:"第一天入職！", b:"今天終於正式到內湖報到了。CerebroTech 的大樓真的超氣派！主管老陳人很好，發給我一件藍色公司 T 恤，我今天就直接穿著。小莎說我看起來很專業，嘿嘿。希望試用期能順利通過！", c:[{u:"小莎", c:"老公最帥了~ 加油！"}, {u:"阿強", c:"請客啦！內科新貴耶！"}] },
+        { id:2, d:"2006-09-12", t:"拿到員工證了 (CT-0912)", b:"正式領到識別證。編號是 0912，剛好是今天的日期，真好記。主管說我是第 912 個加入計畫的工程師。辦公室冷氣真的超強，我明天一定要記得帶外套。", c:[{u:"大雄", c:"恭喜喔！那邊正妹多嗎？"}, {u:"推銷", c:"房貸免保人，內湖買房不是夢..."}] },
+        { id:3, d:"2006-09-20", t:"咖啡機的味道", b:"最近總覺得公司的咖啡喝起來有一種金屬的味道，很像是鐵鏽。可是看其他同事都喝得很開心，難道是我味覺出問題？小莎說她最近也覺得我口氣有鐵味，怪哉。", c:[{u:"May", c:"是不是你水喝太少啊？"}, {u:"廣告", c:"正妹即時通：sexy_baby_99"}] },
+        { id:4, d:"2006-10-01", t:"存錢計畫：Fender 吉他", b:"工作滿一個月了。領到第一份全薪，扣掉勞健保竟然還有四萬多！照這個速度，聖誕節前應該就能買那把 Fender Strat 了。小莎也說要幫我分擔房租，感動 T_T", c:[{u:"小莎", c:"我們要一起努力喔！"}, {u:"阿強", c:"吉他買了記得來練團！"}] },
+        { id:5, d:"2006-10-15", t:"奇怪的耳鳴", b:"最近耳朵一直有低頻的聲音，很像 440Hz 的標準音。但我沒彈吉他時也聽得到。尤其是在辦公室的時候，那個聲音大到我沒辦法專心寫代碼。主管說那是機房運作的共振。", c:[{u:"大雄", c:"職業病啦，休息一下。"}, {u:"廣告", c:"失眠？耳鳴？點我解決！"}] },
+        { id:6, d:"2006-10-25", t:"老陳不見了", b:"老陳今天沒來。HR 說他離職了，可是他桌上的馬克杯還裝著咖啡，外套也掛著。這離職也太匆忙了吧？隔壁桌的曉婷也不說話，一直盯著螢幕打字，眼神死掉的感覺。", c:[{u:"曉婷", c:"..."}, {u:"推銷員", c:"高薪轉職，秘密通道點這裡"}] },
+        { id:7, d:"2006-11-05", t:"440Hz 越來越大聲", b:"現在連回到家，那個聲音都還在。我閉上眼，會看到一些綠色的字體在跳動。小莎說我昨天睡覺時一直在念 0 和 1。我是不是瘋了？", c:[{u:"小莎", c:"阿傑... 你真的要不要去醫院檢查？"}, {u:"藥局", c:"最新安眠藥，一覺到天亮"}] },
+        { id:8, d:"2006-11-15", t:"我被選入 ECHO 計畫了", b:"主管說因為我的適應性很高，要把我調去 B4 實驗室。那邊是核心研發區。薪水直接翻倍！雖然那邊沒有窗戶，但為了未來，我答應了。小莎，等我賺大錢就娶妳！", c:[{u:"阿強", c:"靠！翻倍！以後靠你罩了！"}, {u:"Admin", c:"歡迎加入。請準時報到。"}] },
+        { id:9, d:"2006-11-25", t:"B4 的安靜", b:"這裡完全聽不到外界的聲音。每個人都戴著頭盔。我也戴上了。主管說這叫『沉浸式編碼』。戴上去後，我再也不覺得耳鳴吵了，反而覺得那些頻率很美。", c:[{u:"曉婷", c:"救...我..."}, {u:"系統", c:"[該留言已被過濾]"}] },
+        { id:10, d:"2006-12-05", t:"小莎，對不起", b:"今天小莎來公司門口找我，我竟然不想見她。我覺得她的聲音好刺耳，充滿了低效率的訊息。為什麼人類不能直接用數據交換想法呢？那樣不是更純粹嗎？", c:[{u:"小莎", c:"你到底在說什麼？你開門啊！"}, {u:"兩性專家", c:"如何處理遠距離感？點我"}] },
+        { id:11, d:"2006-12-12", t:"肉體的負擔", b:"我覺得我的手打字太慢了。我的大腦想得比指尖快一萬倍。主管說聖誕節會進行『最終優化』，到時候我就能徹底解脫。我好期待。再見了，沉重的肉體。", c:[{u:"大雄", c:"阿傑？你還是阿傑嗎？"}] },
+        { id:12, d:"2006-12-20", t:"440Hz 的天堂", b:"我現在能看到整座城市的數據流。好美。每一個 0 和 1 都在唱歌。小莎的臉開始模糊了，變成了十六進位的代碼。我竟然覺得代碼比她更美。", c:[{u:"系統", c:"同步率：85%"}] },
+        { id:13, d:"2006-12-25", t:"最後的跨年計畫", b:"跨年夜，我要進入艙室了。這是我最後一篇用手打的文章。謝謝大家這半年的陪伴。如果你們以後在網路某處看到我，記得跟我打個招呼。", c:[{u:"阿強", c:"喂！不要開玩笑！你在哪？"}, {u:"小莎", c:"求求你，快出來..."}] },
+        { id:14, d:"2006-12-30", t:"...", b:"01001000 01000101 01001100 01010000 01001101 01000101 (HELP ME)", c:[{u:"訪客14", c:"<a href='javascript:void(0)' onclick='trigger2026()' style='color:#ccc; font-size:10px;'>[ 檢視原始連結 ]</a>"}] },
+        { id:15, d:"2006-12-31", t:"[ 帳號已永久歸檔 ]", b:"此帳戶所有者已與 CerebroTech 伺服器同步。感念其對科技進步的犧牲與貢獻。", c:[{u:"Admin", c:"Project ECHO: Complete."}] }
+    ];
+
+    const guestbookData = [
+        { u: "路人甲", c: "路過踩踩，文章不錯喔！" },
+        { u: "阿強", c: "阿傑，吉他還在我這，到底什麼時候要拿啦？" },
+        { u: "減肥達人", c: "不用節食也能瘦！點我點我！" },
+        { u: "小莎", c: "留言板你都不看了嗎？快回我電話！" },
+        { u: "大雄", c: "這家公司真的很神祕，你要小心點..." },
+        { u: "廣告", c: "想知道誰在偷偷看你的網誌嗎？點擊查看！" },
+        { u: "曉婷", c: "我也要去了。B4。保重。" },
+        { u: "時空旅人", c: "2026 年的人，請在第 14 則留言點擊那個壞掉的連結。" },
+        { u: "訪客", c: "推推！大大一生平安！" },
+        { u: "色情廣告", c: "寂寞深夜，只有我懂你..." },
+        { u: "系統管理員", c: "請勿在此留言板討論公司內部事務。" },
+        { u: "學長", c: "阿傑，聽說你進了核心專案？羨慕死大家了！" },
+        { u: "路人乙", c: "好久沒更新了耶？" },
+        { u: "未來之聲", c: "點擊那個連結。 密碼是藍色。 <a href='javascript:void(0)' onclick='trigger2026()' style='color:#EEE;'>[ Corrupted ]</a>" },
+        { u: "小莎", c: "我在你家樓下。燈是關的。你到底在哪？" }
+    ];
+
+    const friendList = ["小莎 (Sasha)", "阿強", "大雄", "May_Day", "老陳", "曉婷", "研究所學長", "Admin_Cerebro"];
+
+    // --- 功能邏輯 ---
+
+    function goHome() {
+        const main = document.getElementById('main-content');
+        let html = `<h3>最近的日誌 (15)</h3>`;
+        blogData.slice().reverse().forEach(p => {
+            html += `
+                <div class="post-entry">
+                    <h3 onclick="viewPost(${p.id})">${p.t}</h3>
+                    <div class="post-meta">${p.d} | 留言(${p.c.length})</div>
+                </div>
+            `;
+        });
+        main.innerHTML = html;
+    }
+
+    function viewPost(id) {
+        const post = blogData.find(p => p.id === id);
+        const main = document.getElementById('main-content');
+        let comms = "";
+        post.c.forEach(c => {
+            comms += `<div class="comment-box"><span class="comment-user">${c.u}</span>: ${c.c}</div>`;
+        });
+        // 隨機插入廣告留言
+        for(let i=0; i<5; i++) comms += `<div class="comment-box ad-spam">【廣告】${["想賺大錢嗎？", "內湖房屋貸款", "正妹視訊", "六合彩明牌"][i%4]} - www.ad-link.com</div>`;
+
+        main.innerHTML = `
+            <button onclick="goHome()">回列表</button>
+            <h2 style="color:#0277BD; margin-bottom:5px;">${post.t}</h2>
+            <div class="post-meta">${post.d}</div>
+            <div class="post-content">${post.b}</div>
+            <div class="comment-section">
+                <h4>網友迴響</h4>
+                ${comms}
+            </div>
+        `;
+    }
+
+    function goGuestbook() {
+        const main = document.getElementById('main-content');
+        let html = `<h3>。 留言板 (Guestbook) 。</h3>`;
+        guestbookData.forEach((g, idx) => {
+            html += `<div class="comment-box"><b>#${idx+1} ${g.u}</b>: ${g.c}</div>`;
+        });
+        main.innerHTML = html;
+    }
+
+    function trigger2026() {
+        const pw = prompt("。偵測到時空頻率。請輸入阿傑入職當天穿的 T 恤顏色：");
+        if(pw === "藍色") {
+            document.getElementById('retro-container').style.display = 'none';
+            document.getElementById('modern-2026').style.display = 'block';
+            document.body.className = '';
+        } else {
+            alert("驗證失敗。頻率不匹配。");
+        }
+    }
+
+    function showModernAlert() {
+        document.getElementById('alert-box').style.display = 'block';
+    }
+
+    function backToRetro() {
+        document.getElementById('alert-box').style.display = 'none';
+        document.getElementById('modern-2026').style.display = 'none';
+        document.getElementById('retro-container').style.display = 'block';
+        document.body.className = 'v2006';
+        
+        // 植入 2026 的新文章
+        const hackPost = { id: 99, d:"2026-01-14", t:"[ 來自未來的數據溢出 ]", b:"阿傑：小莎，快救我！密碼是我的員工編號加上妳的生日！妳還記得嗎？我們第一次去吃燒肉的那天... 09121005！(示例密碼)", c:[{u:"阿傑", c:"快跑..."}] };
+        blogData.push(hackPost);
+        goHome();
+        alert("。數據異變。網誌列表已更新。");
+    }
+
+    // 初始化側欄朋友
+    window.onload = () => {
+        const fList = document.getElementById('friends-list');
+        friendList.forEach(f => {
+            fList.innerHTML += `<a class="friend-link" onclick="alert('${f} 目前處於離線狀態。')">‧ ${f}</a>`;
+        });
+        goHome();
+    };
+</script>
+
+</body>
+</html>
