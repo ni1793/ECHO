@@ -128,7 +128,7 @@
                 <div class="box-body">
                     <div class="mp3-player">
                         <div class="lcd-screen">
-                            <div id="lcd-normal" class="lcd-status">[READY] 00:00<br><marquee scrollamount="2" style="width:180px;">周杰倫 - 千里之外.mp3</marquee></div>
+                            <div id="lcd-normal" class="lcd-status">[READY]<br><marquee scrollamount="2" style="width:180px;">周杰倫 - 千里之外.mp3</marquee></div>
                             <div id="lcd-error" class="lcd-fault">[ ERROR: CDR-404 ]<br>READ FAILURE</div>
                         </div>
                         <div class="progress-bar"><div id="p-fill" class="progress-fill"></div></div>
@@ -219,7 +219,7 @@
         for(let i=0; i<4; i++) p.c.push({u:"AD", c:ads[i%4], s:true});
     });
 
-    // 留言板還原內容並大幅擴充
+    // 留言板內容 - 已大幅擴充且不重複
     const gbData = [
         {u:"小莎", c:"老公，今天晚上記得買牛奶回來喔！加油！"},
         {u:"阿強", c:"阿傑，這周末要不要去西門町萬年大樓看模型？那邊有新出的鋼彈喔。"},
@@ -245,30 +245,55 @@
         {u:"路人甲", c:"2006年的最後一個月了，希望明年會更好。"},
         {u:"路人乙", c:"你的計數器壞了嗎？我重新整理好幾次數字都沒變。"},
         {u:"老陳", c:"阿傑，這幾天別亂跑，專案要進入最後階段了。"},
-        {u:"小莎", c:"最近你怎麼都不接電話...我有點擔心。"}
+        {u:"小莎", c:"最近你怎麼都不接電話...我有點擔心。"},
+        {u:"宅男一號", c:"剛剛在 PTT 看到有人推薦這篇，特地跑過來踩踩，原 PO 加油。"},
+        {u:"愛聽歌的小魚", c:"這首歌的 MV 是在老街拍的嗎？感覺好懷舊喔，想家了。"},
+        {u:"MSN 愛用者", c:"阿傑，你的 MSN 怎麼一直顯示『離線』？我有急事找你耶。"},
+        {u:"無名搬家工", c:"無名小站最近好卡喔，考慮要不要把網誌搬到這裡來。"},
+        {u:"棒球迷", c:"昨天王建民又拿下一勝了！19勝了耶，台灣之光啦！"},
+        {u:"勁舞團女王", c:"有人要一起玩勁舞團嗎？我剛練成 188 自由模式喔！"},
+        {u:"魔獸玩家", c:"為了部落！阿傑你到底在哪個伺服器？一起去刷血色修道院啊。"},
+        {u:"深夜電台", c:"這裡的氣氛很適合深夜一個人靜靜讀，感謝分享生活。"},
+        {u:"考卷滿天飛", c:"明天要期末考了，我還在這裡看日誌，死定了啦 Q_Q"},
+        {u:"及時通隱藏人", c:"我有你的及時通，但我都開隱藏看你在不在線上哈哈。"},
+        {u:"懷舊小販", c:"賣最新的《不能說的秘密》電影海報，意者內洽！"},
+        {u:"流浪漢", c:"內湖那家 7-11 的御飯糰漲價了，真傷心。"},
+        {u:"小莎的密友", c:"阿傑，你最近對小莎好一點啦，她常跟我抱怨你變得很神祕。"},
+        {u:"系統管理員", c:"[公告] 本站將於凌晨三點進行維護，請用戶及時保存數據。"},
+        {u:"好奇寶寶", c:"B4 實驗室到底是做什麼的啊？我姊也在那邊上班，但她都不說。"},
+        {u:"鍵盤俠", c:"樓主寫的這些是不是太科幻了點？什麼數據流、像素值的，看不懂。"},
+        {u:"吉他社社長", c:"阿傑，下禮拜的成發你真的不能來嗎？大家都等你的主音耶。"},
+        {u:"愛吃冰美式", c:"原來有人跟我一樣也愛喝冰美式，這種天氣喝最爽了。"},
+        {u:"小莎", c:"我幫你把吉他的弦換好了，希望你回家後能彈給我聽。"},
+        {u:"迷路的小羊", c:"不小心點進來的，發現這篇網誌很有意思，已經加入我的最愛。"},
+        {u:"老陳", c:"計畫不能出錯，你是我最看好的工程師。"},
+        {u:"曉婷的同學", c:"曉婷辭職後就聯絡不上了，她的手機也停機，有人知道她去哪了嗎？"},
+        {u:"阿強", c:"我剛剛在萬年大樓看到一個超酷的頭盔，跟你描述的好像喔。"},
+        {u:"不具名網友", c:"這網頁的背景音樂循環得我很不安...有人有一樣的感覺嗎？"},
+        {u:"時空旅人", c:"20年後的你會後悔現在的選擇，快停下。"},
+        {u:"AD", c:"想知道如何一天賺進一萬塊嗎？點此了解財富密碼。"},
+        {u:"路過的校友", c:"你是 94 級的阿傑嗎？我是坐你隔壁桌的那個阿龍啊！"},
+        {u:"小莎", c:"我今天在街上看到一個很像你的人，但他眼神很空洞。"},
+        {u:"數據魔人", c:"01010101... 原來如此，原來這就是世界的本質。"}
     ];
-    for(let i=0; i<30; i++) gbData.push({u:"User_"+i, c: "留個言，祝版主天天開心！", s: i%10===0});
 
     // 音樂播放器
     function playMusic() {
         triggerFault();
         audio.play().then(() => {
-            // 一開始按下就是 00:32
             audio.currentTime = 32; 
             audio.ontimeupdate = () => {
-                // 播完歌剛好 00:36 (設定在 36.9 左右循環回 32)
                 if (audio.currentTime >= 36.9) audio.currentTime = 32;
                 
                 let cur = audio.currentTime;
-                let sec = Math.floor(cur);
-                let ms = Math.floor((cur % 1) * 100);
-                normalLCD.innerHTML = `[PLAYING] 00:${sec}:${ms < 10 ? '0'+ms : ms}<br><marquee scrollamount="2" style="width:180px;">周杰倫 - 千里之外.mp3</marquee>`;
+                // 僅顯示狀態，不顯示秒數
+                normalLCD.innerHTML = `[PLAYING]<br><marquee scrollamount="2" style="width:180px;">周杰倫 - 千里之外.mp3</marquee>`;
                 pFill.style.width = ((cur - 32) / 4.9 * 100) + "%";
             };
         }).catch(() => {});
     }
     function pauseMusic() { audio.pause(); }
-    function stopMusic() { audio.pause(); audio.currentTime = 0; pFill.style.width = "0%"; normalLCD.innerHTML = "[READY] 00:00<br>..."; }
+    function stopMusic() { audio.pause(); audio.currentTime = 0; pFill.style.width = "0%"; normalLCD.innerHTML = "[READY]<br>..."; }
     function triggerFault() {
         normalLCD.style.display = 'none'; errorLCD.style.display = 'block';
         setTimeout(() => { errorLCD.style.display = 'none'; normalLCD.style.display = 'block'; }, 800);
