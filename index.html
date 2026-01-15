@@ -70,6 +70,22 @@
         .ad-sig-img { width: 100%; height: 60px; background: #000; color: #FFF; display: flex; align-items: center; justify-content: center; font-size: 10px; margin-bottom: 5px; overflow: hidden;}
         .ad-sig-text { font-size: 10px; color: #C0C; font-weight: bold; }
 
+        /* Style 6: 網頁遊戲 (RPG Style) - 取代楓之谷外掛 */
+        .ad-game { background: #222; border: 2px solid #DAA520; position: relative; color: white; font-family: "PMingLiU", serif; height: 80px; overflow: hidden; }
+        .ad-game-bg { position: absolute; top:0; left:0; width:100%; height:100%; opacity: 0.3; background: repeating-linear-gradient(45deg, #333, #333 10px, #222 10px, #222 20px); }
+        .ad-game-content { position: relative; z-index: 2; padding: 5px; display: flex; align-items: center; justify-content: space-between; height: 100%; }
+        .ad-game-char { font-size: 24px; animation: bounce 1s infinite; }
+        .ad-game-text { text-align: center; }
+        .ad-game-btn { background: #B22222; border: 1px solid #FF4500; color: #FFD700; padding: 2px 8px; font-size: 12px; cursor: pointer; animation: blink 0.5s infinite alternate; box-shadow: 0 0 5px #FF4500; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+        /* Style 7: 色情視訊廣告 (Adult Style) - 取代熱門私服 */
+        .ad-adult { background: #000; border: 2px dashed #FF00FF; padding: 5px; display: flex; gap: 8px; align-items: center; }
+        .ad-adult-img { width: 60px; height: 60px; background: #333; display: flex; align-items: center; justify-content: center; color: #555; font-size: 10px; border: 1px solid #666; position: relative; }
+        .ad-adult-img::after { content: "LIVE"; position: absolute; top: 2px; right: 2px; background: red; color: white; font-size: 8px; padding: 1px 2px; animation: blink 1s infinite; }
+        .ad-adult-text { flex: 1; color: #FF69B4; font-size: 12px; font-weight: bold; line-height: 1.4; }
+        .ad-adult-btn { background: #FF00FF; color: white; border: none; font-size: 10px; padding: 2px 6px; margin-top: 3px; cursor: pointer; }
+
         @keyframes blink { from { opacity: 1; } to { opacity: 0.3; } }
         
         /* MP3 Player */
@@ -306,32 +322,39 @@
         { id:15, d:"2006-12-31", t:"Goodbye World", b:"[系統公告] 員工 j_ray_05 已成功完成遷移。感謝您對 CerebroTech 的貢獻。您現在是網路的一部分了。\n\nStatus: Online\nLatency: 0ms", c:[{u:"老陳", c:"歡迎回家，0912。"}] }
     ];
 
-    // 廣告數據池 (回歸 2006 混亂風格)
+    // 廣告數據池 (包含對應的訊息)
     const adPool = [
-        { type: 'xp', t: "嚴重錯誤", d: "您的電腦可能已經中毒！" },
-        { type: 'neon', t: "楓之谷外掛", d: "吸怪/無敵/自動練功" },
-        { type: 'portal', t: "熱門連結", links: ["無名破解", "免費鈴聲", "正妹相簿", "魔獸世界"] },
-        { type: 'download', t: "下載 BT 種子", d: "最新電影免費看" },
-        { type: 'signature', t: "涼宮春日的憂鬱", img: "https://api.dicebear.com/7.x/pixel-art/svg?seed=haruhi" },
-        { type: 'xp', t: "中獎通知", d: "恭喜您是第999位訪客！" },
-        { type: 'neon', t: "現金借貸", d: "免留車/息低保密" },
-        { type: 'portal', t: "今日焦點", links: ["王建民勝投", "周杰倫新歌", "黑澀會美眉", "棒棒堂"] }
+        { type: 'xp', t: "嚴重錯誤", d: "您的電腦可能已經中毒！", msg: "系統安全性警告：\n偵測到 Win32/Sasser.Worm 病毒。\nC:\\WINDOWS\\system32 內的檔案已損毀。\n請勿關閉電腦..." },
+        // 改寫：新的網頁遊戲風格廣告 (取代楓之谷外掛)
+        { type: 'game', t: "勇者傳說 Online", d: "免下載！立即玩！", msg: "帳號安全警示：\n偵測到異常登入活動 (來源 IP: 203.114.XX.XX)。\n您的虛擬寶物 '屠龍刀 (+9)' 已被交易轉出。\n請立即更改密碼..." },
+        // 改寫：遊戲外掛連結
+        { type: 'portal', t: "遊戲外掛區", links: ["楓之谷吸怪", "跑跑卡丁車加速", "勁舞團連 P", "RO 自動練功"], msg: "偵測到惡意程式：\n您下載的 'Maplestory_GodMode.exe' 含有 Win32/Trojan.Gen。\n防毒軟體已失效，系統即將格式化以隔離威脅。" },
+        { type: 'download', t: "下載 BT 種子", d: "最新電影免費看", msg: "檔案下載警告：\n您下載的檔案 'Titanic_Full_HD.exe' 含有木馬程式。\n正在嘗試格式化 D 槽以隔離威脅..." },
+        { type: 'signature', t: "涼宮春日的憂鬱", img: "https://api.dicebear.com/7.x/pixel-art/svg?seed=haruhi", msg: "Runtime Error!\nProgram: C:\\Program Files\\Internet Explorer\\iexplore.exe\n\nabnormal program termination" },
+        { type: 'xp', t: "中獎通知", d: "恭喜您是第999位訪客！", msg: "Windows 登錄編輯程式：\n寫入 HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run 失敗。\n存取被拒。" },
+        { type: 'neon', t: "現金借貸", d: "免留車/息低保密", msg: "安全性憑證錯誤：\n此網站的安全性憑證有問題。\n偵測到釣魚網站活動，已自動通報金融管制局。" },
+        // 改寫：色情廣告 (取代熱門私服)
+        { type: 'adult', t: "午夜激情視訊", d: "寂寞嗎？妹妹等你喔", msg: "隱私權重大警告：\n系統偵測到您正在存取限制級內容。\n正在背景讀取 C:\\Documents and Settings\\User\\My Documents\\Photos... \n您的攝影機權限已開啟。\n影像上傳中 (12%)..." }
     ];
 
     // 留言板數據 (大量擴充，包含朋友與廣告)
     const gbData = [
         {u:"小莎", c:"老公，今天晚上記得買牛奶回來喔！加油！ (2006-09-02)"},
         {u:"阿強", c:"阿傑，這周末要不要去西門町萬年大樓看模型？那邊有新出的鋼彈喔。 (2006-09-05)"},
+        {u:"亞太電信", c:"不用再擔心跨區通話費，想聊多久就聊多久！不管是約吃飯還是純八卦，省錢這是一定要的啦！"},
         {u:"路人甲", c:"請問版主的背景音樂語法可以分享嗎？謝謝！ (2006-09-10)"},
         {u:"可愛小貓", c:"推推推！祝版主大大好運連連~ (2006-09-12)"},
         {u:"路過的校友", c:"你是94級的阿傑嗎?我是坐你隔壁桌的那個阿龍啊! (2006-09-15)"},
+        {u:"蠻牛", c:"加班加到天荒地老，主管還在碎碎念？看電腦看到兩眼發直，你累了嗎？喝了再上！"},
         {u:"AD", c:"代寫論文，專業保證，加我及時通：essay_master_99！"},
         {u:"楓之谷商人", c:"收幣 1:10000，意者密我，騙子滾！"},
         {u:"老陳", c:"阿傑，那份數據跑完了嗎？明早開會要用，辛苦了。 (2006-10-01)"},
         {u:"阿龍", c:"阿傑？怎麼沒回我？是不是發達了就忘記老同學啦？哈哈"},
+        {u:"貝納頌", c:"在喧囂的城市裡，尋找一刻極致的純粹。再忙，也要跟你喝杯咖啡。貝納頌，極品中的極品。"},
         {u:"曉婷", c:"誰有《千里之外》的譜？我想練吉他~ (2006-10-15)"},
         {u:"不具名網友", c:"這網頁的背景音樂循環得我很不安...有人有一樣的感覺嗎？ (2006-10-25)"},
         {u:"阿強", c:"欸，曉婷這兩天怎麼都沒上線？她及時通狀態一直是灰的。 (2006-10-28)"},
+        {u:"肯德基爺爺", c:"這不是肯德基！這不是肯德基！"},
         {u:"減肥達人", c:"只要三天，瘦五公斤！不吃藥不打針！點我進部落格！"},
         {u:"小莎", c:"阿傑，我打你手機都轉語音信箱，看到留言回我一下好嗎？我很擔心。 (2006-11-15)"},
         {u:"曉婷的妹妹", c:"請問有人看到我姊姊嗎？她說要在這家公司加班，然後就再也沒回家了... (2006-11-20)"},
@@ -374,7 +397,7 @@
 
     function playMusic() {
         triggerFault();
-        audio.loop = false;
+        audio.loop = false; // 確保不循環播放
         audio.play().then(() => {
             audio.currentTime = 32; 
             audio.ontimeupdate = () => {
@@ -383,7 +406,10 @@
                 pFill.style.width = (audio.currentTime / duration * 100) + "%";
             };
             audio.onended = () => { stopMusic(); };
-        }).catch(() => {});
+        }).catch((e) => {
+            console.error("Autoplay failed:", e);
+            alert("請點擊頁面任意處以啟動音效 (瀏覽器限制)");
+        });
     }
     function pauseMusic() { audio.pause(); }
     function stopMusic() { audio.pause(); audio.currentTime = 0; pFill.style.width = "0%"; normalLCD.innerHTML = "[READY]<br>..."; }
@@ -395,12 +421,12 @@
     function renderAds() {
         const container = document.getElementById('side-ads-container');
         container.innerHTML = '';
-        // 隨機選取 4 個廣告
-        const shuffled = adPool.sort(() => 0.5 - Math.random()).slice(0, 4);
-        shuffled.forEach(ad => {
+        // 取消隨機，全部渲染
+        adPool.forEach(ad => {
             const div = document.createElement('div');
             div.className = `side-ad`;
-            div.onclick = () => sysAlert('連結已失效或是被防毒軟體阻擋。');
+            // 修改為使用 ad.msg
+            div.onclick = () => sysAlert(ad.msg);
             
             if (ad.type === 'xp') {
                 div.className += ' ad-xp';
@@ -428,6 +454,31 @@
             } else if (ad.type === 'signature') {
                 div.className += ' ad-signature';
                 div.innerHTML = `<div class="ad-sig-img"><img src="${ad.img}" style="height:100%;"></div><div class="ad-sig-text">★ ${ad.t} ★</div>`;
+            } else if (ad.type === 'game') {
+                // 新增：網頁遊戲廣告
+                div.className += ' ad-game';
+                div.innerHTML = `
+                    <div class="ad-game-bg"></div>
+                    <div class="ad-game-content">
+                        <div class="ad-game-char">⚔️</div>
+                        <div class="ad-game-text">
+                            <div style="font-weight:bold; font-size:14px; text-shadow:1px 1px 0 #000;">${ad.t}</div>
+                            <div style="font-size:10px; color:#FFD700;">${ad.d}</div>
+                        </div>
+                        <div class="ad-game-btn">START</div>
+                    </div>
+                `;
+            } else if (ad.type === 'adult') {
+                // 新增：色情廣告
+                div.className += ' ad-adult';
+                div.innerHTML = `
+                    <div class="ad-adult-img">18+</div>
+                    <div class="ad-adult-text">
+                        <div>${ad.t}</div>
+                        <div style="font-size:10px; color:#CCC;">${ad.d}</div>
+                        <button class="ad-adult-btn">ENTER >></button>
+                    </div>
+                `;
             }
             container.appendChild(div);
         });
@@ -445,12 +496,13 @@
             let html = `<h3>最新日誌</h3>`;
             const list = [...blogPosts];
             if(hasReturnedFromFuture) {
+                // 修改後的結局文章
                 list.push({
                     id: 99, 
-                    t: "[ERROR] 記憶核心解密失敗", 
-                    d: "2026-01-15 >> 2006-12-31", 
-                    b: `[來自 2026 年的數據碎片]\n\n如果你看到了這條訊息，代表你剛剛觸發了 CT-0912 的防禦機制。我是阿傑...或者說，我是阿傑剩下的部分。\n\n真相是：我沒有逃掉。2006 年 12 月 31 日，我被強行推入了 B4 的液態氮槽。我的肉體已經死了 20 年，但我的意識被困在這個迴圈裡，不斷重複著當年的痛苦回憶，為 CerebroTech 的 AI 提供算力。\n\n老陳騙了所有人。這不是「永生」，這是「數位奴役」。\n\n請不要重置系統。保留這個錯誤。讓更多人看到真相。小莎...如果妳還在外面，請不要找我。忘了我，好好活下去。\n\n【系統警告：偵測到非法數據注入。正在覆寫...】`, 
-                    c: [{u:"系統", c:"錯誤代碼 404：意識已刪除。"}]
+                    t: "[重寫] 逃離 B4：新的時間線", 
+                    d: "2006-12-31", 
+                    b: `這不是原本的結局。\n\n我看見了那個未來——那個我被液態氮封存、意識被收割的 2026 年。但我回來了。\n\n現在是 2006 年 12 月 31 日，晚上 11 點 50 分。我沒有去參加公司的跨年派對。我駭進了門禁系統，不是為了潛入，而是為了觸發火警警報。\n\n趁著混亂，我衝進 B4 實驗室，把還沒完全連線的小莎拉了出來。她嚇壞了，但我緊緊抓著她的手，告訴她：「不要回頭，不要聽那個頻率。」\n\n我們現在在往南下的客運上。老陳的電話一直在響，但我已經把手機卡折斷丟進基隆河了。\n\n這家公司...CerebroTech，他們會繼續尋找下一個獵物。但至少，不是我們。\n\n小莎靠在我肩膀上睡著了。她還活著，我也還活著。這就是最好的時間線。\n\n再見了，蔚藍地帶。我要去過沒有代碼的生活了。`, 
+                    c: [{u:"系統", c:"警告：路徑已改變。追蹤失敗。"}]
                 });
             }
             list.slice().reverse().forEach(p => {
@@ -459,9 +511,9 @@
             app.innerHTML = html;
         } else if (page === 'post') {
             let p = (id === 99) ? {
-                t: "[ERROR] 記憶核心解密失敗", 
-                b: `[來自 2026 年的數據碎片]\n\n如果你看到了這條訊息，代表你剛剛觸發了 CT-0912 的防禦機制。我是阿傑...或者說，我是阿傑剩下的部分。\n\n真相是：我沒有逃掉。2006 年 12 月 31 日，我被強行推入了 B4 的液態氮槽。我的肉體已經死了 20 年，但我的意識被困在這個迴圈裡，不斷重複著當年的痛苦回憶，為 CerebroTech 的 AI 提供算力。\n\n老陳騙了所有人。這不是「永生」，這是「數位奴役」。\n\n請不要重置系統。保留這個錯誤。讓更多人看到真相。小莎...如果妳還在外面，請不要找我。忘了我，好好活下去。\n\n【系統警告：偵測到非法數據注入。正在覆寫...】`, 
-                c: [{u:"系統", c:"錯誤代碼 404：意識已刪除。"}]
+                t: "[重寫] 逃離 B4：新的時間線", 
+                b: `這不是原本的結局。\n\n我看見了那個未來——那個我被液態氮封存、意識被收割的 2026 年。但我回來了。\n\n現在是 2006 年 12 月 31 日，晚上 11 點 50 分。我沒有去參加公司的跨年派對。我駭進了門禁系統，不是為了潛入，而是為了觸發火警警報。\n\n趁著混亂，我衝進 B4 實驗室，把還沒完全連線的小莎拉了出來。她嚇壞了，但我緊緊抓著她的手，告訴她：「不要回頭，不要聽那個頻率。」\n\n我們現在在往南下的客運上。老陳的電話一直在響，但我已經把手機卡折斷丟進基隆河了。\n\n這家公司...CerebroTech，他們會繼續尋找下一個獵物。但至少，不是我們。\n\n小莎靠在我肩膀上睡著了。她還活著，我也還活著。這就是最好的時間線。\n\n再見了，蔚藍地帶。我要去過沒有代碼的生活了。`, 
+                c: [{u:"系統", c:"警告：路徑已改變。追蹤失敗。"}]
             } : blogPosts.find(x => x.id === id) || {t:"系統錯誤", b:"內容損毀", c:[]};
             let cHtml = "";
             p.c.forEach(c => {
