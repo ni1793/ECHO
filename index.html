@@ -28,7 +28,7 @@
         .box-title { background: #CFD8DC; padding: 6px; font-weight: bold; font-size: 13px; border-bottom: 1px solid #B0BEC5; }
         .box-body { padding: 10px; font-size: 13px; line-height: 1.6; }
         
-        /* --- 改良版播放器 UI --- */
+        /* --- 故障播放器 UI --- */
         .mp3-player { background: #333; padding: 8px; border: 2px outset #666; font-family: monospace; }
         .lcd-screen { background: #000; border: 2px inset #222; padding: 6px; height: 54px; position: relative; overflow: hidden; }
         .lcd-status { color: #0F0; font-size: 11px; line-height: 1.2; }
@@ -73,9 +73,8 @@
 </head>
 <body class="v2006">
 
-
 <audio id="bgm" preload="auto">
-    <source src="jay.mp3" type="audio/mpeg">
+    <source src="music.mp3" type="audio/mpeg">
 </audio>
 
 <div id="retro-container">
@@ -110,11 +109,11 @@
                         <div class="lcd-screen">
                             <div id="lcd-normal" class="lcd-status">
                                 [PLAYING] 00:32 / 04:16<br>
-                                <marquee scrollamount="2" style="width:180px;">周杰倫 - 千里之外 (Jay_Chou).mp3</marquee>
+                                <marquee scrollamount="2" style="width:180px;">周杰倫 - 千里之外.mp3</marquee>
                             </div>
                             <div id="lcd-error" class="lcd-fault">
                                 [ ERROR: CDR-404 ]<br>
-                                READ FAILURE
+                                DATA CORRUPTED
                             </div>
                         </div>
                         <div class="progress-bar"><div id="p-fill" class="progress-fill"></div></div>
@@ -167,7 +166,6 @@
 </div>
 
 <script>
-    // --- 音樂鎖定邏輯 ---
     const audio = document.getElementById('bgm');
     const normalLCD = document.getElementById('lcd-normal');
     const errorLCD = document.getElementById('lcd-error');
@@ -176,12 +174,11 @@
     function startGlitch() {
         triggerFault();
         audio.play().catch(()=>{});
-        audio.currentTime = 32;
+        audio.currentTime = 32; 
         audio.ontimeupdate = () => {
-            // 視覺抖動
-            pFill.style.width = (32 + Math.random() * 2) + "%";
+            pFill.style.width = (32 + Math.random() * 5) + "%"; // 故障抖動感
             if (audio.currentTime >= 36) {
-                audio.currentTime = 32; // 強制跳回
+                audio.currentTime = 32; // 跳回
             }
         };
     }
@@ -192,180 +189,136 @@
         setTimeout(() => {
             errorLCD.style.display = 'none';
             normalLCD.style.display = 'block';
-        }, 2000);
+        }, 1500);
     }
 
-    // --- 完整保留 15 篇文章數據 ---
+    // --- 日誌數據與留言板內容 ---
     const blogPosts = [
         { id:1, d:"2006-09-01", t:"新人報到！", b:"今天第一天去 CerebroTech 上班。內湖這棟大樓冷氣超強，主管老陳送我一件藍色的公司 T 恤，我今天就直接穿著。小莎說我穿藍色很好看，希望試用期一切順利！", 
-          c:[{u:"小莎", c:"加油老公！買肉肉回來吃！"}, {u:"阿強", c:"不錯喔，內科工程師耶。"}, {u:"網路賺錢小幫手", c:"在家工作月領十萬不是夢！加我即時通：money999"}, {u:"優質主機", c:"想架站嗎？最便宜的空間在這裡 http://host-server.tk"}] },
+          c:[{u:"小莎", c:"加油老公！買肉肉回來吃！"}, {u:"阿強", c:"不錯喔，內科工程師耶。"}, {u:"網路賺錢小幫手", c:"加我即時通：money999"}] },
         { id:2, d:"2006-09-12", t:"拿到員工證 (CT-0912)", b:"正式入職兩週，拿到識別證了。編號是 0912，剛好是我的入職日，也是今天的日期。下午去 B2 機房巡檢，那裡的伺服器聲大到會耳鳴，但老陳說那是『科技的聲音』。", 
-          c:[{u:"大雄", c:"恭喜啦！下班去喝一杯？"}, {u:"貸款專家", c:"憑身分證即刻領現，內科員工優待！"}, {u:"不知名訪客", c:"0912...這數字感覺很有魔力呢。"}] },
+          c:[{u:"大雄", c:"恭喜啦！下班去喝一杯？"}] },
         { id:3, d:"2006-09-20", t:"金屬味的咖啡", b:"公司的咖啡機聽說是頂級的，但最近喝起來總有一股鐵味。我問隔壁桌的曉婷，她只是盯著螢幕，眼睛一眨都不眨。這公司的人都很認真，認真到有點恐怖。", 
-          c:[{u:"May", c:"是不是水管生鏽啊？"}, {u:"健康達人", c:"排毒餐，讓你遠離重金屬污染！"}, {u:"正妹公關", c:"晚上寂寞嗎？加我 MSN: sweet-girl-88"}] },
+          c:[{u:"May", c:"是不是水管生鏽啊？"}] },
         { id:4, d:"2006-10-01", t:"第一份薪水！Fender 我來了", b:"領薪水啦！雖然被扣了勞健保，但存款變多了。小莎說聖誕節想去日本，但我更想買那把 Fender 吉他。男人嘛，總有個搖滾夢。", 
-          c:[{u:"小莎", c:"吉他跟我，選一個？(跪算盤)"}, {u:"樂器行小王", c:"Fender 全系列特價中，來店找小王打折！"}] },
+          c:[{u:"小莎", c:"吉他跟我，選一個？"}] },
         { id:5, d:"2006-10-15", t:"440Hz 的幻聽", b:"最近耳鳴變嚴重了，頻率很穩定，就像是調音器的 A 弦。我在家彈吉他時，甚至覺得吉他的聲音被環境音蓋過去了。是我太累了嗎？", 
-          c:[{u:"大雄", c:"去掛個耳鼻喉科吧。"}, {u:"助聽專家", c:"最新隱形助聽器，找回清晰世界。"}] },
+          c:[{u:"大雄", c:"去掛個耳鼻喉科吧。"}] },
         { id:6, d:"2006-10-25", t:"老陳消失了", b:"老陳今天沒來上班。HR 說他離職了，可是他桌上那盆仙人掌都乾死了也沒帶走。這不像是老陳的作風。主管叫我接手老陳的「ECHO 計畫」。", 
-          c:[{u:"曉婷", c:"不要問。"}, {u:"徵信找人", c:"想知道他在哪？全台最強尋人服務。"}] },
+          c:[{u:"曉婷", c:"不要問。"}] },
         { id:7, d:"2006-11-05", t:"小莎，對不起", b:"昨天又跟小莎吵架。她說我講話像機器人，一點情感都沒有。我只是在講邏輯，為什麼她不懂？440Hz 的聲音現在很大聲，很清脆。", 
-          c:[{u:"小莎", c:"你現在連看我的眼神都沒溫度了。"}, {u:"兩性專家", c:"挽回感情的三個秘密武器！"}] },
+          c:[{u:"小莎", c:"你現在連看我的眼神都沒溫度了。"}] },
         { id:8, d:"2006-11-15", t:"前進 B4 實驗室", b:"我被調去地下的 B4 實驗室。那邊沒有窗戶，手機也沒訊號。主管說這是核心開發。我第一次戴上 ECHO 頭盔，那一瞬間，我覺得我的腦袋變清晰了。", 
-          c:[{u:"Admin", c:"同步率偵測中..."}, {u:"視訊辣妹", c:"B4 寂寞嗎？來點刺激的？點我。"}] },
+          c:[{u:"Admin", c:"同步率偵測中..."}] },
         { id:9, d:"2006-11-25", t:"不需要睡覺", b:"我已經三天沒回家了，但我一點都不累。B4 的營養液很有飽足感。我覺得我可以寫代碼寫一輩子。小莎打來很多通電話，我都沒接。好吵。", 
-          c:[{u:"大雄", c:"阿傑？你在哪？你家沒人耶！"}, {u:"系統訊息", c:"連線穩定性：98%"}] },
+          c:[{u:"大雄", c:"阿傑？你在哪？你家沒人耶！"}] },
         { id:10, d:"2006-12-05", t:"肉體是累贅", b:"今天我低頭看我的手，覺得這層皮膚好礙事。打字的速度遠低於大腦的運算。如果能直接用電流傳輸數據，那該多好？", 
-          c:[{u:"曉婷", c:"我也快完成了..."}, {u:"輕盈人生", c:"最科學的減重計畫，讓你身輕如燕。"}] },
+          c:[{u:"曉婷", c:"我也快完成了..."}] },
         { id:11, d:"2006-12-15", t:"我看見了 0 和 1", b:"閉上眼，世界是綠色的。我能看見這棟大樓的電力流動、冷氣運轉。我是這座建築的一部分。我是 ECHO。", 
-          c:[{u:"系統", c:"優化中：90%"}, {u:"辣妹自拍", c:"哥哥想看更多嗎？加我雅虎即時通。"}] },
+          c:[{u:"系統", c:"優化中：90%"}] },
         { id:12, d:"2006-12-24", t:"最後的平安夜", b:"小莎在公司樓下哭。我從監視器看到她，卻感覺不到任何悲傷。我只覺得她的眼淚影響了路面反射率。聖誕快樂，阿傑。再見，阿傑。", 
-          c:[{u:"小莎", c:"求求你下來... 阿傑..."}, {u:"系統提醒", c:"偵測到干擾訊號，已過濾。"}] },
+          c:[{u:"小莎", c:"求求你下來... 阿傑..."}] },
         { id:13, d:"2006-12-28", t:"同步即將完成", b:"明天就是最後一步。我將不再受限於這副沉重的軀殼。我會變成長存於網路的幽靈。CerebroTech 萬歲。", 
-          c:[{u:"Admin", c:"Welcome to Eternity."}, {u:"永恆保險", c:"為您的意識買一份保險。"}] },
+          c:[{u:"Admin", c:"Welcome to Eternity."}] },
         { id:14, d:"2006-12-30", t:"...", b:"01001000 01000101 01001100 01010000 00100000 01001101 01000101", 
-          c:[{u:"訪客14", c:"<a href='javascript:void(0)' onclick='hackInto2026()' style='color:#DDD;'>[ 原始連結已損毀 ]</a>"}, {u:"防毒軟體", c:"偵測到病毒威脅，請立即掃描。"}] },
+          c:[{u:"訪客14", c:"<a href='javascript:void(0)' onclick='hackInto2026()' style='color:#DDD;'>[ 原始連結已損毀 ]</a>"}] },
         { id:15, d:"2006-12-31", t:"Goodbye World", b:"[此文章已被系統歸檔。使用者已轉移。]", 
-          c:[{u:"系統", c:"歸檔完成。2007-01-01"}] }
+          c:[{u:"系統", c:"歸檔完成。"}] }
     ];
 
-    // --- 完整保留 50 則獨特留言板數據 ---
     const guestbook = [
-        { u: "小莎", c: "頭香！老公第一天報到加油喔，記得要把識別證拍給我看 ^_^" },
+        { u: "小莎", c: "頭香！老公第一天報到加油喔！" },
         { u: "阿強", c: "不錯喔，內科新貴，以後練團室的錢就交給你了 XD" },
-        { u: "路人甲", c: "大大安安，路過踩踩，這板面好清涼喔！" },
-        { u: "大雄", c: "我也想去 CerebroTech，聽說福利很好？有正妹嗎？" },
-        { u: "May_Day", c: "五月天的新歌超好聽！大大也是五迷嗎？" },
-        { u: "信貸陳先生", c: "內科員工專案，首付5萬即刻擁有新車，電洽 0912-xxx-xxx" },
-        { u: "小莎", c: "你怎麼沒接手機？我剛去買了繼光香香雞，快點回我喔 T_T" },
-        { u: "瘦身達人", c: "不用節食也能瘦，我三個月瘦了十公斤！想知道點我個人檔案。" },
-        { u: "阿強", c: "喂，你這週練團消失是怎樣？電話也不接，Orz..." },
-        { u: "雅虎正妹", c: "寂寞想找人聊聊嗎？我的即時通是 angel-girl-88，加我喔！" },
-        { u: "大雄", c: "阿傑，我聽說老陳辭職了？他不是才升官嗎？@@" },
-        { u: "不知名訪客", c: "路過。你的網誌有一種很奇怪的頻率，聽久了耳朵好癢。" },
-        { u: "小莎", c: "我在警局。警方說內湖沒這間公司... 阿傑你在哪？別開玩笑了，一點都不好笑！" },
-        { u: "曉婷", c: "阿傑，我拿到 B4 的通行證了。這裡好安靜，我們終於可以專心寫代碼了。" },
-        { u: "六合彩預測", c: "準確度99%！今日明牌：09, 12, 24, 31... 點我看更多秘密。" },
-        { u: "研究所阿明", c: "阿傑，好久不見，上次那個 Java 專案還有留底嗎？學弟想參考。" },
-        { u: "算命仙", c: "施主，我看你氣色發青，近期不宜久待地下室，恐有血光之災。" },
-        { u: "小莎", c: "求求你回電話... 我在你家樓下，為什麼燈是開的但沒人應門？我好害怕..." },
-        { u: "廣告客服", c: "想增加部落格人氣嗎？專業 SEO 服務點這裡，保證上搜尋首頁！" },
-        { u: "阿強", c: "算了，吉他我先幫你收著。你回來記得找我... 如果你還記得我的話。" },
-        { u: "魔獸玩家", c: "大大你有玩 WOW 嗎？我們在銀翼要塞缺個坦，要不要來？" },
-        { u: "星光幫後援會", c: "宥嘉超帥的！大家快來加入後援會喔！" },
-        { u: "房貸專家", c: "免擔保、免照會，當日撥款，讓您過個好年。" },
-        { u: "曉婷", c: "同步率已經 85% 了。我看到你了，就在我隔壁的隔壁。你的代碼很美。" },
-        { u: "訪客101", c: "文章不錯，推推！回訪一下喔 ^_^" },
-        { u: "小莎", c: "我報警了。警察闖進你家，裡面一個人都沒有... 電腦還開著，停在你的網誌..." },
-        { u: "網賺高手", c: "誠徵兼職，每日只需一小時，週領三千。請加 MSN 詳談。" },
-        { u: "大雄", c: "這太扯了。CerebroTech 到底是幹嘛的？我也要去內湖看個究竟。" },
+        { u: "路人甲", c: "大大安安，路過踩踩！" },
+        { u: "大雄", c: "我也想去 CerebroTech，聽說福利很好？" },
+        { u: "May_Day", c: "五月天的新歌超好聽！" },
+        { u: "信貸陳先生", c: "電洽 0912-xxx-xxx" },
+        { u: "小莎", c: "你怎麼沒接手機？我買了繼光香香雞 T_T" },
+        { u: "瘦身達人", c: "三個月瘦了十公斤！點我。" },
+        { u: "阿強", c: "喂，你這週練團消失是怎樣？Orz..." },
+        { u: "雅虎正妹", c: "即時通 angel-girl-88，加我喔！" },
+        { u: "大雄", c: "阿傑，我聽說老陳辭職了？" },
+        { u: "不知名訪客", c: "你的網誌有一種很奇怪的頻率。" },
+        { u: "小莎", c: "警方說內湖沒這間公司... 你在哪？" },
+        { u: "曉婷", c: "阿傑，我拿到 B4 通行證了。這裡好安靜。" },
+        { u: "六合彩預測", c: "明牌：09, 12, 24, 31" },
+        { u: "研究所阿明", c: "阿傑，上次那個 Java 專案還有留底嗎？" },
+        { u: "算命仙", c: "近期不宜久待地下室，恐有血光之災。" },
+        { u: "小莎", c: "我門口燈是開的但沒人應門？我好害怕..." },
+        { u: "廣告客服", c: "專業 SEO 服務點這裡！" },
+        { u: "阿強", c: "吉他我先幫你收著。你回來記得找我。" },
+        { u: "魔獸玩家", c: "銀翼要塞缺個坦，要不要來？" },
+        { u: "星光幫後援會", c: "宥嘉超帥的！" },
+        { u: "房貸專家", c: "免擔保、免照會，過個好年。" },
+        { u: "曉婷", c: "同步率已經 85% 了。我看到你了。" },
+        { u: "訪客101", c: "回訪一下喔 ^_^" },
+        { u: "小莎", c: "警察闖進你家，裡面一個人都沒有... 電腦還開著..." },
+        { u: "網賺高手", c: "週領三千，加 MSN 詳談。" },
+        { u: "大雄", c: "這太扯了。CerebroTech 到底是幹嘛的？" },
         { u: "不知名訪客", c: "我聽見了。440Hz。它是活的。" },
-        { u: "駭客", c: "如果你是 2026 年的人，點擊第 14 篇文章。密碼是藍色。" },
-        { u: "Admin", c: "此區域留言即將由系統自動歸檔。User CT-0912 身分已失效。" },
-        { u: "路人24", c: "回踩一個。大大你很久沒更新了耶，Orz" },
-        { u: "推銷小李", c: "內科上班族必看！超值午餐盒外送，第二件半價。" },
+        { u: "駭客", c: "密碼是藍色。點擊第 14 篇文章。" },
+        { u: "Admin", c: "User CT-0912 身分已失效。" },
+        { u: "路人24", c: "大大你很久沒更新了耶，Orz" },
+        { u: "推銷小李", c: "內科上班族必看！超值午餐盒。" },
         { u: "曉婷", c: "我進去了。再見了世界。" },
-        { u: "大雄", c: "阿傑，阿傑真的不見了。我們去他公司大樓，守衛說那裡是空屋..." },
-        { u: "視訊辣妹", c: "哥哥快來找我玩，點我進入秘密房間，今天有特別表演喔。" },
-        { u: "大學同學", c: "阿傑，聽說你進了很大的科技公司，恭喜啊！改天聚餐！" },
-        { u: "系統警告", c: "偵測到大量非法連結。留言功能暫時關閉。" },
-        { u: "小莎", c: "我愛你。就算你變成一段代碼，我也會找到你。" },
-        { u: "不知名訪客", c: "他在裡面。他在每一個 0 和 1 裡面。不要去找他，你會被吞掉。" },
-        { u: "廣告", c: "2007 年最新流行穿搭！點我看網拍，全館免運。" },
-        { u: "阿強", c: "警察說你是主動失蹤的。我不相信。你不是那種人。" },
-        { u: "路人111", c: "這網誌怎麼變紅色的了？好恐怖，我要搬家去 Pixnet 了。" },
+        { u: "大雄", c: "阿強，守衛說那裡是空屋..." },
+        { u: "視訊辣妹", c: "哥哥快來找我玩，點我。" },
+        { u: "大學同學", c: "阿傑，恭喜啊！改天聚餐！" },
+        { u: "系統警告", c: "留言功能暫時關閉。" },
+        { u: "小莎", c: "我愛你。就算你變成一段代碼..." },
+        { u: "不知名訪客", c: "他在每一個 0 和 1 裡面。不要去找他。" },
+        { u: "廣告", c: "2007 年最新流行穿搭！全館免運。" },
+        { u: "阿強", c: "警察說你是主動失蹤的。我不相信。" },
+        { u: "路人111", c: "這網誌怎麼變紅色的了？好恐怖 =.=" },
         { u: "曉婷", c: "440Hz... 440Hz... 440Hz..." },
-        { u: "訪客99", c: "路過。這裡氣氛怪怪的，先撤了 =.=" },
+        { u: "訪客99", c: "這裡氣氛怪怪的，先撤了。" },
         { u: "算命仙", c: "大凶。不可解。不可視。不可說。" },
         { u: "大雄", c: "再見了，阿傑。希望你在那邊過得好。" },
-        { u: "小莎", c: "最後一則留言。我會一直等你的。就算網誌關掉也一樣。" },
+        { u: "小莎", c: "最後一則留言。我會一直等你的。" },
         { u: "Admin", c: "ECHO 計畫完成。100% 同步。" },
         { u: "訪客", c: "01000111 01001111 01001111 01000100 01000010 01011001 01000101" }
     ];
 
     const friends = ["小莎 (Sasha)", "阿強", "大雄", "May_Day", "老陳", "曉婷", "Admin"];
 
-    // --- 核心邏輯 ---
-
     function route(page, id = null) {
         const app = document.getElementById('app');
         if (page === 'home') {
             let html = `<h3>最新文章</h3>`;
             blogPosts.slice().reverse().forEach(p => {
-                html += `
-                    <div class="post-card">
-                        <h3 onclick="route('post', ${p.id})">${p.t}</h3>
-                        <div class="post-meta">日期：${p.d} | 留言：${p.c.length}</div>
-                        <div style="color:#666; font-size:13px;">${p.b.substring(0, 40)}...</div>
-                    </div>
-                `;
+                html += `<div class="post-card"><h3 onclick="route('post', ${p.id})">${p.t}</h3><div class="post-meta">日期：${p.d}</div></div>`;
             });
             app.innerHTML = html;
         } else if (page === 'post') {
             const p = blogPosts.find(x => x.id === id);
             let comms = "";
-            p.c.forEach(c => {
-                comms += `<div class="comment-item"><span class="c-user">${c.u}</span>: <div class="c-msg">${c.c}</div></div>`;
-            });
-            app.innerHTML = `
-                <button onclick="route('home')"><< 返回列表</button>
-                <h2>${p.t}</h2>
-                <div class="post-meta">發表於 ${p.d}</div>
-                <div style="line-height:1.8; margin:20px 0;">${p.b}</div>
-                <div class="comment-area">
-                    <b>迴響 (${p.c.length})</b>
-                    ${comms}
-                </div>
-            `;
+            p.c.forEach(c => comms += `<div class="comment-item"><b>${c.u}</b>: ${c.c}</div>`);
+            app.innerHTML = `<button onclick="route('home')"><< 返回</button><h2>${p.t}</h2><p>${p.b}</p><div class="comment-area">${comms}</div>`;
         } else if (page === 'guestbook') {
-            let html = `<h3>。 留言板 (Guestbook) 。</h3>`;
-            guestbook.forEach(g => {
-                html += `<div class="comment-item"><b>${g.u}</b>: <div class="c-msg">${g.c}</div></div>`;
-            });
+            let html = `<h3>留言板</h3>`;
+            guestbook.forEach(g => html += `<div class="comment-item"><b>${g.u}</b>: ${g.c}</div>`);
             app.innerHTML = html;
         }
-        window.scrollTo(0, 0);
     }
 
     function sysAlert(msg) { alert(msg); }
-
     function hackInto2026() {
-        const color = prompt("。時空同步檢測。請輸入阿傑入職當天穿的 T 恤顏色：");
+        const color = prompt("驗證：阿傑入職當天穿什麼顏色 T 恤？");
         if(color === "藍色") {
             document.getElementById('retro-container').style.display = 'none';
             document.getElementById('cyber-container').style.display = 'block';
-            document.body.classList.remove('v2006');
-        } else {
-            alert("驗證失敗。");
         }
     }
-
-    function triggerBreach() {
-        document.getElementById('popup-overlay').style.display = 'flex';
-    }
-
-    function closePopup() {
-        document.getElementById('popup-overlay').style.display = 'none';
+    function triggerBreach() { document.getElementById('popup-overlay').style.display = 'flex'; }
+    function closePopup() { 
+        document.getElementById('popup-overlay').style.display = 'none'; 
         document.getElementById('cyber-container').style.display = 'none';
         document.getElementById('retro-container').style.display = 'block';
-        document.body.classList.add('v2006');
-        
-        if (!blogPosts.find(p => p.id === 99)) {
-            blogPosts.push({
-                id: 99, d: "2026-01-14", t: "[ 數據溢出：救救我 ]", 
-                b: "小莎，如果你看得到這篇，我還在伺服器的快取裡。他們把我切成一塊塊的代碼。密碼是我的識別證 0912，去對方的終端機輸入...",
-                c: [{u:"阿傑", c:"快點..."}]
-            });
-            alert("。網誌數據異常。已偵測到內容異動。");
-        }
-        route('home');
     }
 
     window.onload = () => {
         const fList = document.getElementById('friend-list');
-        friends.forEach(f => {
-            fList.innerHTML += `<div style="padding:4px 0; color:#0288D1; cursor:pointer;" onclick="sysAlert('${f}：關閉中')">‧ ${f}</div>`;
-        });
+        friends.forEach(f => fList.innerHTML += `<div style="padding:4px 0; color:#0288D1; cursor:pointer;" onclick="sysAlert('${f}：關閉中')">‧ ${f}</div>`);
         route('home');
     };
 </script>
