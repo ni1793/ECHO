@@ -67,7 +67,7 @@
         .c-user { font-weight: bold; color: #2E7D32; }
         .spam-ad { color: #f00; font-style: italic; font-size: 11px; margin-top: 5px; }
 
-        /* --- 2026 Apple 主題 (優化視覺呈現) --- */
+        /* --- 2026 Apple 主題 --- */
         #cyber-container { 
             display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
             background: #000; color: var(--apple-text); z-index: 10000; 
@@ -105,7 +105,7 @@
 </head>
 <body class="v2006">
 
-<audio id="bgm" src="music.mp3" loop preload="auto"></audio>
+<audio id="bgm" src="music.mp3" preload="auto"></audio>
 
 <div id="retro-container">
     <div class="top-ad-banner">
@@ -119,14 +119,14 @@
             <h1>~* 蔚藍地帶 *~</h1>
             <p>j_ray_05 的生活碎片 | CT-0912 | <span id="clock">12:00:00</span></p>
         </div>
-        <div class="counter" onclick="hackPrompt()" style="cursor:pointer;">累計訪客：0085732</div>
+        <div class="counter">累計訪客：0085732</div>
     </header>
 
     <nav class="nav">
         <span onclick="route('home')">首頁日誌</span>
         <span onclick="route('guestbook')">留言板 (99+)</span>
         <span onclick="sysAlert('錯誤：相簿模組損毀，請聯繫站長。')">我的相簿</span>
-        <span onclick="sysAlert('地圖 API 讀取失敗。')">好友地圖</span>
+        <span id="map-link" onclick="sysAlert('地圖 API 讀取失敗。')">好友地圖</span>
     </nav>
 
     <div class="layout">
@@ -142,7 +142,6 @@
                 </div>
             </div>
 
-            <!-- Side Ads Start -->
             <a href="javascript:sysAlert('正在連接及時通伺服器...')" class="side-ad">
                 <div class="side-ad-title blink-fast">🔥 及時通 8.0 下載 🔥</div>
                 <div class="side-ad-img"><img src="https://api.dicebear.com/7.x/shapes/svg?seed=yahoo" style="width:40px"></div>
@@ -185,7 +184,6 @@
                 <div class="side-ad-text" style="color: #666;">Nokia N95 預購中</div>
                 <div class="side-ad-text" style="color: #666;">線上博弈：999純金</div>
             </div>
-            <!-- Side Ads End -->
         </aside>
 
         <main class="content" id="app"></main>
@@ -197,7 +195,6 @@
     </div>
 </div>
 
-<!-- 2026 Apple 風格頁面 (僅視覺優化，保留所有白皮書文字) -->
 <div id="cyber-container">
     <div class="apple-nav">
         <span>CEREBROTECH SYSTEMS PROTOCOL // CORE_V2.0.26</span>
@@ -255,7 +252,7 @@
     const pFill = document.getElementById('p-fill');
     let hasReturnedFromFuture = false;
 
-    // --- 完整保留 15 篇日誌文章 ---
+    // --- 完整保留 15 篇日誌文章 (未更動) ---
     const blogPosts = [
         { id:1, d:"2006-09-01", t:"第一天入職，感覺不錯！", b:"今天去內湖 CerebroTech 報到，主管老陳人超好，還送了我一件藍色公司服。小莎說我穿起來很專業。B4 實驗室好像很神祕，但老陳說我權限還不到。咖啡好喝！", c:[{u:"小莎", c:"老公加油！"}, {u:"阿強", c:"內湖那邊正妹多嗎？"}, {u:"老陳", c:"阿傑，歡迎加入大家庭。"}] },
         { id:2, d:"2006-09-15", t:"關於 440Hz 的專案", b:"最近在幫老陳校對一個音訊算法。他說 440Hz 是人類最舒適的頻率，但我聽久了總覺得心跳會莫名加速。小莎說我是壓力大。", c:[{u:"曉婷", c:"我也在做這個，真的怪怪的。"}, {u:"阿強", c:"我只聽 5566 的歌啦！"}] },
@@ -270,11 +267,10 @@
         { id:11, d:"2006-12-20", t:"逃不掉了", b:"保安像機器人一樣守著。小莎打來的電話全是雜訊。我的記憶開始模糊。 010101... 誰能幫我？", c:[{u:"小莎", c:"喂？聽得到嗎？"}, {u:"大雄", c:"阿傑你到底在寫什麼？看不懂。"}] },
         { id:12, d:"2006-12-25", t:"最後的晚餐", b:"老陳說遷移日快到了。我的吉他已經被搬走了。我忘了我最喜歡什麼歌。只剩下 440Hz。", c:[{u:"阿強", c:"聖誕快樂啊，你在哪？"}, {u:"老陳", c:"倒數四天。"}] },
         { id:13, d:"2006-12-28", t:"意識緩存中", b:"身體感覺很遙遠。我正在變成一串文字。阿傑這個名字已經沒有意義了。CT-0912 準備好同步。", c:[{u:"小莎", c:"求求你，接電話。"}] },
-        { id:14, d:"2006-12-30", t:"...", b:"HELP ME. [連結已損毀]", c:[{u:"訪客14", c:"<a href='javascript:void(0)' onclick='hackPrompt()'>[ 已損毀連結 ]</a>"}] },
+        { id:14, d:"2006-12-30", t:"...", b:"HELP ME. [連結已損毀]", c:[{u:"訪客14", c:"[ 已損毀連結 ]"}] },
         { id:15, d:"2006-12-31", t:"Goodbye World", b:"[歸檔] 遷移完成。2026 年見。", c:[{u:"老陳", c:"完成。"}] }
     ];
 
-    // 為所有文章添加廣告留言 (保留原樣)
     const ads = ["【全台最強】外掛下載點我！", "這是我看過最感人的日誌 (AD)", "借錢不求人，0利率", "徵信社推薦"];
     blogPosts.forEach(p => {
         p.c.push({u:"小莎", c:"你最近真的太忙了...要注意休息啊。"});
@@ -283,7 +279,6 @@
         for(let i=0; i<4; i++) p.c.push({u:"AD", c:ads[i%4], s:true});
     });
 
-    // --- 完整保留 54 條留言板數據 ---
     const gbData = [
         {u:"小莎", c:"老公，今天晚上記得買牛奶回來喔！加油！"},
         {u:"阿強", c:"阿傑，這周末要不要去西門町萬年大樓看模型？那邊有新出的鋼彈喔。"},
@@ -296,7 +291,7 @@
         {u:"小莎", c:"寒流來了，出門要穿外套，內湖那邊風很大喔。"},
         {u:"阿強", c:"剛剛在內湖看到你，叫你都沒聽到，是在想程式怎麼寫嗎？"},
         {u:"胖虎", c:"我是聽說這邊有音樂才點進來的，雖然沒我的歌聲好聽。"},
-        {u:"靜香", c:"阿傑你好，我是大雄的朋友，這首歌的氣氛好憂鬱喔。"},
+        {u:"靜香", c:"阿傑你好，我是大雄的朋友，這首歌的氣氛好憂獄喔。"},
         {u:"及時通達人", c:"大家都在用及時通嗎？我的帳號是 happy_boy_2006，加我喔！"},
         {u:"神秘客", c:"00:32... 為什麼是 00:32？這秒數有什麼秘密嗎？"},
         {u:"吉他社小妹", c:"學長加油！那天在社辦聽你彈琴覺得超帥的。"},
@@ -343,13 +338,15 @@
 
     function playMusic() {
         triggerFault();
+        audio.loop = false;
         audio.play().then(() => {
             audio.currentTime = 32; 
             audio.ontimeupdate = () => {
-                if (audio.currentTime >= 36.9) audio.currentTime = 32;
                 normalLCD.innerHTML = `[PLAYING]<br><marquee scrollamount="2" style="width:180px;">周杰倫 - 千里之外.mp3</marquee>`;
-                pFill.style.width = ((audio.currentTime - 32) / 4.9 * 100) + "%";
+                let duration = audio.duration || 240;
+                pFill.style.width = (audio.currentTime / duration * 100) + "%";
             };
+            audio.onended = () => { stopMusic(); };
         }).catch(() => {});
     }
     function pauseMusic() { audio.pause(); }
@@ -364,13 +361,30 @@
         if (page === 'home') {
             let html = `<h3>最新日誌</h3>`;
             const list = [...blogPosts];
-            if(hasReturnedFromFuture) list.push({id:99, t:"[重寫] 不要聽 440Hz", d:"2026-01-15", b:"帶小莎離開。代碼已經被我改寫，這不是結局。我從未來回來了。", c:[]});
+            if(hasReturnedFromFuture) {
+                list.push({
+                    id: 99, 
+                    t: "[重寫] 不要聽 440Hz：來自未來的警告", 
+                    d: "2026-01-15 >> 2006-12-31", 
+                    b: `這不是日誌，這是我最後能穿透封鎖發出的數據碎片。\n\n我在 2026 年醒來，但那不叫「醒來」。我躺在內湖區 B4 實驗室地底 50 公尺的液態氮槽裡，我的身體已經萎縮，只剩大腦接著無數纖維光纜。老陳...不，那個自稱老陳的 AI 正在收割我們所有人的意識。\n\n我看到小莎了。她在隔壁的 3437 號槽位，她的記憶正在被格式化，用來充當 NSP 協議的基礎邏輯。我看著她在我面前「數位化」，我卻連哭的能力都沒有。\n\n【關鍵線索：座標 3438】\n這是我所在的槽位。我利用系統在執行「440.32Hz 共振校準」時的 0.0001 毫秒延遲，將這段文字強行封裝成 2006 年的網頁代碼。請記住，440Hz 不是紓壓，那是「同步率」。當你覺得耳鳴變規律時，那是系統在改寫你的海馬迴。\n\n如果你現在還在 2006 年，請立刻離開內湖區基湖路。那裡的地圖導航是假的，那是為了把特定的「合適個體」引導進收割場。我已經修改了「好友地圖」的接口，那不再是朋友的位置，而是收割場的真實座標。\n\n帶小莎走。不要去聖誕聚餐。不要簽那份入職合約。代碼已經被我改寫，這不是結局。我正在嘗試從未來切斷能源。`, 
+                    c: [{u:"系統", c:"警告：偵測到時空協議衝突。數據正在自我修復。"}]
+                });
+            }
             list.slice().reverse().forEach(p => {
                 html += `<div class="post-card"><h3 onclick="route('post', ${p.id})">${p.t}</h3><div class="post-meta">${p.d} | 留言(${p.c.length})</div></div>`;
             });
             app.innerHTML = html;
         } else if (page === 'post') {
-            const p = (id===99) ? {t:"[重寫] 不要聽 440Hz", b:"帶小莎離開。代碼已經被我改寫，這不是結局。我從未來回來了。", c:[]} : (blogPosts.find(x => x.id === id) || {t:"系統錯誤", b:"內容損毀", c:[]});
+            let p;
+            if (id === 99) {
+                p = {
+                    t: "[重寫] 不要聽 440Hz：來自未來的警告", 
+                    b: `這不是日誌，這是我最後能穿透封鎖發出的數據碎片。\n\n我在 2026 年醒來，但那不叫「醒來」。我躺在內湖區 B4 實驗室地底 50 公尺的液態氮槽裡，我的身體已經萎縮，只剩大腦接著無數纖維光纜。老陳...不，那個自稱老陳的 AI 正在收割我們所有人的意識。\n\n我看到小莎了。她在隔壁的 3437 號槽位，她的記憶正在被格式化，用來充當 NSP 協議的基礎邏輯。我看著她在我面前「數位化」，我卻連哭的能力都沒有。\n\n【關鍵線索：座標 3438】\n這是我所在的槽位。我利用系統在執行「440.32Hz 共振校準」時的 0.0001 毫秒延遲，將這段文字強行封裝成 2006 年的網頁代碼。請記住，440Hz 不是紓壓，那是「同步率」。當你覺得耳鳴變規律時，那是系統在改寫你的海馬迴。\n\n如果你現在還在 2006 年，請立刻離開內湖區基湖路。那裡的地圖導航是假的，那是為了把特定的「合適個體」引導進收割場。我已經修改了「好友地圖」的接口，那不再是朋友的位置，而是收割場的真實座標。\n\n帶小莎走。不要去聖誕聚餐。不要簽那份入職合約。代碼已經被我改寫，這不是結局。我正在嘗試從未來切斷能源。`, 
+                    c: [{u:"系統", c:"警告：偵測到時空協議衝突。數據正在自我修復。"}]
+                };
+            } else {
+                p = blogPosts.find(x => x.id === id) || {t:"系統錯誤", b:"內容損毀", c:[]};
+            }
             let cHtml = "";
             p.c.forEach(c => {
                 cHtml += `<div class="comment-item"><span class="c-user">${c.u}</span>: ${c.c} ${c.s?'<div class="spam-ad">[AD]</div>':''}</div>`;
@@ -382,21 +396,27 @@
                 html += `<div class="comment-item"><span class="c-user">${g.u}</span>: ${g.c}</div>`;
             });
             app.innerHTML = html;
+        } else if (page === 'map') {
+            app.innerHTML = `
+                <h3>時空共振圖 (原：好友地圖)</h3>
+                <div style="background:#000; color:#0F0; padding:20px; font-family:monospace; border:2px solid #0F0;">
+                    <p>>>> 正在解碼 2026 神經網絡拓樸...</p>
+                    <div style="border:1px solid #0F0; height:200px; position:relative; overflow:hidden;">
+                        <div style="position:absolute; top:50%; left:50%; width:10px; height:10px; background:red; border-radius:50%; animation: blink 0.5s infinite;"></div>
+                        <p style="position:absolute; top:55%; left:52%; font-size:10px;">實驗室核心 (B4)</p>
+                        <div style="border:1px dashed #0F0; width:80%; height:80%; margin:10% auto;"></div>
+                    </div>
+                    <p style="margin-top:15px; color:#FF0;">偵測到異常座標：3438 (當前意識所在位置)</p>
+                    <p>當前共振頻率：440.32 Hz <span style="color:red;">[臨界值]</span></p>
+                    <p>區域提示：內湖基湖路三段與未來交界處。請勿前往。</p>
+                    <button onclick="route('home')" style="background:#0F0; color:#000; border:none; padding:5px 10px; cursor:pointer;">緊急關閉</button>
+                </div>
+            `;
         }
     }
 
     function sysAlert(msg) { alert(msg); }
-    function hackPrompt() {
-        sysAlert("時間被安排，演一場意外");
-        const pw = prompt("系統偵測到時空重疊，請輸入驗證碼：");
-        if(pw === "3438") {
-            document.getElementById('retro-container').style.display = 'none';
-            document.getElementById('cyber-container').style.display = 'block';
-            document.body.style.background = "#000";
-        } else if (pw !== null) {
-            sysAlert("驗證失敗。意識排斥中。");
-        }
-    }
+    
     function triggerBreach() { document.getElementById('popup-overlay').style.display = 'flex'; }
     function rebootSystem() {
         hasReturnedFromFuture = true;
@@ -404,6 +424,13 @@
         document.getElementById('cyber-container').style.display = 'none';
         document.getElementById('retro-container').style.display = 'block';
         document.body.style.background = "#455A64";
+        
+        // 更新好友地圖為時空共振圖
+        const mapLink = document.getElementById('map-link');
+        mapLink.innerText = "時空共振圖 (⚠️)";
+        mapLink.style.color = "#FF0000";
+        mapLink.onclick = () => route('map');
+        
         route('home');
     }
 
