@@ -11,6 +11,8 @@
             --apple-black: #000000;
             --apple-text: #f5f5f7;
             --accent-blue: #0071e3;
+            --msn-blue: #CEE3F6;
+            --msn-border: #6B9DC9;
         }
         * { box-sizing: border-box; }
         body { margin: 0; padding: 0; overflow-x: hidden; transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
@@ -35,29 +37,28 @@
         .box-title { background: #CFD8DC; padding: 6px; font-weight: bold; font-size: 13px; border-bottom: 1px solid #B0BEC5; }
         .box-body { padding: 10px; font-size: 13px; line-height: 1.6; }
 
-        /* --- 多樣化廣告樣式設計 --- */
+        /* --- 多樣化廣告樣式 --- */
         .side-ad { margin-bottom: 20px; cursor: pointer; display: block; overflow: hidden; position: relative; font-family: "Arial", sans-serif; transition: transform 0.1s; }
         .side-ad:active { transform: scale(0.98); }
 
-        /* Style 1: Windows XP 錯誤視窗 */
+        /* Windows XP 錯誤視窗 */
         .ad-xp { border: 1px solid #0055EA; background: #ECE9D8; font-family: Tahoma, sans-serif; box-shadow: 2px 2px 5px rgba(0,0,0,0.2); }
         .ad-xp-header { background: linear-gradient(to bottom, #0058EE 0%, #3B80F2 100%); color: white; padding: 4px 8px; font-weight: bold; font-size: 11px; display: flex; justify-content: space-between; align-items: center; }
         .ad-xp-body { padding: 10px; display: flex; align-items: center; gap: 10px; font-size: 11px; color: #000; }
         .ad-xp-icon { width: 32px; height: 32px; background: #FFF; border: 1px solid #999; border-radius: 50%; color: red; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 20px; }
         .ad-xp-btn { border: 1px solid #003C74; background: #EEE; padding: 2px 10px; margin-top: 5px; cursor: pointer; display: inline-block; }
-        .ad-xp-btn:hover { box-shadow: inset 0 0 2px #fff; background: #F5F5F5; }
-
-        /* Style 2: 霓虹跑馬燈 */
+        
+        /* 霓虹跑馬燈 */
         .ad-neon { background: #000; border: 2px solid #0F0; padding: 10px; text-align: center; }
         .ad-neon-text { color: #0F0; font-family: "Courier New", monospace; font-weight: bold; font-size: 14px; text-shadow: 0 0 5px #0F0; animation: blink 0.2s infinite alternate; }
         .ad-neon-sub { color: #FFF; font-size: 10px; margin-top: 5px; }
 
-        /* Style 3: 圖片下載按鈕 */
+        /* 圖片下載按鈕 */
         .ad-download { background: #fff; border: 1px solid #ccc; padding: 5px; text-align: center; }
         .ad-dl-btn { background: linear-gradient(#81D057, #3C9118); border: 1px solid #2B6910; color: white; padding: 10px 0; font-weight: bold; font-size: 16px; border-radius: 5px; box-shadow: 0 2px 2px rgba(0,0,0,0.3); text-shadow: 1px 1px 0 #2B6910; display: block; }
         .ad-dl-text { font-size: 10px; color: #666; margin-top: 4px; }
 
-        /* Style 4: 入口網站列表 */
+        /* 入口網站列表 */
         .ad-portal { background: #FFF; border: 1px solid #CCC; }
         .ad-portal-head { background: #E0E0E0; padding: 3px; font-size: 12px; font-weight: bold; text-align: center; color: #333; }
         .ad-portal-list { list-style: none; margin: 0; padding: 5px; }
@@ -65,27 +66,27 @@
         .ad-portal-list li::before { content: "►"; color: #F60; font-size: 9px; margin-right: 4px; }
         .ad-portal-list span { color: #0000CC; font-size: 11px; text-decoration: underline; }
 
-        /* Style 5: 動漫簽名檔 */
+        /* 動漫簽名檔 */
         .ad-signature { border: 1px dashed #F0F; background: #FEF0FE; padding: 5px; text-align: center; }
         .ad-sig-img { width: 100%; height: 60px; background: #000; color: #FFF; display: flex; align-items: center; justify-content: center; font-size: 10px; margin-bottom: 5px; overflow: hidden;}
         .ad-sig-text { font-size: 10px; color: #C0C; font-weight: bold; }
 
-        /* Style 6: 網頁遊戲 (RPG Style) - 取代楓之谷外掛 */
+        /* 網頁遊戲 */
         .ad-game { background: #222; border: 2px solid #DAA520; position: relative; color: white; font-family: "PMingLiU", serif; height: 80px; overflow: hidden; }
         .ad-game-bg { position: absolute; top:0; left:0; width:100%; height:100%; opacity: 0.3; background: repeating-linear-gradient(45deg, #333, #333 10px, #222 10px, #222 20px); }
         .ad-game-content { position: relative; z-index: 2; padding: 5px; display: flex; align-items: center; justify-content: space-between; height: 100%; }
         .ad-game-char { font-size: 24px; animation: bounce 1s infinite; }
         .ad-game-text { text-align: center; }
         .ad-game-btn { background: #B22222; border: 1px solid #FF4500; color: #FFD700; padding: 2px 8px; font-size: 12px; cursor: pointer; animation: blink 0.5s infinite alternate; box-shadow: 0 0 5px #FF4500; }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 
-        /* Style 7: 色情視訊廣告 (Adult Style) - 取代熱門私服 */
+        /* 色情視訊 */
         .ad-adult { background: #000; border: 2px dashed #FF00FF; padding: 5px; display: flex; gap: 8px; align-items: center; }
         .ad-adult-img { width: 60px; height: 60px; background: #333; display: flex; align-items: center; justify-content: center; color: #555; font-size: 10px; border: 1px solid #666; position: relative; }
         .ad-adult-img::after { content: "LIVE"; position: absolute; top: 2px; right: 2px; background: red; color: white; font-size: 8px; padding: 1px 2px; animation: blink 1s infinite; }
         .ad-adult-text { flex: 1; color: #FF69B4; font-size: 12px; font-weight: bold; line-height: 1.4; }
         .ad-adult-btn { background: #FF00FF; color: white; border: none; font-size: 10px; padding: 2px 6px; margin-top: 3px; cursor: pointer; }
 
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
         @keyframes blink { from { opacity: 1; } to { opacity: 0.3; } }
         
         /* MP3 Player */
@@ -110,6 +111,67 @@
         .comment-item { border-bottom: 1px solid #E6EE9C; padding: 10px 0; font-size: 12px; }
         .c-user { font-weight: bold; color: #2E7D32; }
         .spam-ad { color: #f00; font-style: italic; font-size: 11px; margin-top: 5px; }
+
+        /* MSN Chat Window */
+        #msn-window {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            right: 20px;
+            width: 300px;
+            height: 380px;
+            background: var(--msn-blue);
+            border: 1px solid var(--msn-border);
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            box-shadow: -2px -2px 10px rgba(0,0,0,0.2);
+            z-index: 5000;
+            font-family: Tahoma, sans-serif;
+            flex-direction: column;
+            animation: slideUp 0.5s ease-out;
+        }
+        @keyframes slideUp { from { bottom: -400px; } to { bottom: 0; } }
+        @keyframes shake { 
+            0% { transform: translateX(0); } 
+            25% { transform: translateX(-5px) rotate(-1deg); } 
+            75% { transform: translateX(5px) rotate(1deg); } 
+            100% { transform: translateX(0); } 
+        }
+        .shake-anim { animation: shake 0.3s ease-in-out; }
+
+        .msn-header {
+            background: linear-gradient(to bottom, #E8F1FC, #BED6F0);
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #99BBE8;
+            border-top-left-radius: 7px;
+            border-top-right-radius: 7px;
+        }
+        .msn-title { font-weight: bold; color: #224466; font-size: 12px; display: flex; align-items: center; gap: 5px; }
+        .msn-body {
+            flex: 1;
+            background: #FFF;
+            border: 1px solid #99BBE8;
+            margin: 5px;
+            padding: 10px;
+            overflow-y: auto;
+            font-size: 12px;
+            color: #000;
+        }
+        .msn-msg { margin-bottom: 8px; }
+        .msn-sender { color: #0000FF; font-size: 11px; }
+        .msn-sender.me { color: #444; }
+        .msn-text { margin-left: 0px; margin-top: 2px; }
+        .msn-input-area {
+            height: 60px;
+            background: #FFF;
+            border: 1px solid #99BBE8;
+            margin: 0 5px 5px 5px;
+            position: relative;
+        }
+        .msn-sys { color: gray; font-style: italic; font-size: 11px; margin: 5px 0; text-align: center; }
 
         /* --- 2026 Apple 主題 --- */
         #cyber-container { 
@@ -145,8 +207,6 @@
 
         @keyframes blink { 50% { opacity: 0; } }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
-        
-        /* 專業地圖專用動畫 */
         @keyframes scanline { from { top: 0%; } to { top: 100%; } }
         @keyframes pulse-ring { from { transform: scale(0.1); opacity: 1; } to { transform: scale(3); opacity: 0; } }
 
@@ -157,6 +217,21 @@
 
 <div id="glitch" class="glitch-screen"></div>
 <audio id="bgm" src="music.mp3" preload="auto"></audio>
+
+<div id="msn-window">
+    <div class="msn-header">
+        <div class="msn-title">
+            <div style="width:14px; height:14px; background:#0F0; border-radius:50%; border:1px solid #000;"></div>
+            神秘人 - 對話視窗
+        </div>
+        <div style="font-size:14px; font-weight:bold; cursor:pointer;" onclick="document.getElementById('msn-window').style.display='none'">X</div>
+    </div>
+    <div class="msn-body" id="msn-content">
+        </div>
+    <div class="msn-input-area">
+        <div style="padding:5px; color:#AAA; font-size:11px;">(對方似乎已封鎖傳訊功能...)</div>
+    </div>
+</div>
 
 <div id="retro-container">
     <header>
@@ -279,39 +354,21 @@
     let dynamicDate = "2026-01-01"; // 預設值，之後會自動更新
 
     // --- 日誌文章數據 ---
-    // 時間軸：9月(入職興奮) -> 10月(疑惑與壓力) -> 11月(副作用與失憶) -> 12月(發現與絕望)
-    // 標題風格：自然、無病呻吟、2006風格
     const blogPosts = [
-        // 9月：正常期
         { id:1, d:"2006-09-01", t:"新工作新氣象！內湖我來了", b:"今天終於去內湖科學園區報到了！\n\n這家公司叫 CerebroTech，中文是大腦科技？名字聽起來很威，但辦公室在地下室有點怪怪的。主管老陳人蠻好的，雖然講話有點慢，眼神一直盯著我看，害我有點害羞哈哈。\n\n發了新制服，寶藍色的，材質摸起來像潛水衣？不管了，薪水不錯最重要！為了買 N93，我要努力存錢！\n\nPS: 內湖風好大。", c:[{u:"小莎", c:"老公加油！晚上煮好料的等你喔~"}, {u:"阿強", c:"外商喔？薪水應該不錯吧，改天請客啦！"}, {u:"老陳", c:"阿傑，歡迎加入。"}] },
-        
         { id:2, d:"2006-09-08", t:"公司的咖啡機也太高級了吧", b:"茶水間那台咖啡機根本是星巴克等級的，而且免費喝到飽！\n\n但我發現一件怪事，這裡的同事都很安靜，真的超安靜，連敲鍵盤的聲音都很小。大家都在戴耳機工作，眼神都很專注。\n\n我問隔壁的曉婷在聽什麼，她只說：「頻率。」然後就繼續盯著螢幕笑了。是怎樣？聽音樂會笑成那樣？", c:[{u:"曉婷", c:"那咖啡不要喝太多，會睡不著。"}, {u:"大雄", c:"真爽，我們公司連水都要錢。羨慕~"}] },
-
         { id:3, d:"2006-09-15", t:"關於那個新專案...", b:"今天開始接觸新專案「Project Echo」。\n\n老陳說這是一種利用聲波來放鬆大腦的技術，聽起來很像科幻電影。可是我測了一下那些音檔，全部都是嗡嗡嗡的聲音，頻率固定在 440Hz。\n\n聽久了頭有點暈，而且...我總覺得那聲音裡面夾雜著別的東西。好像有人在碎碎念？", c:[{u:"路人甲", c:"440Hz 是標準音高啊，應該沒什麼問題吧？"}, {u:"阿強", c:"你是不是太累了？該出來打球了啦！"}] },
-
-        // 10月：疑惑期
         { id:4, d:"2006-10-02", t:"最近好累...", b:"不知道為什麼，最近常常覺得時間過很快。\n\n明明早上才剛打卡，轉眼就晚上了，中間做了什麼都有點模糊。老陳說這是「心流」，說我工作效率變高了。\n\n但我看了一下我寫的 code，那風格...真的不像我寫的。太整齊了，整齊到有點噁心。", c:[{u:"小莎", c:"你最近回家都不說話，問你話也只會嗯嗯啊啊..."}, {u:"大雄", c:"工程師壓力都很大啦，多休息。"}] },
-        
         { id:5, d:"2006-10-15", t:"曉婷怪怪的", b:"曉婷最近都不跟我講話了。\n\n她整天戴著那個測試用的耳機，嘴巴一直在動，好像在跟誰講話。但我走過去聽，她根本沒發出聲音。\n\n昨天我看到她在筆記本上狂寫一堆 0 和 1，寫滿了整頁，連手指被紙割破流血了都沒感覺。\n\n我問她怎麼了，她轉頭看我，眼神...是空的。", c:[{u:"阿強", c:"她是不是壓力太大崩潰了？"}, {u:"老陳", c:"她在進化，阿傑。你也快了。"}] },
-
         { id:6, d:"2006-10-25", t:"有人看到曉婷嗎？", b:"曉婷三天沒來上班了。\n\n老陳說她家裡有急事辭職回南部。但我經過她的座位時，看到她的電腦螢幕還亮著，上面跑著一行我不認識的代碼。\n\n最毛的是，她的桌墊下壓著一張紙條，字跡很潦草，寫著：「那不是播放器，那是容器。」\n\n我打她手機，只有雜訊聲。", c:[{u:"阿強", c:"該不會是被挖角了吧？"}, {u:"老陳", c:"人事異動是常態。專注工作。"}] },
-
-        // 11月：恐懼與變異
         { id:7, d:"2006-11-05", t:"那個頭盔", b:"公司發了新的福利，說是「沈浸式紓壓頭盔」。\n\n老陳強制每個人午休都要戴著。但我今天偷偷把感應器貼紙撕開，發現裡面藏著幾根微型探針。那些探針是直接貼著太陽穴的！\n\n我把它扔了，但下午開會時，我發現所有同事都戴著它，臉上掛著一模一樣的僵硬微笑。\n\n他們齊聲對我說：「加入我們，阿傑。」\n\n我好害怕，我想離職了。", c:[{u:"大雄", c:"這頭盔真的很舒服啊，阿傑你為什麼不戴？"}, {u:"阿強", c:"加入我們。"}, {u:"曉婷(帳號已註銷)", c:"救命..."}] },
-
         { id:8, d:"2006-11-20", t:"記憶斷片", b:"今天...是幾號？\n\n我記得我剛吃完早餐，但抬頭看已經是晚上了。中間的記憶完全是黑色的。\n\n我的手指好痛，鍵盤上都是血，但我不知道我打了什麼。螢幕上寫著：同步率 82%。\n\n我是誰？我是阿傑嗎？還是 CT-0912？為什麼我覺得阿傑這個名字好陌生？", c:[{u:"老陳", c:"這不是斷層，是同步。"}, {u:"小莎", c:"阿傑！你為什麼不接電話！"}] },
-
-        // 12月：崩壞與真相
         { id:9, d:"2006-12-05", t:"那個女生的名字", b:"床頭有一張照片。照片裡有一個女生，笑得很開心。\n\n我知道她對我很重要。我知道我愛她。可是...她的名字是什麼？\n\n小...什麼？莎？\n\n我的腦袋裡只有嗡嗡聲。440Hz。很溫暖。很安靜。只要聽著聲音，我就不需要思考。不需要痛苦。", c:[{u:"小莎", c:"我是小莎啊！你到底怎麼了？求求你開門！"}, {u:"老陳", c:"情感是沒有效率的數據。捨棄它。"}] },
-
         { id:10, d:"2006-12-15", t:"好冷", b:"好冷。\n\n為什麼辦公室會這麼冷？地板上有白色的煙霧。\n\n同事們都不動了。他們坐在椅子上，閉著眼睛，身上接著管子。\n\n我的皮膚感覺像是塑膠做的。我捏自己的臉，沒有痛覺。\n\n我是不是已經死掉了？", c:[{u:"系統", c:"[自動校準] 體溫調節模組已關閉。"}] },
-
         { id:11, d:"2006-12-25", t:"B4", b:"我駭進了門禁系統，潛入地下四樓。\n\n那裡沒有機房，只有一排排巨大的玻璃水槽。裡面裝滿了液態氮，還有...人。\n\n我看見曉婷了。她漂浮在水槽裡，頭上插滿了管線。她的編號是 CT-0850。\n\n而旁邊有一個空的水槽，上面寫著我的名字：CT-0912。", c:[{u:"Admin", c:"偵測到未經授權的實體入侵。保全協定啟動。"}, {u:"老陳", c:"你終於發現了。這不是死亡，這是飛升。"}] },
-
         { id:12, d:"2006-12-28", t:"最後的警告", b:"我把這段程式碼藏在公司的對外網頁裡。這是唯一的漏洞。\n\n他們要把我「遷移」了。如果這篇日誌還在，代表我失敗了，代表我已經變成他們的一部分。\n\n如果你正在看這篇日誌，不要相信地圖上的位置。不要來應徵。CerebroTech 不是科技公司，它是人類意識的墳場。", c:[{u:"小莎", c:"(語音留言: 充滿雜訊的哭聲)"}, {u:"系統", c:"同步程序啟動。倒數 3 天。"}] },
-        
         { 
-          id:14, d:"2006-12-30", t:"...", b:"[系統錯誤] 意識流並未完全切斷。我還在這裡。我需要有人從外部喚醒我。密碼藏在歌詞裡...時間被安排...演一場意外... \n\n[ 連結已加密 ]", 
+          id:14, d:"2006-12-30", t:"...", b:"[系統錯誤] 意識流並未完全切斷。我還在這裡。我需要有人從外部喚醒我。 \n\n[ 連結已加密 ]", 
           c:[
             {u:"訪客14", c:"<a href='javascript:checkPassword()' style='color:blue;text-decoration:underline;'>[ 強制存取連結 ]</a>"},
             {u:"AD", c:"想要一天賺進一萬塊嗎？點此了解財富密碼。", s:true},
@@ -322,22 +379,19 @@
         { id:15, d:"2006-12-31", t:"Goodbye World", b:"[系統公告] 員工 j_ray_05 已成功完成遷移。感謝您對 CerebroTech 的貢獻。您現在是網路的一部分了。\n\nStatus: Online\nLatency: 0ms", c:[{u:"老陳", c:"歡迎回家，0912。"}] }
     ];
 
-    // 廣告數據池 (包含對應的訊息)
+    // 廣告數據池
     const adPool = [
         { type: 'xp', t: "嚴重錯誤", d: "您的電腦可能已經中毒！", msg: "系統安全性警告：\n偵測到 Win32/Sasser.Worm 病毒。\nC:\\WINDOWS\\system32 內的檔案已損毀。\n請勿關閉電腦..." },
-        // 改寫：新的網頁遊戲風格廣告 (取代楓之谷外掛)
         { type: 'game', t: "勇者傳說 Online", d: "免下載！立即玩！", msg: "帳號安全警示：\n偵測到異常登入活動 (來源 IP: 203.114.XX.XX)。\n您的虛擬寶物 '屠龍刀 (+9)' 已被交易轉出。\n請立即更改密碼..." },
-        // 改寫：遊戲外掛連結
         { type: 'portal', t: "遊戲外掛區", links: ["楓之谷吸怪", "跑跑卡丁車加速", "勁舞團連 P", "RO 自動練功"], msg: "偵測到惡意程式：\n您下載的 'Maplestory_GodMode.exe' 含有 Win32/Trojan.Gen。\n防毒軟體已失效，系統即將格式化以隔離威脅。" },
         { type: 'download', t: "下載 BT 種子", d: "最新電影免費看", msg: "檔案下載警告：\n您下載的檔案 'Titanic_Full_HD.exe' 含有木馬程式。\n正在嘗試格式化 D 槽以隔離威脅..." },
         { type: 'signature', t: "涼宮春日的憂鬱", img: "https://api.dicebear.com/7.x/pixel-art/svg?seed=haruhi", msg: "Runtime Error!\nProgram: C:\\Program Files\\Internet Explorer\\iexplore.exe\n\nabnormal program termination" },
         { type: 'xp', t: "中獎通知", d: "恭喜您是第999位訪客！", msg: "Windows 登錄編輯程式：\n寫入 HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run 失敗。\n存取被拒。" },
         { type: 'neon', t: "現金借貸", d: "免留車/息低保密", msg: "安全性憑證錯誤：\n此網站的安全性憑證有問題。\n偵測到釣魚網站活動，已自動通報金融管制局。" },
-        // 改寫：色情廣告 (取代熱門私服)
         { type: 'adult', t: "午夜激情視訊", d: "寂寞嗎？妹妹等你喔", msg: "隱私權重大警告：\n系統偵測到您正在存取限制級內容。\n正在背景讀取 C:\\Documents and Settings\\User\\My Documents\\Photos... \n您的攝影機權限已開啟。\n影像上傳中 (12%)..." }
     ];
 
-    // 留言板數據 (大量擴充，包含朋友與廣告)
+    // 留言板數據
     const gbData = [
         {u:"小莎", c:"老公，今天晚上記得買牛奶回來喔！加油！ (2006-09-02)"},
         {u:"阿強", c:"阿傑，這周末要不要去西門町萬年大樓看模型？那邊有新出的鋼彈喔。 (2006-09-05)"},
@@ -421,11 +475,9 @@
     function renderAds() {
         const container = document.getElementById('side-ads-container');
         container.innerHTML = '';
-        // 取消隨機，全部渲染
         adPool.forEach(ad => {
             const div = document.createElement('div');
             div.className = `side-ad`;
-            // 修改為使用 ad.msg
             div.onclick = () => sysAlert(ad.msg);
             
             if (ad.type === 'xp') {
@@ -455,7 +507,6 @@
                 div.className += ' ad-signature';
                 div.innerHTML = `<div class="ad-sig-img"><img src="${ad.img}" style="height:100%;"></div><div class="ad-sig-text">★ ${ad.t} ★</div>`;
             } else if (ad.type === 'game') {
-                // 新增：網頁遊戲廣告
                 div.className += ' ad-game';
                 div.innerHTML = `
                     <div class="ad-game-bg"></div>
@@ -469,7 +520,6 @@
                     </div>
                 `;
             } else if (ad.type === 'adult') {
-                // 新增：色情廣告
                 div.className += ' ad-adult';
                 div.innerHTML = `
                     <div class="ad-adult-img">18+</div>
@@ -484,7 +534,6 @@
         });
     }
 
-    // 取得當前日期的函數
     function getCurrentDate() {
         const now = new Date();
         const year = now.getFullYear();
@@ -495,26 +544,20 @@
 
     function route(page, id = null) {
         const app = document.getElementById('app');
-        
-        // 點擊文章時，自動捲動到最上方
-        if (page === 'post') {
-            document.getElementById('app').scrollIntoView({behavior: 'smooth', block: 'start'});
-        }
+        if (page === 'post') document.getElementById('app').scrollIntoView({behavior: 'smooth', block: 'start'});
 
         if (page === 'home') {
             let html = `<h3>最新日誌</h3>`;
             const list = [...blogPosts];
             if(hasReturnedFromFuture) {
-                // 自動更新日期
                 dynamicDate = getCurrentDate();
-                
-                // 修改後的警告文章，由2026年的阿傑發出
+                // 這裡的文字修正為警告語氣，尚未逃亡
                 list.push({
                     id: 99, 
                     t: "[時空訊息] 給2006年的阿傑", 
-                    d: dynamicDate, // 使用現實世界當下的日期
-                    b: `阿傑，聽著，我是2026年的你。\n\n這條訊息是透過時空縫隙傳送回來的。你現在所在的 2006 年 12 月 31 日，是最後的轉捩點。\n\n不要相信老陳，不要參加今晚的跨年派對，那是一個陷阱。他們的「遷移計畫」是要將我們的意識囚禁在數據庫裡。\n\n現在立刻去 B4 實驗室，小莎就在那裡，她正準備被強行連接。拔掉她的管線，帶她離開內湖！\n\n不要管什麼工作了，把手機丟掉，逃得越遠越好。\n\n我被困在這個數位地獄20年了，就是為了這一刻提醒你。救出小莎，活下去，不要變成我。\n\n快逃！`, 
-                    c: [{u:"系統", c:"[CRITICAL] 偵測到未來數據寫入..."}, {u:"老陳", c:"[連結遭拒] 你不能這麼做！"}]
+                    d: dynamicDate, 
+                    b: `阿傑，如果你能看到這則訊息，代表連結還沒斷。\n\n我是2026年的你。聽好了，現在是 2006 年 12 月 31 日，你還在公司，對吧？\n\n**絕對不要參加今晚的跨年派對。**\n\n那是一個陷阱。老陳準備在倒數時刻啟動「全面同步」，把所有在場員工的意識上傳到 B4 伺服器。一旦開始，就再也回不去了。\n\n現在，立刻離開座位。去 B4 實驗室找小莎，她有危險！帶她離開內湖，把手機丟進基隆河，斷絕所有聯繫。\n\n這是你最後的機會。不要變成我。快逃！`, 
+                    c: [{u:"系統", c:"[CRITICAL] 偵測到未來數據寫入..."}, {u:"老陳", c:"[連結遭拒] 權限不足。"}]
                 });
             }
             list.slice().reverse().forEach(p => {
@@ -522,12 +565,11 @@
             });
             app.innerHTML = html;
         } else if (page === 'post') {
-            // 定義新文章的內容，與上方保持一致
             let newPostContent = {
                 t: "[時空訊息] 給2006年的阿傑", 
                 d: dynamicDate,
-                b: `阿傑，聽著，我是2026年的你。\n\n這條訊息是透過時空縫隙傳送回來的。你現在所在的 2006 年 12 月 31 日，是最後的轉捩點。\n\n不要相信老陳，不要參加今晚的跨年派對，那是一個陷阱。他們的「遷移計畫」是要將我們的意識囚禁在數據庫裡。\n\n現在立刻去 B4 實驗室，小莎就在那裡，她正準備被強行連接。拔掉她的管線，帶她離開內湖！\n\n不要管什麼工作了，把手機丟掉，逃得越遠越好。\n\n我被困在這個數位地獄20年了，就是為了這一刻提醒你。救出小莎，活下去，不要變成我。\n\n快逃！`, 
-                c: [{u:"系統", c:"[CRITICAL] 偵測到未來數據寫入..."}, {u:"老陳", c:"[連結遭拒] 你不能這麼做！"}]
+                b: `阿傑，如果你能看到這則訊息，代表連結還沒斷。\n\n我是2026年的你。聽好了，現在是 2006 年 12 月 31 日，你還在公司，對吧？\n\n**絕對不要參加今晚的跨年派對。**\n\n那是一個陷阱。老陳準備在倒數時刻啟動「全面同步」，把所有在場員工的意識上傳到 B4 伺服器。一旦開始，就再也回不去了。\n\n現在，立刻離開座位。去 B4 實驗室找小莎，她有危險！帶她離開內湖，把手機丟進基隆河，斷絕所有聯繫。\n\n這是你最後的機會。不要變成我。快逃！`, 
+                c: [{u:"系統", c:"[CRITICAL] 偵測到未來數據寫入..."}, {u:"老陳", c:"[連結遭拒] 權限不足。"}]
             };
 
             let p = (id === 99) ? newPostContent : blogPosts.find(x => x.id === id) || {t:"系統錯誤", b:"內容損毀", c:[]};
@@ -554,7 +596,6 @@
                         <div style="position:absolute; top:50%; left:50%; transform: translate(-50%, -50%);">
                             <div style="width:8px; height:8px; background:#F00; border-radius:50%; position:relative; z-index:3;"></div>
                             <div style="position:absolute; top:-6px; left:-6px; width:20px; height:20px; border:1px solid #F00; border-radius:50%; animation: pulse-ring 2s ease-out infinite;"></div>
-                            <div style="position:absolute; top:-16px; left:-16px; width:40px; height:40px; border:1px solid #F00; border-radius:50%; animation: pulse-ring 2s ease-out infinite; animation-delay: 0.5s;"></div>
                         </div>
                         <div style="position:absolute; bottom:10px; right:10px; text-align:right; font-size:11px;">
                             LAT: 25.0805<br>LNG: 121.5674<br>ELEV: -50M [CRYO_VAULT]
@@ -562,11 +603,59 @@
                     </div>
                     <div style="margin-top:20px; border-left:3px solid #F00; padding-left:15px;">
                         <p style="color:#FFF; margin:0 0 5px 0;">[ 系統訊息 ]</p>
-                        <p style="margin:0; font-size:12px; color:#AAA;">偵測到大規模意識封裝行為。物理載體定位：內湖基湖路核心區塊。共振校準完成。請確保觀測者與原始坐標保持距離。</p>
+                        <p style="margin:0; font-size:12px; color:#AAA;">偵測到大規模意識封裝行為。物理載體定位：內湖基湖路核心區塊。共振校準完成。</p>
                     </div>
                 </div>
             `;
         }
+    }
+
+    // --- MSN 聊天機器人邏輯 ---
+    function triggerChat() {
+        const win = document.getElementById('msn-window');
+        const content = document.getElementById('msn-content');
+        
+        // 延遲 3 秒後彈出
+        setTimeout(() => {
+            win.style.display = 'flex';
+            win.classList.add('shake-anim'); // 震動提示
+            addMsg("神秘人", "阿傑，是你嗎？");
+        }, 3000);
+
+        // 腳本流
+        setTimeout(() => addMsg("神秘人", "我看到這篇文章了... 你回來了？"), 6000);
+        setTimeout(() => addMsg("神秘人", "他們一直在監控這裡，我不敢用本名。"), 10000);
+        setTimeout(() => addMsg("神秘人", "B4 的冷卻水槽... 我在那裡留了一個備份。"), 15000);
+        
+        // 緊張時刻
+        setTimeout(() => {
+            addMsg("神秘人", "等等...");
+        }, 20000);
+
+        setTimeout(() => {
+            addMsg("神秘人", "門外有聲音。");
+        }, 23000);
+
+        setTimeout(() => {
+            addMsg("神秘人", "有人來了！阿傑，記得 440Hz... 只有那個能切斷...");
+        }, 26000);
+
+        setTimeout(() => {
+            const div = document.createElement('div');
+            div.className = 'msn-sys';
+            div.innerText = "對方已離線";
+            content.appendChild(div);
+            content.scrollTop = content.scrollHeight;
+        }, 29000);
+    }
+
+    function addMsg(sender, text) {
+        const content = document.getElementById('msn-content');
+        const div = document.createElement('div');
+        div.className = 'msn-msg';
+        div.innerHTML = `<div class="msn-sender">${sender}:</div><div class="msn-text">${text}</div>`;
+        content.appendChild(div);
+        content.scrollTop = content.scrollHeight;
     }
 
     function sysAlert(msg) { alert(msg); }
@@ -585,6 +674,9 @@
         mapLink.onclick = () => route('map');
         
         route('home');
+        
+        // 觸發聊天事件
+        triggerChat();
     }
 
     setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }, 1000);
@@ -593,7 +685,7 @@
         const fList = document.getElementById('friend-list');
         const friends = ["小莎", "阿強", "大雄", "老陳", "曉婷"];
         friends.forEach(f => fList.innerHTML += `<div style="padding:4px 0; color:#0288D1; cursor:pointer;" onclick="sysAlert('網誌已關閉')">‧ ${f}</div>`);
-        renderAds(); // 渲染隨機廣告
+        renderAds();
         route('home');
     };
 </script>
