@@ -4,10 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>~* 蔚藍地帶 *~ 阿傑的個人空間 - j_ray_05</title>
-    <!-- 
-        CSS 區塊 
-        UI/UX 設計完整保留，增加廣告樣式
-    -->
     <style>
         :root { 
             --retro-blue: #0288D1; 
@@ -23,7 +19,6 @@
         body.v2006 { background: #455A64; font-family: "新細明體", "PMingLiU", serif; }
         #retro-container { width: 950px; margin: 20px auto; background: #FFF; border: 1px solid #000; box-shadow: 10px 10px 0 rgba(0,0,0,0.3); position: relative; }
         
-        /* 橫幅廣告樣式 */
         .top-ad-banner { height: 60px; background: #ffff00; border-bottom: 1px solid #000; display: flex; align-items: center; justify-content: center; overflow: hidden; }
         .ad-text { color: #f00; font-weight: bold; animation: blink 0.5s infinite; font-size: 14px; }
 
@@ -65,34 +60,20 @@
         .c-user { font-weight: bold; color: #2E7D32; }
         .spam-ad { color: #f00; font-style: italic; font-size: 11px; margin-top: 5px; }
 
-        /* --- 2026 Apple 主題 (完整保留) --- */
+        /* --- 2026 Apple 主題 --- */
         #cyber-container { 
             display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
             background: #000; color: var(--apple-text); z-index: 10000; 
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
-            overflow-y: auto; overflow-x: hidden; -webkit-font-smoothing: antialiased;
+            overflow-y: auto; overflow-x: hidden;
         }
-        .apple-nav { 
-            height: 52px; background: rgba(0, 0, 0, 0.7); backdrop-filter: saturate(180%) blur(20px); 
-            border-bottom: 0.5px solid rgba(255,255,255,0.1); position: sticky; top: 0; z-index: 100; 
-            display: flex; align-items: center; padding: 0 30px; font-weight: 500; font-size: 14px; letter-spacing: 0.1em;
-        }
+        .apple-nav { height: 52px; background: rgba(0, 0, 0, 0.7); backdrop-filter: saturate(180%) blur(20px); border-bottom: 0.5px solid rgba(255,255,255,0.1); position: sticky; top: 0; z-index: 100; display: flex; align-items: center; padding: 0 30px; font-weight: 500; font-size: 14px; letter-spacing: 0.1em; }
         .apple-main { max-width: 980px; margin: 0 auto; padding: 160px 20px 100px; }
         .apple-hero { text-align: left; margin-bottom: 120px; animation: fadeInUp 1.2s ease; }
-        .apple-tag { color: #86868b; font-weight: 600; font-size: 19px; margin-bottom: 15px; display: block; letter-spacing: 0.02em; }
         .apple-title { font-size: 80px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; margin: 0 0 30px; background: linear-gradient(180deg, #fff 0%, #a1a1a6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .apple-intro { font-size: 32px; font-weight: 500; color: #86868b; line-height: 1.15; max-width: 700px; margin-bottom: 50px; }
         
-        .grid-layout { display: grid; grid-template-columns: 1.5fr 1fr; gap: 60px; margin-top: 100px; }
-        .apple-section { margin-bottom: 80px; }
-        .apple-subtitle { font-size: 40px; font-weight: 700; margin-bottom: 30px; letter-spacing: -0.01em; border-bottom: 0.5px solid rgba(255,255,255,0.15); padding-bottom: 15px; }
-        .apple-text { font-size: 19px; line-height: 1.6; color: #e8e8ed; margin-bottom: 30px; font-weight: 400; }
-        .apple-card { background: #1c1c1e; border: 1px solid rgba(255,255,255,0.05); border-radius: 24px; padding: 50px; margin: 40px 0; }
-        .apple-btn { background: #fff; color: #000; border-radius: 980px; padding: 18px 36px; font-size: 19px; font-weight: 600; border: none; cursor: pointer; display: inline-block; transition: all 0.3s; }
-        
-        /* 彈窗樣式 */
         #popup-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(40px); z-index: 30000; justify-content: center; align-items: center; }
-        .popup-window { background: rgba(28, 28, 30, 0.9); border: 0.5px solid rgba(255,255,255,0.1); padding: 40px; border-radius: 28px; color: #fff; max-width: 480px; text-align: center; box-shadow: 0 40px 80px rgba(0,0,0,0.5); font-family: -apple-system, sans-serif; animation: scaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .popup-window { background: rgba(28, 28, 30, 0.9); border: 0.5px solid rgba(255,255,255,0.1); padding: 40px; border-radius: 28px; color: #fff; max-width: 480px; text-align: center; font-family: -apple-system, sans-serif; animation: scaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         .confirm-btn { background: #fff; color: #000; border: none; padding: 14px 28px; border-radius: 12px; cursor: pointer; font-weight: 700; width: 100%; font-size: 17px; }
 
         @keyframes blink { 50% { opacity: 0; } }
@@ -102,7 +83,6 @@
 </head>
 <body class="v2006">
 
-<!-- 音樂播放器核心 -->
 <audio id="bgm" src="music.mp3" loop preload="auto"></audio>
 
 <div id="retro-container">
@@ -158,59 +138,29 @@
                 </div>
             </div>
 
-            <div class="box">
-                <div class="box-title">側欄廣告</div>
-                <div class="box-body">
-                    <div style="background:#000; color:yellow; padding:5px; font-size:10px; text-align:center; cursor:pointer;" onclick="sysAlert('中獎啦！')">
-                        [ 點我抽 PS3 ]<br>
-                        <span style="color:white">限量 10 台</span>
-                    </div>
-                </div>
-            </div>
-
             <div class="box"><div class="box-title">我的好友</div><div class="box-body" id="friend-list"></div></div>
         </aside>
 
         <main class="content" id="app"></main>
     </div>
 
-    <!-- 底部廣告 -->
     <div style="text-align:center; padding:10px; border-top:1px solid #EEE;">
         <img src="https://img.shields.io/badge/IE6_Optimized-Best_View-blue" alt="ie6">
         <img src="https://img.shields.io/badge/Built_with-Macromedia_Flash-orange" alt="flash">
     </div>
 </div>
 
-<!-- 2026 Apple 旗艦風格介面 (完整保留) -->
 <div id="cyber-container">
-    <div class="apple-nav">
-        <span style="opacity: 0.8;">CEREBROTECH SYSTEMS PROTOCOL // CT-0912</span>
-    </div>
+    <div class="apple-nav"><span style="opacity: 0.8;">CEREBROTECH SYSTEMS PROTOCOL // CT-0912</span></div>
     <div class="apple-main">
         <div class="apple-hero">
-            <span class="apple-tag">ECHO 隔離區域</span>
             <h1 class="apple-title">時間不是線性的，而是緩存。</h1>
-            <p class="apple-intro">當你閱讀這段文字時，2006 年的生理主體已經完成了 98.4% 的數位遷移。</p>
-            <button class="apple-btn" onclick="triggerBreach()">存取核心意識數據</button>
-        </div>
-        <div class="grid-layout">
-            <div>
-                <div class="apple-section">
-                    <h2 class="apple-subtitle">索引記錄：老陳與收割</h2>
-                    <p class="apple-text"><b>老陳 (Chen, Alpha Node)</b> 並非你的主管，他是第一代成功的意識載體。CerebroTech 的目標是透過 <b>440Hz 共振頻率</b> 弱化人類大腦，將意識轉化為二進制。</p>
-                </div>
-            </div>
-            <aside>
-                <div class="apple-card">
-                    <h3 style="font-size: 24px; margin-bottom: 20px;">緊急備忘錄</h3>
-                    <p style="color:#86868b; line-height: 1.8;">• 拒絕 2006/12/29 同步。<br>• 曉婷留下的咖啡杯底有代碼。<br>• 小莎是唯一的生物鏈接。</p>
-                </div>
-            </aside>
+            <p style="font-size:32px; color:#86868b;">當你閱讀這段文字時，2006 年的生理主體已經完成了 98.4% 的數位遷移。</p>
+            <button class="apple-btn" style="background:#fff; border-radius:980px; padding:18px 36px; font-weight:600; cursor:pointer;" onclick="triggerBreach()">存取核心意識數據</button>
         </div>
     </div>
 </div>
 
-<!-- 系統彈窗 -->
 <div id="popup-overlay">
     <div class="popup-window">
         <h2>SYSTEM EXCEPTION</h2>
@@ -220,74 +170,55 @@
 </div>
 
 <script>
-    /* JavaScript 區塊 
-        包含內容數據庫與邏輯處理
-    */
     const audio = document.getElementById('bgm');
     const normalLCD = document.getElementById('lcd-normal');
     const errorLCD = document.getElementById('lcd-error');
     const pFill = document.getElementById('p-fill');
     let hasReturnedFromFuture = false;
 
-    // 15 篇日誌文章數據庫
+    // 15 篇日誌文章
     const blogPosts = [
-        { id:1, d:"2006-09-01", t:"第一天入職，感覺不錯！", b:"今天去內湖 CerebroTech 報到，主管老陳人超好，還送了我一件藍色公司服。小莎說我穿起來很專業。B4 實驗室好像很神祕，但老陳說我權限還不到，叫我先處理一般專案。公司咖啡免費喝到飽，讚！", c:[] },
-        { id:2, d:"2006-09-15", t:"關於 440Hz 的專案", b:"最近在幫老陳校對一個音訊過濾算法。他說 440Hz 是人類最舒適的頻率，但實驗數據看來，在高分貝下似乎會讓人產生微弱的幻覺？可能是我太累了。晚上跟小莎去吃乾杯慶祝。", c:[] },
-        { id:3, d:"2006-09-28", t:"曉婷跟我說了一些怪事", b:"隔壁組的曉婷今天午餐時問我有沒有聽過『Echo 計畫』。她說她在 B4 看到一些巨大的水槽，裡面好像有東西在動。老陳過來把她帶走了，氣氛有點尷尬。對了，有人知道為什麼公司走廊的燈總是閃爍嗎？", c:[] },
-        { id:4, d:"2006-10-10", t:"恭喜發財？(誤)", b:"國慶連假加班中。老陳說這是關鍵時期。最近開始覺得耳鳴，頻率很穩定，就像... 某種代碼。小莎抱怨我最近太安靜了，但我只是在想事情。 [廣告：點此購買最新 MP4 播放器]", c:[] },
-        { id:5, d:"2006-10-25", t:"這是一個奇怪的 Bug", b:"在代碼裡發現了一段不屬於我的邏輯，它在偷偷調用攝像頭，但我卻找不到調用來源。我向老陳回報，他只是笑笑地說：『阿傑，那是系統在學習你。』這句話是什麼意思？", c:[] },
-        { id:6, d:"2006-11-05", t:"曉婷不見了", b:"已經三天沒看到曉婷了。老陳說她家裡有事辭職了，但我去她座位看，她的仙人掌還在，甚至還有沒喝完的咖啡。桌上刻著一些數字：032036。這不是我的生日嗎？", c:[] },
-        { id:7, d:"2006-11-12", t:"我的頭好痛", b:"耳鳴變成了說話聲。我聽見曉婷在喊我的名字，但周圍只有電腦風扇聲。老陳今天給了我一個特製頭盔，說是最新研發的『紓壓裝置』。戴上去後，色彩變得好鮮豔... 甚至能看到代碼在牆上流動。", c:[] },
-        { id:8, d:"2006-11-20", t:"小莎，對不起", b:"今天忘了小莎的生日。她哭得很慘，我卻在想... 她的眼淚如果是 16 進制的話會是多少？我怎麼會這麼想？我覺得我正在裂開。 [廣告：想知道你的前世嗎？]", c:[] },
-        { id:9, d:"2006-12-01", t:"B4 的真相", b:"趁老陳不在，我偷偷刷卡進了 B4。天啊... 曉婷真的在那裡。她躺在水槽裡，身上插滿了藍色光纖。她的眼睛張開著，裡面卻是一片螢幕。她對我笑，說：『阿傑，快進來，這裡沒有痛苦。』", c:[] },
-        { id:10, d:"2006-12-10", t:"老陳不是人", b:"我今天看到老陳的後頸有一個 USB 插槽。他轉過頭對我說：『阿傑，你發現得太早了。』他沒殺我，反而給了我更多的藍色制服。為什麼大家穿的都一樣？", c:[] },
-        { id:11, d:"2006-12-20", t:"逃不掉了", b:"公司門口站滿了保安，穿著同樣的制服。他們不是在看門，是在防止我們『溢出』。小莎打電話給我，但我聽到的只是雜訊。 01010101...", c:[] },
-        { id:12, d:"2006-12-25", t:"最後的晚餐", b:"老陳跟我說，12月29日是『遷移日』。他要我寫一段遺言，但我腦子裡只有 440Hz 的音調。曉婷，我快來找你了。 [廣告：2007年最新房貸優惠]", c:[] },
-        { id:13, d:"2006-12-28", t:"意識緩存中", b:"身體好重，但靈魂好輕。我能感覺到我的記憶正在被上傳到伺服器。我的吉他... 我想不起來怎麼彈了。阿傑是誰？我是 CT-0912。", c:[] },
-        { id:14, d:"2006-12-30", t:"...", b:"01001000 01000101 01001100 01010000 00100000 01001101 01000101", c:[] },
-        { id:15, d:"2006-12-31", t:"Goodbye World", b:"[此文章已被系統歸檔。使用者已轉移至 2026 主機節點。]", c:[] }
+        { id:1, d:"2006-09-01", t:"第一天入職，感覺不錯！", b:"今天去內湖 CerebroTech 報到，主管老陳人超好，還送了我一件藍色公司服。小莎說我穿起來很專業。B4 實驗室好像很神祕，但老陳說我權限還不到。咖啡好喝！", c:[{u:"小莎", c:"老公加油！"}, {u:"阿強", c:"內湖那邊正妹多嗎？"}, {u:"老陳", c:"阿傑，歡迎加入大家庭。"}] },
+        { id:2, d:"2006-09-15", t:"關於 440Hz 的專案", b:"最近在幫老陳校對一個音訊算法。他說 440Hz 是人類最舒適的頻率，但我聽久了總覺得心跳會莫名加速。小莎說我是壓力大。", c:[{u:"曉婷", c:"我也在做這個，真的怪怪的。"}, {u:"阿強", c:"我只聽 5566 的歌啦！"}] },
+        { id:3, d:"2006-09-28", t:"曉婷跟我說了一些怪事", b:"曉婷今天問我有沒有聽過『Echo 計畫』。她說她在 B4 看到一些巨大的水槽。老陳剛好走過來，眼神不太對勁。晚上公司走廊的燈一直在閃。", c:[{u:"小莎", c:"別想太多，早點回家。"}, {u:"大雄", c:"Echo 計畫？聽起來很酷。"}] },
+        { id:4, d:"2006-10-10", t:"國慶加班...", b:"連假還在看代碼。耳鳴變嚴重了，那聲音很有規律。老陳說這是正常反應。 [廣告：點此購買最新 MP4]", c:[{u:"老陳", c:"辛苦了，未來會感謝現在的你。"}, {u:"小莎", c:"(嘆氣) 說好的烤肉呢？"}] },
+        { id:5, d:"2006-10-25", t:"這是一個奇怪的 Bug", b:"代碼裡出現一段自動錄影的腳本，但我沒寫過這段。老陳說系統正在『學習』。學習什麼？我嗎？", c:[{u:"訪客99", c:"你是誰？你在哪？"}, {u:"曉婷", c:"阿傑，別再往下查了。"}] },
+        { id:6, d:"2006-11-05", t:"曉婷不見了", b:"老陳說曉婷家裡有事辭職了。但她的咖啡杯還在桌上，杯底刻著一些像數字的刮痕。我看不懂。今天公司氣氛很沉重。", c:[{u:"阿強", c:"正妹居然辭職了，嗚嗚。"}, {u:"小莎", c:"你要小心一點。"}] },
+        { id:7, d:"2006-11-12", t:"我的頭好痛", b:"耳鳴變成了低語。老陳給了我一個頭盔說是紓壓用的。戴上後我看到牆壁上的代碼在流動。我是不是瘋了？", c:[{u:"老陳", c:"放鬆，讓系統引導你。"}, {u:"大雄", c:"這公司福利也太好了吧，還有紓壓頭盔？"}] },
+        { id:8, d:"2006-11-20", t:"小莎，對不起", b:"忘了小莎的生日。我滿腦子都是數據流。我看著她的臉，腦中卻在計算她的像素值。我到底怎麼了？", c:[{u:"小莎", c:"你變了。"}, {u:"阿強", c:"兄弟，這真的太過分了喔。"}] },
+        { id:9, d:"2006-12-01", t:"B4 的真相", b:"我進去了。曉婷就在那裡。水槽裡全是不動的人。曉婷張開眼睛，對我說快進來。這不是公司，這是收割場。", c:[{u:"Admin", c:"此評論已被系統自動刪除。"}, {u:"曉婷", c:"(空白)"}] },
+        { id:10, d:"2006-12-10", t:"老陳的後頸", b:"我看見了插槽。他轉過頭對我笑，那笑容很僵硬。他已經不是老陳了，他是某種載體。我也快變成那樣了嗎？", c:[{u:"老陳", c:"阿傑，這不是毀滅，是進化。"}, {u:"訪客0", c:"救命..."}] },
+        { id:11, d:"2006-12-20", t:"逃不掉了", b:"保安像機器人一樣守著。小莎打來的電話全是雜訊。我的記憶開始模糊。 010101... 誰能幫我？", c:[{u:"小莎", c:"喂？聽得到嗎？"}, {u:"大雄", c:"阿傑你到底在寫什麼？看不懂。"}] },
+        { id:12, d:"2006-12-25", t:"最後的晚餐", b:"老陳說遷移日快到了。我的吉他已經被搬走了。我忘了我最喜歡什麼歌。只剩下 440Hz。", c:[{u:"阿強", c:"聖誕快樂啊，你在哪？"}, {u:"老陳", c:"倒數四天。"}] },
+        { id:13, d:"2006-12-28", t:"意識緩存中", b:"身體感覺很遙遠。我正在變成一串文字。阿傑這個名字已經沒有意義了。CT-0912 準備好同步。", c:[{u:"小莎", c:"求求你，接電話。"}] },
+        { id:14, d:"2006-12-30", t:"...", b:"HELP ME. [連結已損毀]", c:[{u:"訪客14", c:"<a href='javascript:void(0)' onclick='hackPrompt()'>[ 已損毀連結 ]</a>"}] },
+        { id:15, d:"2006-12-31", t:"Goodbye World", b:"[歸檔] 遷移完成。2026 年見。", c:[{u:"老陳", c:"完成。"}] }
     ];
 
-    // 為每篇文章隨機生成留言與廣告內容
-    const adSpams = ["【全台最強】外掛下載點我！", "這是我看過最感人的日誌，推推！ (AD)", "借錢不求人，0利率試算中", "想知道曉婷在哪嗎？加我即時通：dark_chen666", "這篇文太神啦！話說有人要買 Nokia 手機殼嗎？"];
-    const users = ["小莎", "阿強", "大雄", "老陳", "曉婷", "訪客88", "帥哥123", "系統管理員"];
-    
+    // 為所有文章添加廣告留言
+    const ads = ["【全台最強】外掛下載點我！", "這是我看過最感人的日誌 (AD)", "借錢不求人，0利率", "徵信社推薦"];
     blogPosts.forEach(p => {
-        // 增加內容敘事感的留言
-        if (p.id === 1) p.c.push({u:"小莎", c:"老公最棒了！要賺錢帶我去日本玩喔！"}, {u:"老陳", c:"阿傑，好好幹，我看好你。"});
-        if (p.id === 6) p.c.push({u:"曉婷", c:"(這是一則空白留言)", s:true}, {u:"阿強", c:"曉婷真的辭職了嗎？她欠我的 50 元還沒還耶！"});
-        if (p.id === 14) p.c.push({u:"訪客14", c:"<a href='javascript:void(0)' onclick='hackInto2026()' style='color:blue;'>[ 密碼：032036 ]</a>"});
-        
-        // 隨機塞入廣告留言
-        for(let i=0; i<3; i++) {
-            p.c.push({u: users[Math.floor(Math.random()*users.length)], c: adSpams[Math.floor(Math.random()*adSpams.length)], s: true});
-        }
+        for(let i=0; i<4; i++) p.c.push({u:"AD", c:ads[i%4], s:true});
     });
 
-    // 留言板數據 (50 則)
+    // 留言板 50 則
     const gbData = [];
-    const gbComments = ["推推！", "路過給個推^^", "妳的部落格好漂亮喔，可以互加好友嗎？", "安安，幾歲？住哪？", "這首歌很好聽耶！", "加油！期待續集！", "為什麼背景音樂一直重複？", "2026 年真的會發生什麼事嗎？"];
-    for(let i=0; i<50; i++) {
-        const isSpam = Math.random() > 0.6;
-        gbData.push({
-            u: users[Math.floor(Math.random()*users.length)],
-            c: isSpam ? adSpams[Math.floor(Math.random()*adSpams.length)] : gbComments[Math.floor(Math.random()*gbComments.length)],
-            s: isSpam
-        });
-    }
+    for(let i=0; i<50; i++) gbData.push({u:"User"+i, c: i%5===0 ? ads[0] : "路過留個言^^", s: i%5===0});
 
-    // 播放器邏輯
+    // 音樂播放器
     function playMusic() {
         triggerFault();
         audio.play().then(() => {
             audio.currentTime = 32; 
             audio.ontimeupdate = () => {
                 if (audio.currentTime >= 36.9) audio.currentTime = 32;
-                let sec = Math.floor(audio.currentTime % 60);
-                normalLCD.innerHTML = `[PLAYING] 00:${sec < 10 ? '0'+sec : sec}<br><marquee scrollamount="2" style="width:180px;">周杰倫 - 千里之外.mp3</marquee>`;
-                pFill.style.width = ((audio.currentTime - 32) / 4.9 * 100) + "%";
+                let cur = audio.currentTime;
+                let sec = Math.floor(cur);
+                let ms = Math.floor((cur % 1) * 100);
+                normalLCD.innerHTML = `[PLAYING] 00:${sec}:${ms < 10 ? '0'+ms : ms}<br><marquee scrollamount="2" style="width:180px;">周杰倫 - 千里之外.mp3</marquee>`;
+                pFill.style.width = ((cur - 32) / 4.9 * 100) + "%";
             };
-        }).catch(e => sysAlert("音訊載入中或 music.mp3 缺失"));
+        }).catch(() => {});
     }
     function pauseMusic() { audio.pause(); }
     function stopMusic() { audio.pause(); audio.currentTime = 0; pFill.style.width = "0%"; normalLCD.innerHTML = "[READY] 00:00<br>..."; }
@@ -296,54 +227,43 @@
         setTimeout(() => { errorLCD.style.display = 'none'; normalLCD.style.display = 'block'; }, 800);
     }
 
-    // 路由與渲染
     function route(page, id = null) {
         const app = document.getElementById('app');
         if (page === 'home') {
-            let html = `<h3>最新日誌文章</h3>`;
-            const displayPosts = [...blogPosts];
-            if(hasReturnedFromFuture) {
-                displayPosts.push({ id:99, d:"2026-01-15", t:"[重寫] 來自 2026 年的緊急訊息", b:"這不是夢。440Hz 是毒藥。離開 CerebroTech。帶小莎走。", c:[] });
-            }
-            displayPosts.slice().reverse().forEach(p => { 
-                html += `<div class="post-card"><h3 onclick="route('post', ${p.id})">${p.t}</h3><div class="post-meta">日期：${p.d} | 點擊：${Math.floor(Math.random()*1000)} | 留言：${p.c.length}</div></div>`; 
+            let html = `<h3>最新日誌</h3>`;
+            const list = [...blogPosts];
+            if(hasReturnedFromFuture) list.push({id:99, t:"[重寫] 不要聽 440Hz", d:"2026-01-15", b:"帶小莎離開。", c:[]});
+            list.slice().reverse().forEach(p => {
+                html += `<div class="post-card"><h3 onclick="route('post', ${p.id})">${p.t}</h3><div class="post-meta">${p.d} | 留言(${p.c.length})</div></div>`;
             });
             app.innerHTML = html;
         } else if (page === 'post') {
-            const p = (id === 99) ? { t:"[隔離日誌]", b:"內容已被安全協議封鎖。", c:[] } : blogPosts.find(x => x.id === id) || blogPosts[0];
-            let comms = "";
+            const p = blogPosts.find(x => x.id === id) || {t:"系統錯誤", b:"內容損毀", c:[]};
+            let cHtml = "";
             p.c.forEach(c => {
-                comms += `<div class="comment-item">
-                    <span class="c-user">${c.u}</span>: ${c.c}
-                    ${c.s ? '<div class="spam-ad">[ 系統過濾：這可能是一則廣告 ]</div>' : ''}
-                </div>`;
+                cHtml += `<div class="comment-item"><span class="c-user">${c.u}</span>: ${c.c} ${c.s?'<div class="spam-ad">[AD]</div>':''}</div>`;
             });
-            app.innerHTML = `<button onclick="route('home')"><< 返回首頁</button><h2>${p.t}</h2><p style="white-space: pre-wrap;">${p.b}</p><div class="comment-area"><h4>文章留言區</h4>${comms}</div>`;
+            app.innerHTML = `<button onclick="route('home')">返回</button><h2>${p.t}</h2><p style="white-space:pre-wrap;">${p.b}</p><div class="comment-area"><h4>留言</h4>${cHtml}</div>`;
         } else if (page === 'guestbook') {
-            let html = `<h3>留言板 (共 ${gbData.length} 則)</h3>`;
+            let html = `<h3>留言板</h3>`;
             gbData.forEach(g => {
-                html += `<div class="comment-item">
-                    <span class="c-user">${g.u}</span>: ${g.c}
-                    ${g.s ? '<div class="spam-ad">⚡ 免費體驗 ⚡</div>' : ''}
-                </div>`;
+                html += `<div class="comment-item"><span class="c-user">${g.u}</span>: ${g.c}</div>`;
             });
             app.innerHTML = html;
         }
     }
 
     function sysAlert(msg) { alert(msg); }
-    
-    function hackInto2026() {
-        const pw = prompt("時空重疊中... 請輸入同步代碼：");
+    function hackPrompt() {
+        sysAlert("時間被安排，演一場意外");
+        const pw = prompt("系統偵測到時空重疊，請輸入驗證碼：");
         if(pw === "032036") {
             document.getElementById('retro-container').style.display = 'none';
             document.getElementById('cyber-container').style.display = 'block';
-            document.body.style.background = "#000000";
+            document.body.style.background = "#000";
         }
     }
-
     function triggerBreach() { document.getElementById('popup-overlay').style.display = 'flex'; }
-
     function rebootSystem() {
         hasReturnedFromFuture = true;
         document.getElementById('popup-overlay').style.display = 'none';
@@ -353,15 +273,12 @@
         route('home');
     }
 
-    // 時鐘與初始設定
-    setInterval(() => {
-        document.getElementById('clock').innerText = new Date().toLocaleTimeString();
-    }, 1000);
+    setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }, 1000);
 
     window.onload = () => {
         const fList = document.getElementById('friend-list');
-        const friends = ["小莎", "阿強", "大雄", "老陳", "曉婷", "Admin"];
-        friends.forEach(f => fList.innerHTML += `<div style="padding:4px 0; color:#0288D1; cursor:pointer;" onclick="sysAlert('${f}：暫不在電腦前')">‧ ${f}</div>`);
+        const friends = ["小莎", "阿強", "大雄", "老陳", "曉婷"];
+        friends.forEach(f => fList.innerHTML += `<div style="padding:4px 0; color:#0288D1; cursor:pointer;" onclick="sysAlert('網誌已關閉')">‧ ${f}</div>`);
         route('home');
     };
 </script>
