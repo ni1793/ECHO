@@ -38,6 +38,13 @@
         .box-title { background: #CFD8DC; padding: 6px; font-weight: bold; font-size: 13px; border-bottom: 1px solid #B0BEC5; }
         .box-body { padding: 10px; font-size: 13px; line-height: 1.6; }
 
+        /* Side Ad Styles */
+        .side-ad { margin-bottom: 20px; border: 2px solid #ff0000; padding: 5px; background: #fff; cursor: pointer; text-decoration: none; display: block; }
+        .side-ad-title { background: #ff0000; color: #fff; font-size: 12px; font-weight: bold; padding: 2px; text-align: center; }
+        .side-ad-img { width: 100%; height: 80px; background: #eee; margin: 5px 0; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #666; overflow: hidden; }
+        .side-ad-text { font-size: 11px; color: #0000ff; text-align: center; text-decoration: underline; }
+        .blink-fast { animation: blink 0.3s infinite; }
+
         /* MP3 Player */
         .mp3-player { background: #333; padding: 8px; border: 2px outset #666; font-family: monospace; }
         .lcd-screen { background: #000; border: 2px inset #222; padding: 6px; height: 54px; position: relative; overflow: hidden; }
@@ -123,6 +130,13 @@
                 </div>
             </div>
 
+            <!-- Side Ads Start -->
+            <a href="javascript:sysAlert('正在連接及時通伺服器...')" class="side-ad">
+                <div class="side-ad-title blink-fast">🔥 及時通 8.0 下載 🔥</div>
+                <div class="side-ad-img"><img src="https://api.dicebear.com/7.x/shapes/svg?seed=yahoo" style="width:40px"></div>
+                <div class="side-ad-text">最新表情符號包！點我下載</div>
+            </a>
+
             <div class="box">
                 <div class="box-title">MP3 Player</div>
                 <div class="box-body">
@@ -141,7 +155,25 @@
                 </div>
             </div>
 
+            <a href="javascript:sysAlert('燃燒吧，燃燒吧，火鳥！')" class="side-ad" style="border-color: #00ff00;">
+                <div class="side-ad-title" style="background: #00ff00; color: #000;">【震撼預告】魔獸世界：燃燒的遠征</div>
+                <div class="side-ad-img" style="background: #000; color: #fff;">伊利丹在此！</div>
+                <div class="side-ad-text" style="color: #ffcc00;">你還沒準備好！！</div>
+            </a>
+
             <div class="box"><div class="box-title">我的好友</div><div class="box-body" id="friend-list"></div></div>
+
+            <div class="side-ad" onclick="sysAlert('正在掃描您的 C:\\ 槽...')" style="border-color: #ff00ff;">
+                <div class="side-ad-title" style="background: #ff00ff;">💖 尋找內湖區單身交友 💖</div>
+                <div class="side-ad-text" style="color: #ff00ff; text-decoration: none;">點我立刻與附近的「小琳」聊天</div>
+            </div>
+
+            <div class="side-ad" style="border: 1px solid #666;">
+                <div class="side-ad-title" style="background: #666;">贊助廠商</div>
+                <div class="side-ad-text" style="color: #666;">Nokia N95 預購中</div>
+                <div class="side-ad-text" style="color: #666;">線上博弈：999純金</div>
+            </div>
+            <!-- Side Ads End -->
         </aside>
 
         <main class="content" id="app"></main>
@@ -219,7 +251,7 @@
         for(let i=0; i<4; i++) p.c.push({u:"AD", c:ads[i%4], s:true});
     });
 
-    // 留言板內容 - 已大幅擴充且不重複
+    // 留言板內容
     const gbData = [
         {u:"小莎", c:"老公，今天晚上記得買牛奶回來喔！加油！"},
         {u:"阿強", c:"阿傑，這周末要不要去西門町萬年大樓看模型？那邊有新出的鋼彈喔。"},
@@ -268,7 +300,7 @@
         {u:"迷路的小羊", c:"不小心點進來的，發現這篇網誌很有意思，已經加入我的最愛。"},
         {u:"老陳", c:"計畫不能出錯，你是我最看好的工程師。"},
         {u:"曉婷的同學", c:"曉婷辭職後就聯絡不上了，她的手機也停機，有人知道她去哪了嗎？"},
-        {u:"阿強", c:"我剛剛在萬年大樓看到一個超酷的頭盔，跟你描述的好像喔。"},
+        {u:"阿強", c:"阿傑，你一定要記住 00320036 這個數字。"},
         {u:"不具名網友", c:"這網頁的背景音樂循環得我很不安...有人有一樣的感覺嗎？"},
         {u:"時空旅人", c:"20年後的你會後悔現在的選擇，快停下。"},
         {u:"AD", c:"想知道如何一天賺進一萬塊嗎？點此了解財富密碼。"},
@@ -284,11 +316,8 @@
             audio.currentTime = 32; 
             audio.ontimeupdate = () => {
                 if (audio.currentTime >= 36.9) audio.currentTime = 32;
-                
-                let cur = audio.currentTime;
-                // 僅顯示狀態，不顯示秒數
                 normalLCD.innerHTML = `[PLAYING]<br><marquee scrollamount="2" style="width:180px;">周杰倫 - 千里之外.mp3</marquee>`;
-                pFill.style.width = ((cur - 32) / 4.9 * 100) + "%";
+                pFill.style.width = ((audio.currentTime - 32) / 4.9 * 100) + "%";
             };
         }).catch(() => {});
     }
