@@ -187,7 +187,6 @@
                 </div>
             </div>
 
-            <!-- 動態廣告容器 -->
             <div id="side-ads-container"></div>
 
             <div class="box">
@@ -277,6 +276,7 @@
     const errorLCD = document.getElementById('lcd-error');
     const pFill = document.getElementById('p-fill');
     let hasReturnedFromFuture = false;
+    let dynamicDate = "2026-01-01"; // 預設值，之後會自動更新
 
     // --- 日誌文章數據 ---
     // 時間軸：9月(入職興奮) -> 10月(疑惑與壓力) -> 11月(副作用與失憶) -> 12月(發現與絕望)
@@ -399,13 +399,13 @@
         triggerFault();
         audio.loop = false; // 確保不循環播放
         audio.play().then(() => {
-            audio.currentTime = 32; 
+            audio.currentTime = 0; // 從頭開始
             audio.ontimeupdate = () => {
                 normalLCD.innerHTML = `[PLAYING]<br><marquee scrollamount="2" style="width:180px;">周杰倫 - 千里之外.mp3</marquee>`;
                 let duration = audio.duration || 240;
                 pFill.style.width = (audio.currentTime / duration * 100) + "%";
             };
-            audio.onended = () => { stopMusic(); };
+            audio.onended = () => { stopMusic(); }; // 播放結束後自動停止
         }).catch((e) => {
             console.error("Autoplay failed:", e);
             alert("請點擊頁面任意處以啟動音效 (瀏覽器限制)");
@@ -484,6 +484,15 @@
         });
     }
 
+    // 取得當前日期的函數
+    function getCurrentDate() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
     function route(page, id = null) {
         const app = document.getElementById('app');
         
@@ -496,13 +505,16 @@
             let html = `<h3>最新日誌</h3>`;
             const list = [...blogPosts];
             if(hasReturnedFromFuture) {
-                // 修改後的結局文章
+                // 自動更新日期
+                dynamicDate = getCurrentDate();
+                
+                // 修改後的警告文章，由2026年的阿傑發出
                 list.push({
                     id: 99, 
-                    t: "[重寫] 逃離 B4：新的時間線", 
-                    d: "2006-12-31", 
-                    b: `這不是原本的結局。\n\n我看見了那個未來——那個我被液態氮封存、意識被收割的 2026 年。但我回來了。\n\n現在是 2006 年 12 月 31 日，晚上 11 點 50 分。我沒有去參加公司的跨年派對。我駭進了門禁系統，不是為了潛入，而是為了觸發火警警報。\n\n趁著混亂，我衝進 B4 實驗室，把還沒完全連線的小莎拉了出來。她嚇壞了，但我緊緊抓著她的手，告訴她：「不要回頭，不要聽那個頻率。」\n\n我們現在在往南下的客運上。老陳的電話一直在響，但我已經把手機卡折斷丟進基隆河了。\n\n這家公司...CerebroTech，他們會繼續尋找下一個獵物。但至少，不是我們。\n\n小莎靠在我肩膀上睡著了。她還活著，我也還活著。這就是最好的時間線。\n\n再見了，蔚藍地帶。我要去過沒有代碼的生活了。`, 
-                    c: [{u:"系統", c:"警告：路徑已改變。追蹤失敗。"}]
+                    t: "[時空訊息] 給2006年的阿傑", 
+                    d: dynamicDate, // 使用現實世界當下的日期
+                    b: `阿傑，聽著，我是2026年的你。\n\n這條訊息是透過時空縫隙傳送回來的。你現在所在的 2006 年 12 月 31 日，是最後的轉捩點。\n\n不要相信老陳，不要參加今晚的跨年派對，那是一個陷阱。他們的「遷移計畫」是要將我們的意識囚禁在數據庫裡。\n\n現在立刻去 B4 實驗室，小莎就在那裡，她正準備被強行連接。拔掉她的管線，帶她離開內湖！\n\n不要管什麼工作了，把手機丟掉，逃得越遠越好。\n\n我被困在這個數位地獄20年了，就是為了這一刻提醒你。救出小莎，活下去，不要變成我。\n\n快逃！`, 
+                    c: [{u:"系統", c:"[CRITICAL] 偵測到未來數據寫入..."}, {u:"老陳", c:"[連結遭拒] 你不能這麼做！"}]
                 });
             }
             list.slice().reverse().forEach(p => {
@@ -510,11 +522,15 @@
             });
             app.innerHTML = html;
         } else if (page === 'post') {
-            let p = (id === 99) ? {
-                t: "[重寫] 逃離 B4：新的時間線", 
-                b: `這不是原本的結局。\n\n我看見了那個未來——那個我被液態氮封存、意識被收割的 2026 年。但我回來了。\n\n現在是 2006 年 12 月 31 日，晚上 11 點 50 分。我沒有去參加公司的跨年派對。我駭進了門禁系統，不是為了潛入，而是為了觸發火警警報。\n\n趁著混亂，我衝進 B4 實驗室，把還沒完全連線的小莎拉了出來。她嚇壞了，但我緊緊抓著她的手，告訴她：「不要回頭，不要聽那個頻率。」\n\n我們現在在往南下的客運上。老陳的電話一直在響，但我已經把手機卡折斷丟進基隆河了。\n\n這家公司...CerebroTech，他們會繼續尋找下一個獵物。但至少，不是我們。\n\n小莎靠在我肩膀上睡著了。她還活著，我也還活著。這就是最好的時間線。\n\n再見了，蔚藍地帶。我要去過沒有代碼的生活了。`, 
-                c: [{u:"系統", c:"警告：路徑已改變。追蹤失敗。"}]
-            } : blogPosts.find(x => x.id === id) || {t:"系統錯誤", b:"內容損毀", c:[]};
+            // 定義新文章的內容，與上方保持一致
+            let newPostContent = {
+                t: "[時空訊息] 給2006年的阿傑", 
+                d: dynamicDate,
+                b: `阿傑，聽著，我是2026年的你。\n\n這條訊息是透過時空縫隙傳送回來的。你現在所在的 2006 年 12 月 31 日，是最後的轉捩點。\n\n不要相信老陳，不要參加今晚的跨年派對，那是一個陷阱。他們的「遷移計畫」是要將我們的意識囚禁在數據庫裡。\n\n現在立刻去 B4 實驗室，小莎就在那裡，她正準備被強行連接。拔掉她的管線，帶她離開內湖！\n\n不要管什麼工作了，把手機丟掉，逃得越遠越好。\n\n我被困在這個數位地獄20年了，就是為了這一刻提醒你。救出小莎，活下去，不要變成我。\n\n快逃！`, 
+                c: [{u:"系統", c:"[CRITICAL] 偵測到未來數據寫入..."}, {u:"老陳", c:"[連結遭拒] 你不能這麼做！"}]
+            };
+
+            let p = (id === 99) ? newPostContent : blogPosts.find(x => x.id === id) || {t:"系統錯誤", b:"內容損毀", c:[]};
             let cHtml = "";
             p.c.forEach(c => {
                 cHtml += `<div class="comment-item"><span class="c-user">${c.u}</span>: ${c.c} ${c.s?'<div class="spam-ad">[AD]</div>':''}</div>`;
@@ -533,11 +549,8 @@
                     <div style="position:absolute; top:0; left:0; width:100%; height:100%; background:repeating-linear-gradient(0deg, rgba(0,255,0,0.03) 0px, rgba(0,255,0,0.03) 1px, transparent 1px, transparent 2px); pointer-events:none;"></div>
                     <p style="font-size:12px; opacity:0.7;">STATUS: CONNECTED // SYNC_FREQ: 440.32HZ</p>
                     <div style="border:1px solid #0F0; height:300px; position:relative; overflow:hidden; background:#050505;">
-                        <!-- 掃描線 -->
                         <div style="position:absolute; width:100%; height:2px; background:rgba(0,255,0,0.5); top:0; animation: scanline 4s linear infinite; z-index:2;"></div>
-                        <!-- 坐標網格 -->
                         <div style="width:100%; height:100%; background-image: linear-gradient(rgba(0,255,0,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,0,0.1) 1px, transparent 1px); background-size: 20px 20px;"></div>
-                        <!-- 中心節點 -->
                         <div style="position:absolute; top:50%; left:50%; transform: translate(-50%, -50%);">
                             <div style="width:8px; height:8px; background:#F00; border-radius:50%; position:relative; z-index:3;"></div>
                             <div style="position:absolute; top:-6px; left:-6px; width:20px; height:20px; border:1px solid #F00; border-radius:50%; animation: pulse-ring 2s ease-out infinite;"></div>
