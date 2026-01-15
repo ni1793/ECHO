@@ -174,27 +174,24 @@
 function startGlitch() {
     triggerFault();
     
-    // 確保音訊加載並嘗試播放
-    audio.load(); 
+    // 每次點擊都重新加載，確保檔案被抓到
+    audio.load();
     
-    // 建立一個 Promise 來處理播放請求
-    let playPromise = audio.play();
+    // 監聽：當元數據（長度、內容）加載完成後再執行跳轉
+    audio.onloadedmetadata = function() {
+        audio.currentTime = 32;
+        audio.play().catch(e => console.log("播放被攔截:", e));
+    };
 
-    if (playPromise !== undefined) {
-        playPromise.then(_ => {
-            // 播放成功後再設定跳轉時間，避免瀏覽器攔截
+    audio.ontimeupdate = function() {
+        // 故障視覺效果
+        pFill.style.width = (32 + Math.random() * 5) + "%";
+        
+        // 循環邏輯
+        if (audio.currentTime >= 36) {
             audio.currentTime = 32;
-            audio.ontimeupdate = () => {
-                pFill.style.width = (32 + Math.random() * 5) + "%";
-                if (audio.currentTime >= 36) {
-                    audio.currentTime = 32;
-                }
-            };
-        }).catch(error => {
-            console.log("播放失敗，請確認 music.mp3 是否存在於正確資料夾:", error);
-            alert("播放器讀取失敗，請確認 music.mp3 檔案名稱與位置正確。");
-        });
-    }
+        }
+    };
 }
 
     function triggerFault() {
