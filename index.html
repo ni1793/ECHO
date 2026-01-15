@@ -37,7 +37,7 @@
         .box-title { background: #CFD8DC; padding: 6px; font-weight: bold; font-size: 13px; border-bottom: 1px solid #B0BEC5; }
         .box-body { padding: 10px; font-size: 13px; line-height: 1.6; }
 
-        /* --- 手機版響應式設計 (Mobile Responsive) --- */
+        /* --- 手機版響應式設計 --- */
         @media screen and (max-width: 960px) {
             #retro-container { width: 100%; margin: 0; box-shadow: none; border: none; }
             header { height: auto; padding: 20px; flex-direction: column; align-items: flex-start; }
@@ -238,11 +238,14 @@
 
         .glitch-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 99999; display: none; }
     </style>
+    <script src="https://www.youtube.com/iframe_api"></script>
 </head>
 <body class="v2006">
 
 <div id="glitch" class="glitch-screen"></div>
+
 <audio id="bgm" src="music.mp3" preload="auto"></audio>
+<div id="yt-player-wrapper" style="display:none;"><div id="yt-player"></div></div>
 
 <div id="msn-window">
     <div class="msn-header">
@@ -372,13 +375,33 @@
 </div>
 
 <script>
+    // --- YouTube API 初始化 ---
+    var player;
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('yt-player', {
+            height: '0',
+            width: '0',
+            videoId: 'tn1uKa5ZyA8', // 440Hz 音頻
+            playerVars: {
+                'start': 3, // 從第3秒開始
+                'playsinline': 1
+            },
+            events: {
+                'onReady': onPlayerReady
+            }
+        });
+    }
+    function onPlayerReady(event) {
+        // Player is ready
+    }
+
     const audio = document.getElementById('bgm');
     const normalLCD = document.getElementById('lcd-normal');
     const errorLCD = document.getElementById('lcd-error');
     const pFill = document.getElementById('p-fill');
     let hasReturnedFromFuture = false;
     let dynamicDate = "2026-01-01";
-    let isHacked = false; // 新增：是否已駭入
+    let isHacked = false; // 是否已駭入
 
     // --- 日誌文章數據 ---
     const blogPosts = [
@@ -477,35 +500,63 @@
     }
 
     function playMusic() {
-        // 如果已駭入，播放音樂會觸發解鎖
+        // --- 核心修改：判斷是否駭入 ---
         if (isHacked) {
-             setTimeout(() => {
-                 const lockStatus = document.getElementById('cam-lock-status');
-                 if(lockStatus) {
-                     lockStatus.innerText = "[🔓 UNLOCKED]";
-                     lockStatus.classList.add('cam-unlocked');
-                     sysAlert("系統提示：偵測到 440Hz 共振音頻。\nB4 安全門禁已失效。");
-                 }
-             }, 3000); // 模擬共振需要時間
+             // 1. 如果是駭入狀態，播放 YouTube 440Hz
+             if (audio && !audio.paused) {
+                 audio.pause(); // 確保本地音樂停止
+             }
+             
+             if (player && player.playVideo) {
+                 player.seekTo(3); // 確保從第3秒開始
+                 player.playVideo();
+                 
+                 // 更新 LCD 顯示
+                 normalLCD.innerHTML = `[RECEIVING]<br><marquee scrollamount="5" style="width:180px; color:#F00;">WARNING: 440HZ CARRIER DETECTED...</marquee>`;
+                 
+                 // 模擬 3 秒後解鎖
+                 setTimeout(() => {
+                     const lockStatus = document.getElementById('cam-lock-status');
+                     if(lockStatus) {
+                         lockStatus.innerText = "[🔓 UNLOCKED]";
+                         lockStatus.classList.add('cam-unlocked');
+                         sysAlert("系統提示：偵測到 440Hz 共振音頻。\nB4 安全門禁已失效。");
+                     }
+                 }, 3000); 
+             }
+        } else {
+            // 2. 如果是正常狀態，播放本地 mp3
+            triggerFault();
+            audio.loop = false;
+            audio.play().then(() => {
+                audio.currentTime = 0;
+                audio.ontimeupdate = () => {
+                    normalLCD.innerHTML = `[PLAYING]<br><marquee scrollamount="2" style="width:180px;">周杰倫 - 千里之外.mp3</marquee>`;
+                    let duration = audio.duration || 240;
+                    pFill.style.width = (audio.currentTime / duration * 100) + "%";
+                };
+                audio.onended = () => { stopMusic(); };
+            }).catch((e) => {
+                console.error("Autoplay failed:", e);
+                alert("請點擊頁面任意處以啟動音效 (瀏覽器限制)");
+            });
         }
-        
-        triggerFault();
-        audio.loop = false;
-        audio.play().then(() => {
-            audio.currentTime = 0;
-            audio.ontimeupdate = () => {
-                normalLCD.innerHTML = `[PLAYING]<br><marquee scrollamount="2" style="width:180px;">周杰倫 - 千里之外.mp3</marquee>`;
-                let duration = audio.duration || 240;
-                pFill.style.width = (audio.currentTime / duration * 100) + "%";
-            };
-            audio.onended = () => { stopMusic(); };
-        }).catch((e) => {
-            console.error("Autoplay failed:", e);
-            alert("請點擊頁面任意處以啟動音效 (瀏覽器限制)");
-        });
     }
-    function pauseMusic() { audio.pause(); }
-    function stopMusic() { audio.pause(); audio.currentTime = 0; pFill.style.width = "0%"; normalLCD.innerHTML = "[READY]<br>..."; }
+    
+    function pauseMusic() { 
+        audio.pause(); 
+        if(player && player.pauseVideo) player.pauseVideo();
+    }
+    
+    function stopMusic() { 
+        audio.pause(); 
+        audio.currentTime = 0; 
+        if(player && player.stopVideo) player.stopVideo();
+        
+        pFill.style.width = "0%"; 
+        normalLCD.innerHTML = "[READY]<br>..."; 
+    }
+    
     function triggerFault() {
         normalLCD.style.display = 'none'; errorLCD.style.display = 'block';
         setTimeout(() => { errorLCD.style.display = 'none'; normalLCD.style.display = 'block'; }, 800);
