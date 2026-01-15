@@ -71,10 +71,13 @@
         .apple-main { max-width: 980px; margin: 0 auto; padding: 160px 20px 100px; }
         .apple-hero { text-align: left; margin-bottom: 120px; animation: fadeInUp 1.2s ease; }
         .apple-title { font-size: 80px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; margin: 0 0 30px; background: linear-gradient(180deg, #fff 0%, #a1a1a6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        
+        .apple-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 100px; }
+        .apple-card { background: #1c1c1e; padding: 40px; border-radius: 24px; border: 0.5px solid rgba(255,255,255,0.1); transition: 0.3s; }
+        .apple-card:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.3); }
+
         #popup-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(40px); z-index: 30000; justify-content: center; align-items: center; }
         .popup-window { background: rgba(28, 28, 30, 0.9); border: 0.5px solid rgba(255,255,255,0.1); padding: 40px; border-radius: 28px; color: #fff; max-width: 480px; text-align: center; font-family: -apple-system, sans-serif; animation: scaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-        .confirm-btn { background: #fff; color: #000; border: none; padding: 14px 28px; border-radius: 12px; cursor: pointer; font-weight: 700; width: 100%; font-size: 17px; }
+        .confirm-btn { background: #fff; color: #000; border: none; padding: 14px 28px; border-radius: 12px; cursor: pointer; font-weight: 700; width: 100%; font-size: 17px; margin-top: 20px; }
 
         @keyframes blink { 50% { opacity: 0; } }
         @keyframes scaleIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
@@ -154,17 +157,29 @@
     <div class="apple-nav"><span style="opacity: 0.8;">CEREBROTECH SYSTEMS PROTOCOL // CT-0912</span></div>
     <div class="apple-main">
         <div class="apple-hero">
-            <h1 class="apple-title">時間不是線性的，而是緩存。</h1>
-            <p style="font-size:32px; color:#86868b;">當你閱讀這段文字時，2006 年的生理主體已經完成了 98.4% 的數位遷移。</p>
-            <button class="apple-btn" style="background:#fff; border-radius:980px; padding:18px 36px; font-weight:600; cursor:pointer;" onclick="triggerBreach()">存取核心意識數據</button>
+            <h1 class="apple-title">時間不是線性的，<br>而是緩存。</h1>
+            <p style="font-size:32px; color:#86868b; line-height:1.4; max-width:700px;">當你閱讀這段文字時，2006 年的生理主體已經完成了 98.4% 的數位遷移。我們不再受限於肉體，而是永恆的位元。</p>
+            <div style="margin-top: 40px;">
+                <button class="apple-btn" style="background:#fff; color:#000; border:none; border-radius:980px; padding:18px 40px; font-weight:600; font-size:18px; cursor:pointer;" onclick="triggerBreach()">存取核心意識數據</button>
+            </div>
+        </div>
+        <div class="apple-grid">
+            <div class="apple-card">
+                <h3 style="color:#0071e3; margin-top:0;">01. 意識數位化</h3>
+                <p style="color:#a1a1a6;">透過 CT-0912 協議，將情感、記憶與痛苦轉化為可索引的資料庫。</p>
+            </div>
+            <div class="apple-card">
+                <h3 style="color:#0071e3; margin-top:0;">02. 時空同步</h3>
+                <p style="color:#a1a1a6;">2006 與 2026 之間的屏障已經崩塌。你可以在緩存中重溫每一秒。</p>
+            </div>
         </div>
     </div>
 </div>
 
 <div id="popup-overlay">
     <div class="popup-window">
-        <h2>SYSTEM EXCEPTION</h2>
-        <p>偵測到時空節點回傳。系統將執行緊急視覺重設。</p>
+        <h2 style="margin-top:0;">SYSTEM EXCEPTION</h2>
+        <p style="color:#a1a1a6; line-height:1.5;">偵測到非授權的時空節點回傳。CerebroTech 核心正在重新配置視覺層，以防止意識排斥反應。系統將執行緊急重設。</p>
         <button class="confirm-btn" onclick="rebootSystem()">同步並返回</button>
     </div>
 </div>
@@ -198,12 +213,26 @@
     // 為所有文章添加廣告留言
     const ads = ["【全台最強】外掛下載點我！", "這是我看過最感人的日誌 (AD)", "借錢不求人，0利率", "徵信社推薦"];
     blogPosts.forEach(p => {
+        p.c.push({u:"小莎", c:"你最近真的太忙了...要注意休息啊。"});
+        p.c.push({u:"老陳", c:"一切都在計畫中。"});
+        p.c.push({u:"阿強", c:"下次出來打球啦！"});
         for(let i=0; i<4; i++) p.c.push({u:"AD", c:ads[i%4], s:true});
     });
 
-    // 留言板 50 則
-    const gbData = [];
-    for(let i=0; i<50; i++) gbData.push({u:"User"+i, c: i%5===0 ? ads[0] : "路過留個言^^", s: i%5===0});
+    // 留言板還原內容
+    const gbData = [
+        {u:"小莎", c:"老公，今天晚上記得買牛奶回來喔！加油！"},
+        {u:"阿強", c:"阿傑，這周末要不要去西門町萬年大樓看模型？"},
+        {u:"曉婷", c:"誰有《千里之外》的譜？我想練吉他~"},
+        {u:"大雄", c:"路過留個言，你的網誌風格很藍色喔。"},
+        {u:"老陳", c:"阿傑，那份數據跑完了嗎？"},
+        {u:"阿強", c:"有人要去市政府跨年嗎？我有拿五月天的票！"},
+        {u:"迷路的人", c:"這首歌好好聽喔...是周董的新歌嗎？"},
+        {u:"AD", c:"代寫論文，專業保證，加我及時通！"},
+        {u:"小莎", c:"寒流來了，出門要穿外套。"},
+        {u:"阿強", c:"剛剛在內湖看到你，叫你都沒聽到。"}
+    ];
+    for(let i=0; i<40; i++) gbData.push({u:"User"+i, c: "路過留個言^^", s: i%10===0});
 
     // 音樂播放器
     function playMusic() {
@@ -211,6 +240,7 @@
         audio.play().then(() => {
             audio.currentTime = 32; 
             audio.ontimeupdate = () => {
+                // 強制秒數在 32~36 之間跑
                 if (audio.currentTime >= 36.9) audio.currentTime = 32;
                 let cur = audio.currentTime;
                 let sec = Math.floor(cur);
@@ -232,13 +262,13 @@
         if (page === 'home') {
             let html = `<h3>最新日誌</h3>`;
             const list = [...blogPosts];
-            if(hasReturnedFromFuture) list.push({id:99, t:"[重寫] 不要聽 440Hz", d:"2026-01-15", b:"帶小莎離開。", c:[]});
+            if(hasReturnedFromFuture) list.push({id:99, t:"[重寫] 不要聽 440Hz", d:"2026-01-15", b:"帶小莎離開。代碼已經被我改寫，這不是結局。", c:[]});
             list.slice().reverse().forEach(p => {
                 html += `<div class="post-card"><h3 onclick="route('post', ${p.id})">${p.t}</h3><div class="post-meta">${p.d} | 留言(${p.c.length})</div></div>`;
             });
             app.innerHTML = html;
         } else if (page === 'post') {
-            const p = blogPosts.find(x => x.id === id) || {t:"系統錯誤", b:"內容損毀", c:[]};
+            const p = (id===99) ? {t:"[重寫] 不要聽 440Hz", b:"帶小莎離開。代碼已經被我改寫，這不是結局。", c:[]} : (blogPosts.find(x => x.id === id) || {t:"系統錯誤", b:"內容損毀", c:[]});
             let cHtml = "";
             p.c.forEach(c => {
                 cHtml += `<div class="comment-item"><span class="c-user">${c.u}</span>: ${c.c} ${c.s?'<div class="spam-ad">[AD]</div>':''}</div>`;
@@ -257,7 +287,7 @@
     function hackPrompt() {
         sysAlert("時間被安排，演一場意外");
         const pw = prompt("系統偵測到時空重疊，請輸入驗證碼：");
-        if(pw === "032036") {
+        if(pw === "00320036") {
             document.getElementById('retro-container').style.display = 'none';
             document.getElementById('cyber-container').style.display = 'block';
             document.body.style.background = "#000";
