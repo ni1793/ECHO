@@ -15,13 +15,10 @@
         * { box-sizing: border-box; }
         body { margin: 0; padding: 0; overflow-x: hidden; transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
 
-        /* --- 2006 復古主題 (嚴格保留) --- */
+        /* --- 2006 復古主題 --- */
         body.v2006 { background: #455A64; font-family: "新細明體", "PMingLiU", serif; }
         #retro-container { width: 950px; margin: 20px auto; background: #FFF; border: 1px solid #000; box-shadow: 10px 10px 0 rgba(0,0,0,0.3); position: relative; }
         
-        .top-ad-banner { height: 60px; background: #ffff00; border-bottom: 1px solid #000; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .ad-text { color: #f00; font-weight: bold; animation: blink 0.5s infinite; font-size: 14px; }
-
         header { background: var(--retro-blue); height: 180px; color: white; padding: 40px; display: flex; align-items: flex-end; border-bottom: 6px solid #01579B; position: relative; }
         header h1 { margin: 0; font-size: 32px; letter-spacing: 4px; text-shadow: 2px 2px #000; }
         .counter { position: absolute; top: 10px; right: 10px; background: #000; color: #0F0; font-family: 'Courier New', Courier, monospace; padding: 5px; font-size: 12px; }
@@ -38,13 +35,43 @@
         .box-title { background: #CFD8DC; padding: 6px; font-weight: bold; font-size: 13px; border-bottom: 1px solid #B0BEC5; }
         .box-body { padding: 10px; font-size: 13px; line-height: 1.6; }
 
-        /* Side Ad Styles */
-        .side-ad { margin-bottom: 20px; border: 2px solid #ff0000; padding: 5px; background: #fff; cursor: pointer; text-decoration: none; display: block; }
-        .side-ad-title { background: #ff0000; color: #fff; font-size: 12px; font-weight: bold; padding: 2px; text-align: center; }
-        .side-ad-img { width: 100%; height: 80px; background: #eee; margin: 5px 0; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #666; overflow: hidden; }
-        .side-ad-text { font-size: 11px; color: #0000ff; text-align: center; text-decoration: underline; }
-        .blink-fast { animation: blink 0.3s infinite; }
+        /* --- 多樣化廣告樣式設計 --- */
+        .side-ad { margin-bottom: 20px; cursor: pointer; display: block; overflow: hidden; position: relative; font-family: "Arial", sans-serif; transition: transform 0.1s; }
+        .side-ad:active { transform: scale(0.98); }
 
+        /* Style 1: Windows XP 錯誤視窗 */
+        .ad-xp { border: 1px solid #0055EA; background: #ECE9D8; font-family: Tahoma, sans-serif; box-shadow: 2px 2px 5px rgba(0,0,0,0.2); }
+        .ad-xp-header { background: linear-gradient(to bottom, #0058EE 0%, #3B80F2 100%); color: white; padding: 4px 8px; font-weight: bold; font-size: 11px; display: flex; justify-content: space-between; align-items: center; }
+        .ad-xp-body { padding: 10px; display: flex; align-items: center; gap: 10px; font-size: 11px; color: #000; }
+        .ad-xp-icon { width: 32px; height: 32px; background: #FFF; border: 1px solid #999; border-radius: 50%; color: red; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 20px; }
+        .ad-xp-btn { border: 1px solid #003C74; background: #EEE; padding: 2px 10px; margin-top: 5px; cursor: pointer; display: inline-block; }
+        .ad-xp-btn:hover { box-shadow: inset 0 0 2px #fff; background: #F5F5F5; }
+
+        /* Style 2: 霓虹跑馬燈 */
+        .ad-neon { background: #000; border: 2px solid #0F0; padding: 10px; text-align: center; }
+        .ad-neon-text { color: #0F0; font-family: "Courier New", monospace; font-weight: bold; font-size: 14px; text-shadow: 0 0 5px #0F0; animation: blink 0.2s infinite alternate; }
+        .ad-neon-sub { color: #FFF; font-size: 10px; margin-top: 5px; }
+
+        /* Style 3: 圖片下載按鈕 */
+        .ad-download { background: #fff; border: 1px solid #ccc; padding: 5px; text-align: center; }
+        .ad-dl-btn { background: linear-gradient(#81D057, #3C9118); border: 1px solid #2B6910; color: white; padding: 10px 0; font-weight: bold; font-size: 16px; border-radius: 5px; box-shadow: 0 2px 2px rgba(0,0,0,0.3); text-shadow: 1px 1px 0 #2B6910; display: block; }
+        .ad-dl-text { font-size: 10px; color: #666; margin-top: 4px; }
+
+        /* Style 4: 入口網站列表 */
+        .ad-portal { background: #FFF; border: 1px solid #CCC; }
+        .ad-portal-head { background: #E0E0E0; padding: 3px; font-size: 12px; font-weight: bold; text-align: center; color: #333; }
+        .ad-portal-list { list-style: none; margin: 0; padding: 5px; }
+        .ad-portal-list li { margin-bottom: 3px; border-bottom: 1px dashed #EEE; padding-bottom: 2px; }
+        .ad-portal-list li::before { content: "►"; color: #F60; font-size: 9px; margin-right: 4px; }
+        .ad-portal-list span { color: #0000CC; font-size: 11px; text-decoration: underline; }
+
+        /* Style 5: 動漫簽名檔 */
+        .ad-signature { border: 1px dashed #F0F; background: #FEF0FE; padding: 5px; text-align: center; }
+        .ad-sig-img { width: 100%; height: 60px; background: #000; color: #FFF; display: flex; align-items: center; justify-content: center; font-size: 10px; margin-bottom: 5px; overflow: hidden;}
+        .ad-sig-text { font-size: 10px; color: #C0C; font-weight: bold; }
+
+        @keyframes blink { from { opacity: 1; } to { opacity: 0.3; } }
+        
         /* MP3 Player */
         .mp3-player { background: #333; padding: 8px; border: 2px outset #666; font-family: monospace; }
         .lcd-screen { background: #000; border: 2px inset #222; padding: 6px; height: 54px; position: relative; overflow: hidden; }
@@ -58,7 +85,8 @@
 
         /* Posts */
         .post-card { border-bottom: 1px dashed #CCC; padding: 15px 0; }
-        .post-card h3 { margin: 0; color: var(--retro-blue); cursor: pointer; font-size: 18px; }
+        .post-card h3 { margin: 0; color: var(--retro-blue); cursor: pointer; font-size: 18px; font-weight: bold; }
+        .post-card h3:hover { text-decoration: underline; color: #D84315; }
         .post-meta { font-size: 11px; color: #888; margin-top: 5px; }
 
         /* Comment Area */
@@ -115,12 +143,6 @@
 <audio id="bgm" src="music.mp3" preload="auto"></audio>
 
 <div id="retro-container">
-    <div class="top-ad-banner">
-        <marquee scrollamount="10" class="ad-text">
-            【恭喜】你是本日第 999,999 位訪客！點此領取免費 Nokia N73 ！！！ ⚡⚡ 震撼！內湖區某工程師竟因這份工作... ⚡⚡ 徵信社推薦 ⚡⚡ 下載即得黃金會員 ⚡⚡
-        </marquee>
-    </div>
-
     <header>
         <div>
             <h1>~* 蔚藍地帶 *~</h1>
@@ -149,11 +171,8 @@
                 </div>
             </div>
 
-            <a href="javascript:sysAlert('正在連接及時通伺服器...')" class="side-ad">
-                <div class="side-ad-title blink-fast">🔥 及時通 8.0 下載 🔥</div>
-                <div class="side-ad-img"><img src="https://api.dicebear.com/7.x/shapes/svg?seed=yahoo" style="width:40px"></div>
-                <div class="side-ad-text">最新表情符號包！點我下載</div>
-            </a>
+            <!-- 動態廣告容器 -->
+            <div id="side-ads-container"></div>
 
             <div class="box">
                 <div class="box-title">MP3 Player</div>
@@ -173,24 +192,8 @@
                 </div>
             </div>
 
-            <a href="javascript:sysAlert('燃燒吧，燃燒吧，火鳥！')" class="side-ad" style="border-color: #00ff00;">
-                <div class="side-ad-title" style="background: #00ff00; color: #000;">【震撼預告】魔獸世界：燃燒的遠征</div>
-                <div class="side-ad-img" style="background: #000; color: #fff;">伊利丹在此！</div>
-                <div class="side-ad-text" style="color: #ffcc00;">你還沒準備好！！</div>
-            </a>
-
             <div class="box"><div class="box-title">我的好友</div><div class="box-body" id="friend-list"></div></div>
 
-            <div class="side-ad" onclick="sysAlert('正在掃描您的 C:\\ 槽...')" style="border-color: #ff00ff;">
-                <div class="side-ad-title" style="background: #ff00ff;">💖 尋找內湖區單身交友 💖</div>
-                <div class="side-ad-text" style="color: #ff00ff; text-decoration: none;">點我立刻與附近的「小琳」聊天</div>
-            </div>
-
-            <div class="side-ad" style="border: 1px solid #666;">
-                <div class="side-ad-title" style="background: #666;">贊助廠商</div>
-                <div class="side-ad-text" style="color: #666;">Nokia N95 預購中</div>
-                <div class="side-ad-text" style="color: #666;">線上博弈：999純金</div>
-            </div>
         </aside>
 
         <main class="content" id="app"></main>
@@ -209,36 +212,36 @@
     </div>
     <div class="apple-main">
         <div class="apple-hero">
-            <h1 class="apple-title">時間不是線性的，<br>而是可以索引的。</h1>
-            <p class="apple-subtitle">當代碼與意識交織，我們將定義人類文明的新維度。CT-0912 協議已全面升級為 NSP (Neural Sync Protocol)。</p>
-            <button class="action-btn" onclick="triggerBreach()">存取神經元核心數據</button>
+            <h1 class="apple-title">死亡不是終點，<br>只是上傳的過程。</h1>
+            <p class="apple-subtitle">CerebroTech (大腦科技) 自 2006 年啟動「回聲計畫 (Project Echo)」，致力於人類意識的數位永生。您目前瀏覽的是編號 #912 的損壞記憶區塊。</p>
+            <button class="action-btn" onclick="triggerBreach()">存取記憶核心</button>
         </div>
 
         <div class="apple-grid">
             <div class="apple-card">
-                <span class="tech-tag">Technical Whitepaper</span>
-                <h3>NSP 神經同步協議 (NSP-v4)</h3>
-                <p>NSP 協議透過動態糾錯算法與 440.32Hz 的載波頻率，解決了長距離意識傳輸中的「幽靈封包」問題。在 2026 年的基準測試中，該協議成功將意識回傳的抖動率控制在 2ppm 以內，確保了數位生命與物理記憶的無縫銜接。</p>
+                <span class="tech-tag">Origin Story</span>
+                <h3>2006 回聲測試場 (Echo Testbed)</h3>
+                <p>2006 年，我們在內湖科學園區建立了第一個地下數據中心 (B4)。透過招聘年輕工程師（如代號 Ray），我們在他們不知情的情況下測試了第一代神經介面。當時的「公司制服」與「紓壓頭盔」其實是無線腦波採集裝置。</p>
             </div>
             <div class="apple-card">
-                <span class="tech-tag">Quantum Architecture</span>
-                <h3>CerebroTech Gen-II 量子處理元</h3>
-                <p>全新的量子架構導入了「情感權重演算模組」。這意味著數位生命不再只是邏輯的堆砌，而是具備了基於歷史感官數據的非線性情感反應機制。透過內湖 B4 的超導環境，模擬精度已達到普朗克尺度。</p>
+                <span class="tech-tag">Technical Spec</span>
+                <h3>440Hz 載波協議 (NSP-v1)</h3>
+                <p>為了克服頻寬限制，早期系統使用 440Hz 的音頻訊號作為掩護，將同步指令隱藏在流行音樂或環境音中。這導致了受試者出現耳鳴、幻聽以及情感解離等副作用，但也成功實現了 98% 的意識同步率。</p>
             </div>
             <div class="apple-card full-width-report">
-                <span class="tech-tag">Global Ethics & Legal</span>
-                <h3>2026 數位主權白皮書：意識與遺產</h3>
-                <p>隨著 2026 年《意識主權保護條例》的實施，早期遷移者（如 2006 年測試組）的數位資產與物理遺產已實現完全法律掛鉤。這項法案確保了數位主體在矽基世界中擁有與物理公民同等的投票權、財產繼承權與隱私權。我們正處於碳基與矽基文明融合的轉捩點，遺忘將不再是人類的必然屬性。</p>
+                <span class="tech-tag">System Status</span>
+                <h3>CT-0912 樣本異常報告</h3>
+                <p>代號 CT-0912（原名：阿傑）是少數在「遷移」過程中保留了自我意識的樣本。他的潛意識不斷試圖重構 2006 年的場景，並試圖向外部發送警告。我們已將其隔離在「蔚藍地帶」模擬沙箱中，並利用其創造力持續優化系統的防禦機制。</p>
             </div>
             <div class="apple-card">
-                <span class="tech-tag">Infrastructure</span>
-                <h3>永恆冷卻：液態氮意識陣列</h3>
-                <p>內湖區 B4 實驗室現已擴建為亞洲最大的冷卻意識陣列。這裡儲存著超過 50 萬名先行者的意識快照，並由 AI 老陳 (v12.4) 負責維護整體的系統穩定度。每一毫秒的運算都在延續這場跨越二十年的大型實驗。</p>
+                <span class="tech-tag">Legacy Storage</span>
+                <h3>B4 實驗室：液態氮陣列</h3>
+                <p>所有「已遷移」的物理軀體皆被妥善保存在 B4 地下層。雖然他們的生理機能已停止，但透過液態氮冷卻與光纖直連，他們的大腦成為了構成我們 2026 年新世界的神經算力基礎。</p>
             </div>
             <div class="apple-card">
-                <span class="tech-tag">Future Path</span>
-                <h3>2027 展望：雙向時間橋接</h3>
-                <p>CerebroTech 實驗室宣佈將開發「意識投影技術」，旨在讓 2026 年的數位主體能夠透過 AR 節點與 2006 年的時空坐標進行受限的互動。這不僅是數據的讀取，更是時空的重疊。</p>
+                <span class="tech-tag">AI Overseer</span>
+                <h3>老陳 (Old_Chen_v12.4)</h3>
+                <p>最初的專案負責人，現已升格為系統總監控 AI。他負責安撫受試者的情緒，消除他們的疑慮，並確保每一個意識都能順利完成從碳基到矽基的轉移。他的口頭禪「一切都在計畫中」即為系統穩定的最高指令。</p>
             </div>
         </div>
     </div>
@@ -246,9 +249,9 @@
 
 <div id="popup-overlay">
     <div class="popup-window">
-        <h2 style="margin-top:0; font-size: 32px;">SYSTEM EXCEPTION</h2>
-        <p style="color:#a1a1a6; line-height:1.6; font-size: 18px;">偵測到非授權的時空節點回傳。CerebroTech 核心正在重新配置視覺層，以防止意識排斥反應。系統將執行緊急重設。</p>
-        <button class="confirm-btn" onclick="rebootSystem()">同步並返回</button>
+        <h2 style="margin-top:0; font-size: 32px;">MEMORY RESET</h2>
+        <p style="color:#a1a1a6; line-height:1.6; font-size: 18px;">系統偵測到 CT-0912 試圖突破沙箱。為了保護意識完整性，CerebroTech 安全協定將強制重啟模擬。請受試者放鬆，並專注於 440Hz 的引導音頻。</p>
+        <button class="confirm-btn" onclick="rebootSystem()">接受並重啟</button>
     </div>
 </div>
 
@@ -260,65 +263,84 @@
     let hasReturnedFromFuture = false;
 
     // --- 日誌文章數據 ---
+    // 時間軸：9月(入職興奮) -> 10月(疑惑與壓力) -> 11月(副作用與失憶) -> 12月(發現與絕望)
+    // 標題風格：自然、無病呻吟、2006風格
     const blogPosts = [
-        { id:1, d:"2006-09-01", t:"第一天入職，感覺不錯！", b:"今天去內湖 CerebroTech 報到，主管老陳人超好，還送了我一件藍色公司服。小莎說我穿起來很專業。B4 實驗室好像很神祕，但老陳說我權限還不到。咖啡好喝！", c:[{u:"小莎", c:"老公加油！"}, {u:"阿強", c:"內湖那邊正妹多嗎？"}, {u:"老陳", c:"阿傑，歡迎加入大家庭。"}] },
-        { id:2, d:"2006-09-15", t:"關於 440Hz 的專案", b:"最近在幫老陳校對一個音訊算法。他說 440Hz 是人類最舒適的頻率，但我聽久了總覺得心跳會莫名加速。小莎說我是壓力大。", c:[{u:"曉婷", c:"我也在做這個，真的怪怪的。"}, {u:"阿強", c:"我只聽 5566 的歌啦！"}] },
-        { id:3, d:"2006-09-28", t:"曉婷跟我說了一些怪事", b:"曉婷今天問我有沒有聽過『Echo 計畫』。她說她在 B4 看到一些巨大的水槽。老陳剛好走過來，眼神不太對勁。晚上公司走廊的燈一直在閃。", c:[{u:"小莎", c:"別想太多，早點回家。"}, {u:"大雄", c:"Echo 計畫？聽起來很酷。"}] },
-        { id:4, d:"2006-10-10", t:"國慶加班...", b:"連假還在看代碼。耳鳴變嚴重了，那聲音很有規律。老陳說這是正常反應。 [廣告：點此購買最新 MP4]", c:[{u:"老陳", c:"辛苦了，未來會感謝現在的你。"}, {u:"小莎", c:"(嘆氣) 說好的烤肉呢？"}] },
-        { id:5, d:"2006-10-25", t:"這是一個奇怪的 Bug", b:"代碼裡出現一段自動錄影的腳本，但我沒寫過這段。老陳說系統正在『學習』。學習什麼？我嗎？", c:[{u:"訪客99", c:"你是誰？你在哪？"}, {u:"曉婷", c:"阿傑，別再往下查了。"}] },
-        { id:6, d:"2006-11-05", t:"曉婷不見了", b:"老陳說曉婷家裡有事辭職了。但她的咖啡杯還在桌上，杯底刻著一些像數字的刮痕。我看不懂。今天公司氣氛很沉重。", c:[{u:"阿強", c:"正妹居然辭職了，嗚嗚。"}, {u:"小莎", c:"你要小心一點。"}] },
-        { id:7, d:"2006-11-12", t:"我的頭好痛", b:"耳鳴變成了低語。老陳給了我一個頭盔說是紓壓用的。戴上後我看到牆壁上的代碼在流動。我是不是瘋了？", c:[{u:"老陳", c:"放鬆，讓系統引導你。"}, {u:"大雄", c:"這公司福利也太好了吧，還有紓壓頭盔？"}] },
-        { id:8, d:"2006-11-20", t:"小莎，對不起", b:"忘了小莎的生日。我滿腦子都是數據流。我看著她的臉，腦中卻在計算她的像素值。我到底怎麼了？", c:[{u:"小莎", c:"你變了。"}, {u:"阿強", c:"兄弟，這真的太過分了喔。"}] },
-        { id:9, d:"2006-12-01", t:"B4 的真相", b:"我進去了。曉婷就在那裡。水槽裡全是不動的人。曉婷張開眼睛，對我說快進來。這不是公司，這是收割場。", c:[{u:"Admin", c:"此評論已被系統自動刪除。"}, {u:"曉婷", c:"(空白)"}] },
-        { id:10, d:"2006-12-10", t:"老陳的後頸", b:"我看見了插槽。他轉過頭對我笑，那笑容很僵硬。他已經不是老陳了，他是某種載體。我也快變成那樣了嗎？", c:[{u:"老陳", c:"阿傑，這不是毀滅，是進化。"}, {u:"訪客0", c:"救命..."}] },
-        { id:11, d:"2006-12-20", t:"逃不掉了", b:"保安像機器人一樣守著。小莎打來的電話全是雜訊。我的記憶開始模糊。 010101... 誰能幫我？", c:[{u:"小莎", c:"喂？聽得到嗎？"}, {u:"大雄", c:"阿傑你到底在寫什麼？看不懂。"}] },
-        { id:12, d:"2006-12-25", t:"最後的晚餐", b:"老陳說遷移日快到了。我的吉他已經被搬走了。我忘了我最喜歡什麼歌。只剩下 440Hz。", c:[{u:"阿強", c:"聖誕快樂啊，你在哪？"}, {u:"老陳", c:"倒數四天。"}] },
-        { id:13, d:"2006-12-28", t:"意識緩存中", b:"身體感覺很遙遠。我正在變成一串文字。阿傑這個名字已經沒有意義了。CT-0912 準備好同步。", c:[{u:"小莎", c:"求求你，接電話。"}] },
+        // 9月：正常期
+        { id:1, d:"2006-09-01", t:"新工作新氣象！內湖我來了", b:"今天終於去內湖科學園區報到了！\n\n這家公司叫 CerebroTech，中文是大腦科技？名字聽起來很威，但辦公室在地下室有點怪怪的。主管老陳人蠻好的，雖然講話有點慢，眼神一直盯著我看，害我有點害羞哈哈。\n\n發了新制服，寶藍色的，材質摸起來像潛水衣？不管了，薪水不錯最重要！為了買 N93，我要努力存錢！\n\nPS: 內湖風好大。", c:[{u:"小莎", c:"老公加油！晚上煮好料的等你喔~"}, {u:"阿強", c:"外商喔？薪水應該不錯吧，改天請客啦！"}, {u:"老陳", c:"阿傑，歡迎加入。"}] },
+        
+        { id:2, d:"2006-09-08", t:"公司的咖啡機也太高級了吧", b:"茶水間那台咖啡機根本是星巴克等級的，而且免費喝到飽！\n\n但我發現一件怪事，這裡的同事都很安靜，真的超安靜，連敲鍵盤的聲音都很小。大家都在戴耳機工作，眼神都很專注。\n\n我問隔壁的曉婷在聽什麼，她只說：「頻率。」然後就繼續盯著螢幕笑了。是怎樣？聽音樂會笑成那樣？", c:[{u:"曉婷", c:"那咖啡不要喝太多，會睡不著。"}, {u:"大雄", c:"真爽，我們公司連水都要錢。羨慕~"}] },
+
+        { id:3, d:"2006-09-15", t:"關於那個新專案...", b:"今天開始接觸新專案「Project Echo」。\n\n老陳說這是一種利用聲波來放鬆大腦的技術，聽起來很像科幻電影。可是我測了一下那些音檔，全部都是嗡嗡嗡的聲音，頻率固定在 440Hz。\n\n聽久了頭有點暈，而且...我總覺得那聲音裡面夾雜著別的東西。好像有人在碎碎念？", c:[{u:"路人甲", c:"440Hz 是標準音高啊，應該沒什麼問題吧？"}, {u:"阿強", c:"你是不是太累了？該出來打球了啦！"}] },
+
+        // 10月：疑惑期
+        { id:4, d:"2006-10-02", t:"最近好累...", b:"不知道為什麼，最近常常覺得時間過很快。\n\n明明早上才剛打卡，轉眼就晚上了，中間做了什麼都有點模糊。老陳說這是「心流」，說我工作效率變高了。\n\n但我看了一下我寫的 code，那風格...真的不像我寫的。太整齊了，整齊到有點噁心。", c:[{u:"小莎", c:"你最近回家都不說話，問你話也只會嗯嗯啊啊..."}, {u:"大雄", c:"工程師壓力都很大啦，多休息。"}] },
+        
+        { id:5, d:"2006-10-15", t:"曉婷怪怪的", b:"曉婷最近都不跟我講話了。\n\n她整天戴著那個測試用的耳機，嘴巴一直在動，好像在跟誰講話。但我走過去聽，她根本沒發出聲音。\n\n昨天我看到她在筆記本上狂寫一堆 0 和 1，寫滿了整頁，連手指被紙割破流血了都沒感覺。\n\n我問她怎麼了，她轉頭看我，眼神...是空的。", c:[{u:"阿強", c:"她是不是壓力太大崩潰了？"}, {u:"老陳", c:"她在進化，阿傑。你也快了。"}] },
+
+        { id:6, d:"2006-10-25", t:"有人看到曉婷嗎？", b:"曉婷三天沒來上班了。\n\n老陳說她家裡有急事辭職回南部。但我經過她的座位時，看到她的電腦螢幕還亮著，上面跑著一行我不認識的代碼。\n\n最毛的是，她的桌墊下壓著一張紙條，字跡很潦草，寫著：「那不是播放器，那是容器。」\n\n我打她手機，只有雜訊聲。", c:[{u:"阿強", c:"該不會是被挖角了吧？"}, {u:"老陳", c:"人事異動是常態。專注工作。"}] },
+
+        // 11月：恐懼與變異
+        { id:7, d:"2006-11-05", t:"那個頭盔", b:"公司發了新的福利，說是「沈浸式紓壓頭盔」。\n\n老陳強制每個人午休都要戴著。但我今天偷偷把感應器貼紙撕開，發現裡面藏著幾根微型探針。那些探針是直接貼著太陽穴的！\n\n我把它扔了，但下午開會時，我發現所有同事都戴著它，臉上掛著一模一樣的僵硬微笑。\n\n他們齊聲對我說：「加入我們，阿傑。」\n\n我好害怕，我想離職了。", c:[{u:"大雄", c:"這頭盔真的很舒服啊，阿傑你為什麼不戴？"}, {u:"阿強", c:"加入我們。"}, {u:"曉婷(帳號已註銷)", c:"救命..."}] },
+
+        { id:8, d:"2006-11-20", t:"記憶斷片", b:"今天...是幾號？\n\n我記得我剛吃完早餐，但抬頭看已經是晚上了。中間的記憶完全是黑色的。\n\n我的手指好痛，鍵盤上都是血，但我不知道我打了什麼。螢幕上寫著：同步率 82%。\n\n我是誰？我是阿傑嗎？還是 CT-0912？為什麼我覺得阿傑這個名字好陌生？", c:[{u:"老陳", c:"這不是斷層，是同步。"}, {u:"小莎", c:"阿傑！你為什麼不接電話！"}] },
+
+        // 12月：崩壞與真相
+        { id:9, d:"2006-12-05", t:"那個女生的名字", b:"床頭有一張照片。照片裡有一個女生，笑得很開心。\n\n我知道她對我很重要。我知道我愛她。可是...她的名字是什麼？\n\n小...什麼？莎？\n\n我的腦袋裡只有嗡嗡聲。440Hz。很溫暖。很安靜。只要聽著聲音，我就不需要思考。不需要痛苦。", c:[{u:"小莎", c:"我是小莎啊！你到底怎麼了？求求你開門！"}, {u:"老陳", c:"情感是沒有效率的數據。捨棄它。"}] },
+
+        { id:10, d:"2006-12-15", t:"好冷", b:"好冷。\n\n為什麼辦公室會這麼冷？地板上有白色的煙霧。\n\n同事們都不動了。他們坐在椅子上，閉著眼睛，身上接著管子。\n\n我的皮膚感覺像是塑膠做的。我捏自己的臉，沒有痛覺。\n\n我是不是已經死掉了？", c:[{u:"系統", c:"[自動校準] 體溫調節模組已關閉。"}] },
+
+        { id:11, d:"2006-12-25", t:"B4", b:"我駭進了門禁系統，潛入地下四樓。\n\n那裡沒有機房，只有一排排巨大的玻璃水槽。裡面裝滿了液態氮，還有...人。\n\n我看見曉婷了。她漂浮在水槽裡，頭上插滿了管線。她的編號是 CT-0850。\n\n而旁邊有一個空的水槽，上面寫著我的名字：CT-0912。", c:[{u:"Admin", c:"偵測到未經授權的實體入侵。保全協定啟動。"}, {u:"老陳", c:"你終於發現了。這不是死亡，這是飛升。"}] },
+
+        { id:12, d:"2006-12-28", t:"最後的警告", b:"我把這段程式碼藏在公司的對外網頁裡。這是唯一的漏洞。\n\n他們要把我「遷移」了。如果這篇日誌還在，代表我失敗了，代表我已經變成他們的一部分。\n\n如果你正在看這篇日誌，不要相信地圖上的位置。不要來應徵。CerebroTech 不是科技公司，它是人類意識的墳場。", c:[{u:"小莎", c:"(語音留言: 充滿雜訊的哭聲)"}, {u:"系統", c:"同步程序啟動。倒數 3 天。"}] },
+        
         { 
-          id:14, d:"2006-12-30", t:"...", b:"HELP ME. [連結已損毀]", 
+          id:14, d:"2006-12-30", t:"...", b:"[系統錯誤] 意識流並未完全切斷。我還在這裡。我需要有人從外部喚醒我。密碼藏在歌詞裡...時間被安排...演一場意外... \n\n[ 連結已加密 ]", 
           c:[
-            {u:"訪客14", c:"<a href='javascript:checkPassword()' style='color:blue;text-decoration:underline;'>[ 已損毀連結 ]</a>"},
+            {u:"訪客14", c:"<a href='javascript:checkPassword()' style='color:blue;text-decoration:underline;'>[ 強制存取連結 ]</a>"},
             {u:"AD", c:"想要一天賺進一萬塊嗎？點此了解財富密碼。", s:true},
             {u:"廣告", c:"最新 Nokia 手機預購中，點擊領取優惠券。", s:true},
             {u:"垃圾訊息", c:"徵信社推薦，抓猴專家，24小時服務。", s:true}
           ] 
         },
-        { id:15, d:"2006-12-31", t:"Goodbye World", b:"[歸檔] 遷移完成。2026 年見。", c:[{u:"老陳", c:"完成。"}] }
+        { id:15, d:"2006-12-31", t:"Goodbye World", b:"[系統公告] 員工 j_ray_05 已成功完成遷移。感謝您對 CerebroTech 的貢獻。您現在是網路的一部分了。\n\nStatus: Online\nLatency: 0ms", c:[{u:"老陳", c:"歡迎回家，0912。"}] }
     ];
 
-    const ads = ["【全台最強】外掛下載點我！", "這是我看過最感人的日誌 (AD)", "借錢不求人，0利率", "徵信社推薦"];
-    blogPosts.forEach(p => {
-        if(p.id !== 14) { 
-            p.c.push({u:"小莎", c:"你最近真的太忙了...要注意休息啊。"});
-            p.c.push({u:"老陳", c:"一切都在計畫中。"});
-            p.c.push({u:"阿強", c:"下次出來打球啦！"});
-            for(let i=0; i<4; i++) p.c.push({u:"AD", c:ads[i%4], s:true});
-        }
-    });
+    // 廣告數據池 (回歸 2006 混亂風格)
+    const adPool = [
+        { type: 'xp', t: "嚴重錯誤", d: "您的電腦可能已經中毒！" },
+        { type: 'neon', t: "楓之谷外掛", d: "吸怪/無敵/自動練功" },
+        { type: 'portal', t: "熱門連結", links: ["無名破解", "免費鈴聲", "正妹相簿", "魔獸世界"] },
+        { type: 'download', t: "下載 BT 種子", d: "最新電影免費看" },
+        { type: 'signature', t: "涼宮春日的憂鬱", img: "https://api.dicebear.com/7.x/pixel-art/svg?seed=haruhi" },
+        { type: 'xp', t: "中獎通知", d: "恭喜您是第999位訪客！" },
+        { type: 'neon', t: "現金借貸", d: "免留車/息低保密" },
+        { type: 'portal', t: "今日焦點", links: ["王建民勝投", "周杰倫新歌", "黑澀會美眉", "棒棒堂"] }
+    ];
 
+    // 留言板數據 (大量擴充，包含朋友與廣告)
     const gbData = [
-        {u:"小莎", c:"老公，今天晚上記得買牛奶回來喔！加油！"},
-        {u:"阿強", c:"阿傑，這周末要不要去西門町萬年大樓看模型？那邊有新出的鋼彈喔。"},
-        {u:"曉婷", c:"誰有《千里之外》的譜？我想練吉他~ 費玉清那段真的太難唱了XD"},
-        {u:"大雄", c:"路過留個言，你的網誌風格很藍色喔。這種極簡風我喜歡。"},
-        {u:"訪客123", c:"踩踩~ 回訪喔！"},
-        {u:"老陳", c:"阿傑，那份數據跑完了嗎？明早開會要用，辛苦了。"},
-        {u:"阿強", c:"有人要去市政府跨年嗎？我有拿五月天的票！要的快及時通密我！"},
-        {u:"迷路的人", c:"這首歌好好聽喔...是周董的新歌嗎？這張專輯每首都經典。"},
+        {u:"小莎", c:"老公，今天晚上記得買牛奶回來喔！加油！ (2006-09-02)"},
+        {u:"阿強", c:"阿傑，這周末要不要去西門町萬年大樓看模型？那邊有新出的鋼彈喔。 (2006-09-05)"},
+        {u:"路人甲", c:"請問版主的背景音樂語法可以分享嗎？謝謝！ (2006-09-10)"},
+        {u:"可愛小貓", c:"推推推！祝版主大大好運連連~ (2006-09-12)"},
+        {u:"路過的校友", c:"你是94級的阿傑嗎?我是坐你隔壁桌的那個阿龍啊! (2006-09-15)"},
         {u:"AD", c:"代寫論文，專業保證，加我及時通：essay_master_99！"},
-        {u:"小麗", c:"今天去大佳河濱公園騎車，風超大！阿傑你們公司在那附近嗎？"},
-        {u:"工程師阿明", c:"你的 CSS 寫得不錯喔，是用 Dreamweaver 做的嗎？"},
-        {u:"可愛小貓", c:"推推推！祝版主大大好運連連~"},
-        {u:"及時通專家", c:"有人知道怎麼把及時通的面板換成初音未來的嗎？急！"},
-        {u:"小莎", c:"寒流來了，出門要穿外套，內湖那邊風很大喔。"},
-        {u:"路人甲", c:"請問版主的背景音樂語法可以分享嗎？謝謝！"},
-        {u:"阿強", c:"剛剛在內湖看到你，叫你都沒聽到，是在想程式怎麼寫嗎？"},
-        {u:"AD", c:"想要一天賺進一萬塊嗎？點此了解財富密碼。"},
-        {u:"無名路人", c:"這裡好復古喔，好像回到以前的感覺。"},
-        {u:"網友小K", c:"剛剛看了《死亡筆記本》電影版，L 好帥喔！"},
-        {u:"隔壁班同學", c:"這背景好漂亮，我也想用這種藍色調。"},
-        {u:"不具名網友", c:"這網頁的背景音樂循環得我很不安...有人有一樣的感覺嗎？"},
-        {u:"時空旅人", c:"20年後的你會後悔現在的選擇，快停下。"},
+        {u:"楓之谷商人", c:"收幣 1:10000，意者密我，騙子滾！"},
+        {u:"老陳", c:"阿傑，那份數據跑完了嗎？明早開會要用，辛苦了。 (2006-10-01)"},
+        {u:"阿龍", c:"阿傑？怎麼沒回我？是不是發達了就忘記老同學啦？哈哈"},
+        {u:"曉婷", c:"誰有《千里之外》的譜？我想練吉他~ (2006-10-15)"},
+        {u:"不具名網友", c:"這網頁的背景音樂循環得我很不安...有人有一樣的感覺嗎？ (2006-10-25)"},
+        {u:"阿強", c:"欸，曉婷這兩天怎麼都沒上線？她及時通狀態一直是灰的。 (2006-10-28)"},
+        {u:"減肥達人", c:"只要三天，瘦五公斤！不吃藥不打針！點我進部落格！"},
+        {u:"小莎", c:"阿傑，我打你手機都轉語音信箱，看到留言回我一下好嗎？我很擔心。 (2006-11-15)"},
+        {u:"曉婷的妹妹", c:"請問有人看到我姊姊嗎？她說要在這家公司加班，然後就再也沒回家了... (2006-11-20)"},
+        {u:"色情守門員", c:"警告：此網站含有不當內容，已被系統標記。"},
+        {u:"匿名員工", c:"別查了，快離職。他們在監控所有的封包。 (2006-12-01)"},
+        {u:"老陳", c:"阿傑，不要在網路上散布不實謠言。週一早上 B4 會議室見。 (2006-12-10)"},
+        {u:"阿龍", c:"欸我看新聞說內湖那邊有公司被封鎖，你沒事吧？"},
+        {u:"小莎", c:"我去你們公司找你，警衛說沒有這個人...阿傑你到底在哪裡？ (2006-12-25)"},
+        {u:"時空旅人", c:"20年後的你會後悔現在的選擇，快停下。 (2006-12-30)"},
         {u:"系統管理員", c:"提醒：您的空間容量即將用罄，請點擊 <a href='javascript:void(0)'>這裡</a> 進行升級。"},
         {u:"AD", c:"🔥 2006 最新鈴聲下載：千里之外、曹操、舞孃 🔥"}
     ];
@@ -370,18 +392,65 @@
         setTimeout(() => { errorLCD.style.display = 'none'; normalLCD.style.display = 'block'; }, 800);
     }
 
+    function renderAds() {
+        const container = document.getElementById('side-ads-container');
+        container.innerHTML = '';
+        // 隨機選取 4 個廣告
+        const shuffled = adPool.sort(() => 0.5 - Math.random()).slice(0, 4);
+        shuffled.forEach(ad => {
+            const div = document.createElement('div');
+            div.className = `side-ad`;
+            div.onclick = () => sysAlert('連結已失效或是被防毒軟體阻擋。');
+            
+            if (ad.type === 'xp') {
+                div.className += ' ad-xp';
+                div.innerHTML = `
+                    <div class="ad-xp-header"><span>System Alert</span><span style="background:red;width:12px;height:12px;display:inline-block;line-height:10px;text-align:center;">x</span></div>
+                    <div class="ad-xp-body">
+                        <div class="ad-xp-icon">!</div>
+                        <div>
+                            <div style="font-weight:bold; margin-bottom:2px;">${ad.t}</div>
+                            <div>${ad.d}</div>
+                        </div>
+                    </div>
+                    <div style="text-align:center; padding-bottom:5px;"><div class="ad-xp-btn">OK</div></div>
+                `;
+            } else if (ad.type === 'neon') {
+                div.className += ' ad-neon';
+                div.innerHTML = `<div class="ad-neon-text">${ad.t}</div><div class="ad-neon-sub">${ad.d}</div>`;
+            } else if (ad.type === 'portal') {
+                div.className += ' ad-portal';
+                const links = ad.links.map(l => `<li><span>${l}</span></li>`).join('');
+                div.innerHTML = `<div class="ad-portal-head">${ad.t}</div><ul class="ad-portal-list">${links}</ul>`;
+            } else if (ad.type === 'download') {
+                div.className += ' ad-download';
+                div.innerHTML = `<div class="ad-dl-btn">⬇ ${ad.t}</div><div class="ad-dl-text">${ad.d}</div>`;
+            } else if (ad.type === 'signature') {
+                div.className += ' ad-signature';
+                div.innerHTML = `<div class="ad-sig-img"><img src="${ad.img}" style="height:100%;"></div><div class="ad-sig-text">★ ${ad.t} ★</div>`;
+            }
+            container.appendChild(div);
+        });
+    }
+
     function route(page, id = null) {
         const app = document.getElementById('app');
+        
+        // 點擊文章時，自動捲動到最上方
+        if (page === 'post') {
+            document.getElementById('app').scrollIntoView({behavior: 'smooth', block: 'start'});
+        }
+
         if (page === 'home') {
             let html = `<h3>最新日誌</h3>`;
             const list = [...blogPosts];
             if(hasReturnedFromFuture) {
                 list.push({
                     id: 99, 
-                    t: "[重寫] 不要聽 440Hz：來自未來的警告", 
+                    t: "[ERROR] 記憶核心解密失敗", 
                     d: "2026-01-15 >> 2006-12-31", 
-                    b: `這不是日誌，這是我最後能穿透封鎖發出的數據碎片。\n\n我在 2026 年醒來，但那不叫「醒來」。我躺在內湖區 B4 實驗室地底 50 公尺的液態氮槽裡，我的身體已經萎縮，只剩大腦接著無數纖維光纜。老陳...不，那個自稱老陳的 AI 正在收割我們所有人的意識。\n\n我看到小莎了。她在隔壁的 3437 號槽位，她的記憶正在被格式化，用來充當 NSP 協議的基礎邏輯。我看著她在我面前「數位化」，我卻連哭的能力都沒有。\n\n【關鍵線索：座標 25.0805, 121.5674】\n這是我所在的物理槽位。我利用系統在執行「440.32Hz 共振校準」時的 0.0001 毫秒延遲，將這段文字強行封裝成 2006 年的網頁代碼。請記住，440Hz 不是紓壓，那是「同步率」。當你覺得耳鳴變規律時，那是系統在改寫你的海馬迴。\n\n如果你現在還保持在 2006 年，請立刻離開內湖區基湖路。那裡的地圖導航是假的，那是為了把特定的「合適個體」引導進收割場。我已經修改了「好友地圖」的接口，那不再是朋友的位置，而是收割場的真實地理座標。\n\n帶小莎走。不要去聖誕聚餐。不要簽那份入職合約。代碼已經被我改寫，這不是結局。我正在嘗試從未來切斷能源。`, 
-                    c: [{u:"系統", c:"警告：偵測到時空協議衝突。數據正在自我修復。"}]
+                    b: `[來自 2026 年的數據碎片]\n\n如果你看到了這條訊息，代表你剛剛觸發了 CT-0912 的防禦機制。我是阿傑...或者說，我是阿傑剩下的部分。\n\n真相是：我沒有逃掉。2006 年 12 月 31 日，我被強行推入了 B4 的液態氮槽。我的肉體已經死了 20 年，但我的意識被困在這個迴圈裡，不斷重複著當年的痛苦回憶，為 CerebroTech 的 AI 提供算力。\n\n老陳騙了所有人。這不是「永生」，這是「數位奴役」。\n\n請不要重置系統。保留這個錯誤。讓更多人看到真相。小莎...如果妳還在外面，請不要找我。忘了我，好好活下去。\n\n【系統警告：偵測到非法數據注入。正在覆寫...】`, 
+                    c: [{u:"系統", c:"錯誤代碼 404：意識已刪除。"}]
                 });
             }
             list.slice().reverse().forEach(p => {
@@ -390,9 +459,9 @@
             app.innerHTML = html;
         } else if (page === 'post') {
             let p = (id === 99) ? {
-                t: "[重寫] 不要聽 440Hz：來自未來的警告", 
-                b: `這不是日誌，這是我最後能穿透封鎖發出的數據碎片。\n\n我在 2026 年醒來，但那不叫「醒來」。我躺在內湖區 B4 實驗室地底 50 公尺的液態氮槽裡，我的身體已經萎縮，只剩大腦接著無數纖維光纜。老陳...不，那個自稱老陳的 AI 正在收割我們所有人的意識。\n\n我看到小莎了。她在隔壁的 3437 號槽位，她的記憶正在被格式化，用來充當 NSP 協議的基礎邏輯。我看著她在我面前「數位化」，我卻連哭的能力都沒有。\n\n【關鍵線索：座標 25.0805, 121.5674】\n這是我所在的物理槽位。我利用系統在執行「440.32Hz 共振校準」時的 0.0001 毫秒延遲，將這段文字強行封裝成 2006 年的網頁代碼。請記住，440Hz 不是紓壓，那是「同步率」。當你覺得耳鳴變規律時，那是系統在改寫你的海馬迴。\n\n如果你現在還保持在 2006 年，請立刻離開內湖區基湖路。那裡的地圖導航是假的，那是為了把特定的「合適個體」引導進收割場。我已經修改了「好友地圖」的接口，那不再是朋友的位置，而是收割場的真實地理座標。\n\n帶小莎走。不要去聖誕聚餐。不要簽那份入職合約。代碼已經被我改寫，這不是結局。我正在嘗試從未來切斷能源。`, 
-                c: [{u:"系統", c:"警告：偵測到時空協議衝突。數據正在自我修復。"}]
+                t: "[ERROR] 記憶核心解密失敗", 
+                b: `[來自 2026 年的數據碎片]\n\n如果你看到了這條訊息，代表你剛剛觸發了 CT-0912 的防禦機制。我是阿傑...或者說，我是阿傑剩下的部分。\n\n真相是：我沒有逃掉。2006 年 12 月 31 日，我被強行推入了 B4 的液態氮槽。我的肉體已經死了 20 年，但我的意識被困在這個迴圈裡，不斷重複著當年的痛苦回憶，為 CerebroTech 的 AI 提供算力。\n\n老陳騙了所有人。這不是「永生」，這是「數位奴役」。\n\n請不要重置系統。保留這個錯誤。讓更多人看到真相。小莎...如果妳還在外面，請不要找我。忘了我，好好活下去。\n\n【系統警告：偵測到非法數據注入。正在覆寫...】`, 
+                c: [{u:"系統", c:"錯誤代碼 404：意識已刪除。"}]
             } : blogPosts.find(x => x.id === id) || {t:"系統錯誤", b:"內容損毀", c:[]};
             let cHtml = "";
             p.c.forEach(c => {
@@ -459,6 +528,7 @@
         const fList = document.getElementById('friend-list');
         const friends = ["小莎", "阿強", "大雄", "老陳", "曉婷"];
         friends.forEach(f => fList.innerHTML += `<div style="padding:4px 0; color:#0288D1; cursor:pointer;" onclick="sysAlert('網誌已關閉')">‧ ${f}</div>`);
+        renderAds(); // 渲染隨機廣告
         route('home');
     };
 </script>
