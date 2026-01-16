@@ -275,8 +275,23 @@
             .action-btn { width: 100%; padding: 16px; font-size: 18px; }
             .popup-window { width: 90%; padding: 30px; margin: 0 20px; }
             
-            #msn-window { width: 100%; right: 0; left: 0; bottom: 0; border-radius: 8px 8px 0 0; }
-        }
+/* 手機版 MSN 視窗設定 */
+            #msn-window { 
+                width: 100%; 
+                right: 0; 
+                left: 0; 
+                bottom: 0; 
+                border-radius: 8px 8px 0 0; /* 上方圓角，下方直角 */
+                height: 400px; /* 展開時的高度 */
+                transform: translateY(0); /* 確保位置正確 */
+            }
+            
+            /* 修正縮小狀態，讓它只露出標題列 */
+            #msn-window.minimized {
+                height: 32px; /* 標題列高度 */
+                width: 100%;
+                bottom: 0;
+            }        }
 
         /* --- 廣告與組件樣式 --- */
         .side-ad { margin-bottom: 20px; cursor: pointer; display: block; overflow: hidden; position: relative; font-family: "Arial", sans-serif; transition: transform 0.1s; }
@@ -531,24 +546,101 @@
 </div>
 
 <script>
-    // --- YouTube API 初始化 ---
+ // --- YouTube API 初始化 ---
     var player;
     function onYouTubeIframeAPIReady() {
         player = new YT.Player('yt-player', {
             height: '0',
             width: '0',
-            videoId: 'tn1uKa5ZyA8', // 440Hz 音頻
+            videoId: 'tn1uKa5ZyA8', // 您指定的 440Hz 影片 ID
             playerVars: {
-                'start': 3, // 從第3秒開始
-                'playsinline': 1
+                'playsinline': 1,
+                'controls': 0, // 不顯示控制列
+                'loop': 1      // 循環播放
             },
             events: {
                 'onReady': onPlayerReady
             }
         });
     }
+
     function onPlayerReady(event) {
-        // Player is ready
+        // 準備就緒，什麼都不做，等待使用者按下播放鍵
+    }
+
+    // --- 音樂播放控制 ---
+    function playMusic() {
+        // 判斷當前是否處於「駭入/監視器」狀態
+        if (isHacked) {
+             // === 狀態：已駭入 (播放 YouTube) ===
+             
+             // 1. 如果本地音樂正在放，先暫停
+             if (audio && !audio.paused) {
+                 audio.pause();
+             }
+
+             // 2. 播放 YouTube 聲音
+             if (player && player.playVideo) {
+                 player.playVideo();
+                 
+                 // 3. 更改播放器螢幕顯示
+                 normalLCD.innerHTML = `[RECEIVING]<br><marquee scrollamount="5" style="width:180px; color:#F00;">WARNING: 440HZ SIGNAL DETECTED...</marquee>`;
+                 
+                 // 4. (劇情觸發) 3秒後解鎖門禁
+                 setTimeout(() => {
+                     const lockStatus = document.getElementById('cam-lock-status');
+                     // 確保只觸發一次解鎖
+                     if(lockStatus && !lockStatus.classList.contains('cam-unlocked')) {
+                         lockStatus.innerText = "[🔓 UNLOCKED]";
+                         lockStatus.classList.add('cam-unlocked');
+                         sysAlert("系統提示：偵測到 440Hz 共振音頻。\nB4 安全門禁已解除。");
+                         
+                         // 啟動超載劇本
+                         setTimeout(triggerOverloadScenario, 2000);
+                     }
+                 }, 3000); 
+             }
+        } else {
+            // === 狀態：正常 (播放本地 MP3) ===
+            
+            // 1. 確保 YouTube 暫停
+            if (player && player.pauseVideo) {
+                player.pauseVideo();
+            }
+
+            // 2. 播放本地 MP3
+            triggerFault(); // 閃爍特效
+            audio.loop = false;
+            
+            audio.play().then(() => {
+                audio.currentTime = 0;
+                audio.ontimeupdate = () => {
+                    normalLCD.innerHTML = `[PLAYING]<br><marquee scrollamount="2" style="width:180px;">周杰倫 - 千里之外.mp3</marquee>`;
+                    let duration = audio.duration || 240;
+                    pFill.style.width = (audio.currentTime / duration * 100) + "%";
+                };
+                audio.onended = () => { stopMusic(); };
+            }).catch((e) => {
+                console.error("Autoplay failed:", e);
+                alert("播放失敗，請檢查瀏覽器設定");
+            });
+        }
+    }
+    
+    function pauseMusic() { 
+        if(audio) audio.pause(); 
+        if(player && player.pauseVideo) player.pauseVideo();
+    }
+    
+    function stopMusic() { 
+        if(audio) {
+            audio.pause(); 
+            audio.currentTime = 0; 
+        }
+        if(player && player.stopVideo) player.stopVideo();
+        
+        if(pFill) pFill.style.width = "0%"; 
+        if(normalLCD) normalLCD.innerHTML = "[READY]<br>..."; 
     }
 
     const audio = document.getElementById('bgm');
