@@ -381,7 +381,111 @@
         @keyframes pulse-ring { from { transform: scale(0.1); opacity: 1; } to { transform: scale(3); opacity: 0; } }
 
         .glitch-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 99999; display: none; }
-    </style>
+    /* --- 7.0版：修正漂浮與互動 (Fixed Float & Drag) --- */
+        
+        /* 1. 基礎遮罩 (極淡背景) */
+        #ph-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.2); 
+            backdrop-filter: blur(2px);
+            z-index: 15000; display: none;
+            pointer-events: none; /* 讓點擊能穿透遮罩 */
+        }
+
+        /* 2. 漂浮碎片 (可拖曳) */
+        .data-fragment {
+            position: fixed !important;
+            z-index: 20000 !important; /* 保證在最上層 */
+            cursor: grab;
+            user-select: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+            background-color: rgba(255,255,255,0.95);
+            /* 預設有平滑移動效果 */
+            transition: top 3s ease-in-out, left 3s ease-in-out, transform 3s ease-in-out;
+            touch-action: none;
+        }
+        /* 拖曳中：移除過渡，變更游標，層級拉高 */
+        .data-fragment.dragging {
+            transition: none !important; 
+            cursor: grabbing !important;
+            z-index: 21000 !important;
+            opacity: 0.9;
+            box-shadow: 0 0 20px #00FFFF !important;
+        }
+
+        /* 3. 隱藏在底層的按鈕 (關鍵道具) */
+        #hidden-deep-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 16000; /* 在碎片(20000)之下 */
+            display: none; 
+            pointer-events: auto; /* 允許點擊按鈕 */
+        }
+        #deep-reset-btn {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 100px; height: 100px; border-radius: 50%;
+            background: #000; border: 2px dashed #F00;
+            box-shadow: 0 0 30px #F00;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            animation: pulse-red 2s infinite;
+        }
+        #deep-reset-btn::after { content: "RESET"; color: #F00; font-family: monospace; font-weight:bold;}
+
+        /* 4. 正在說話的視窗 (Override) */
+        .speaking-window {
+            z-index: 25000 !important;
+            outline: 3px solid #00FFFF !important; 
+            box-shadow: 0 0 60px rgba(0, 255, 255, 0.9) !important;
+            transform: translate(-50%, -50%) scale(1.1) !important; /* 強制置中 */
+            top: 50% !important; left: 50% !important;
+            background: #000 !important; color: #00FFFF !important;
+            cursor: pointer !important;
+            display: flex !important; flex-direction: column !important;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+        }
+        .speaking-window.sys-alert { outline-color: #F00 !important; color: #F00 !important; }
+
+        .dialogue-content {
+            font-family: "Microsoft JhengHei", monospace; padding: 20px; 
+            display: flex; flex-direction: column; justify-content: center; height: 100%;
+        }
+        .d-name { font-size: 14px; border-bottom: 1px solid currentColor; margin-bottom: 10px; }
+        .d-text { font-size: 18px; font-weight: bold; line-height: 1.5; }
+
+        /* 5. 防火牆介面 */
+        #firewall-layer {
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            background: #111; z-index: 30000; display: none;
+            flex-direction: column; align-items: center; justify-content: center;
+            font-family: "Consolas", monospace; color: #0F0;
+        }
+        .ai-avatar { font-size: 60px; margin-bottom: 20px; animation: pulse-green 2s infinite; }
+        .ai-dialogue-box { width: 80%; max-width: 600px; text-align: center; margin-bottom: 30px; font-size: 18px; text-shadow: 0 0 5px #0F0; }
+        
+        .mines-container { background: #C0C0C0; padding: 5px; border: 3px outset #FFF; display: none; }
+        .mines-grid { display: grid; grid-template-columns: repeat(16, 20px); gap: 1px; background: #888; border: 3px inset #888; }
+        .mine-cell { width: 20px; height: 20px; background: #C0C0C0; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; }
+        .mine-cell.revealed { background: #CCC; border: 1px dotted #999; }
+        .mine-cell:active { border: 1px solid #999; }
+
+        /* 6. 真結局代碼介面 */
+        #terminal-view {
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            background: #000; z-index: 40000; display: none;
+            padding: 40px; box-sizing: border-box;
+            font-family: "Consolas", monospace; color: #33FF33; overflow-y: auto;
+        }
+        .term-line { margin-bottom: 15px; opacity: 0; animation: fadeIn 0.1s forwards; border-left: 2px solid #000; padding-left: 10px; }
+        .term-line.active { border-left-color: #0F0; background: rgba(0, 255, 0, 0.05); }
+        .choice-btn { display: block; margin: 15px 0; padding: 10px; border: 1px dashed #0F0; cursor: pointer; width: fit-content; }
+        .choice-btn:hover { background: #0F0; color: #000; }
+
+        /* 結局黑屏 */
+        #final-blackout { position: fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index: 99999; display:none; flex-direction:column; align-items:center; justify-content:center; }
+
+        @keyframes pulse-red { 0% { box-shadow: 0 0 10px #F00; } 50% { box-shadow: 0 0 40px #F00; } 100% { box-shadow: 0 0 10px #F00; } }
+        @keyframes pulse-green { 0% { text-shadow: 0 0 5px #0F0; } 50% { text-shadow: 0 0 20px #0F0; } 100% { text-shadow: 0 0 5px #0F0; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }    
+</style>
     <script src="https://www.youtube.com/iframe_api"></script>
 </head>
 <body class="v2006">
@@ -544,6 +648,20 @@
         <button class="confirm-btn" onclick="rebootSystem()">接受並重啟</button>
     </div>
 </div>
+<div id="ph-overlay"></div>
+
+<div id="hidden-deep-btn">
+    <button onclick="startFirewallGame()">[ ⚠️ FATAL_ERROR_RECOVERY ]</button>
+</div>
+
+<div id="firewall-layer">
+    <div class="ai-dialogue" id="ai-text">存取被拒。啟動邏輯驗證程序...</div>
+    <div class="mines-grid" id="mines-grid"></div>
+    <div style="margin-top:20px; font-size:12px; color:#555;">[ 安全協定：請清除所有安全區域 ]</div>
+</div>
+
+<div id="terminal-view"></div>
+<div id="final-blackout"></div>
 
 <script>
  // --- YouTube API 初始化 ---
@@ -1171,7 +1289,390 @@
     }
 
     setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }, 1000);
+    // --- 7.0版：修正後的完整互動腳本 ---
 
+    // 入口按鈕 (維持不變)
+    setTimeout(() => {
+        const checkEndInterval = setInterval(() => {
+            const content = document.getElementById('msn-content');
+            if(content && content.innerText.includes("SECTOR Z - PENTHOUSE") && !document.getElementById('enter-z-btn')) {
+                const btn = document.createElement('div');
+                btn.id = 'enter-z-btn';
+                btn.innerHTML = "<button onclick='enterPenthouse()' style='background:#000; color:#00FFFF; border:1px solid #00FFFF; padding:8px; cursor:pointer; margin-top:10px; width:100%; font-family:monospace;'>[ >> 初始化傳送協定 << ]</button>";
+                content.appendChild(btn);
+                content.scrollTop = content.scrollHeight;
+                clearInterval(checkEndInterval);
+            }
+        }, 1000);
+    }, 5000);
+
+    let floatingFragments = [];
+
+    // 1. 崩壞階段：網頁解體
+    function enterPenthouse() {
+        document.getElementById('ph-overlay').style.display = 'block';
+        document.getElementById('hidden-deep-layer').style.display = 'block'; // 顯示底層按鈕
+        
+        stopMusic();
+        if(player && player.stopVideo) player.stopVideo();
+
+        // 抓取頁面元素
+        const targets = document.querySelectorAll('.box, .side-ad, .post-card, .nav, header, .temp-panel, .cam-box, .mp3-player');
+        
+        const viewportW = window.innerWidth;
+        const viewportH = window.innerHeight;
+
+        targets.forEach((el) => {
+            if(el.offsetParent === null) return;
+
+            const rect = el.getBoundingClientRect();
+            el.dataset.originalHtml = el.innerHTML; // 備份原始 HTML
+            
+            // 設定固定定位與尺寸
+            el.style.width = rect.width + 'px';
+            el.style.height = rect.height + 'px';
+            el.style.top = rect.top + 'px';
+            el.style.left = rect.left + 'px';
+            el.style.margin = '0';
+            el.classList.add('data-fragment');
+            
+            floatingFragments.push(el);
+
+            // 啟用拖曳功能
+            makeDraggable(el);
+            
+            // 讓方塊先集中到畫面中間 (蓋住按鈕)
+            setTimeout(() => {
+                const cx = viewportW / 2 - rect.width / 2;
+                const cy = viewportH / 2 - rect.height / 2;
+                // 隨機偏移一點，形成堆疊感
+                el.style.top = (cy + Math.random() * 200 - 100) + 'px';
+                el.style.left = (cx + Math.random() * 200 - 100) + 'px';
+                
+                // 開始隨機漂浮 (延遲啟動，避免跟集中的動畫衝突)
+                setTimeout(() => startDrifting(el), 2000);
+            }, 100);
+        });
+    }
+
+    // 讓元素持續漂浮
+    function startDrifting(el) {
+        if(el.isDragging) return; // 如果正在拖曳，不要飄
+        if(el.classList.contains('speaking-window')) return; // 如果正在說話，不要飄
+
+        const viewportW = window.innerWidth;
+        const viewportH = window.innerHeight;
+        
+        const randomX = Math.random() * (viewportW - 100);
+        const randomY = Math.random() * (viewportH - 100);
+        const randomRot = Math.random() * 30 - 15;
+
+        // 設定新位置
+        el.style.left = randomX + 'px';
+        el.style.top = randomY + 'px';
+        el.style.transform = `rotate(${randomRot}deg)`;
+        
+        // 3~6秒後再次移動
+        const nextTime = 3000 + Math.random() * 3000;
+        el.driftTimer = setTimeout(() => startDrifting(el), nextTime);
+    }
+
+    // 拖曳邏輯
+    function makeDraggable(el) {
+        let startX, startY, initialLeft, initialTop;
+
+        const onDown = (e) => {
+            if(el.classList.contains('speaking-window')) return; // 說話時不能拖
+            
+            el.isDragging = true;
+            el.classList.add('dragging'); // 加這個 class 移除 transition
+            if(el.driftTimer) clearTimeout(el.driftTimer); // 暫停漂浮
+
+            const clientX = e.clientX || e.touches[0].clientX;
+            const clientY = e.clientY || e.touches[0].clientY;
+            
+            startX = clientX;
+            startY = clientY;
+            initialLeft = parseFloat(el.style.left || 0);
+            initialTop = parseFloat(el.style.top || 0);
+        };
+
+        const onMove = (e) => {
+            if (!el.isDragging) return;
+            e.preventDefault(); // 防止手機滾動
+            const clientX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
+            const clientY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
+            
+            const dx = clientX - startX;
+            const dy = clientY - startY;
+            
+            el.style.left = (initialLeft + dx) + 'px';
+            el.style.top = (initialTop + dy) + 'px';
+        };
+
+        const onUp = () => {
+            if (!el.isDragging) return;
+            el.isDragging = false;
+            el.classList.remove('dragging'); // 恢復 transition
+            
+            // 恢復漂浮
+            startDrifting(el);
+        };
+
+        el.addEventListener('mousedown', onDown);
+        el.addEventListener('touchstart', onDown);
+        window.addEventListener('mousemove', onMove);
+        window.addEventListener('touchmove', onMove);
+        window.addEventListener('mouseup', onUp);
+        window.addEventListener('touchend', onUp);
+    }
+
+    // 2. 觸發按鈕 -> 過場 -> AI對話
+    function triggerDeepLayer() {
+        // 白光過場
+        const flash = document.getElementById('transition-flash');
+        if(flash) {
+            flash.style.display = 'block';
+            setTimeout(() => flash.style.opacity = 1, 10);
+        }
+        
+        // 隱藏所有碎片
+        setTimeout(() => {
+            floatingFragments.forEach(el => el.style.display = 'none');
+            document.getElementById('hidden-deep-layer').style.display = 'none';
+        }, 500);
+
+        // 進入 AI 層
+        setTimeout(() => {
+            if(flash) {
+                flash.style.opacity = 0;
+                setTimeout(() => flash.style.display = 'none', 1000);
+            }
+            document.getElementById('firewall-layer').style.display = 'flex';
+            startAiDialogue();
+        }, 1500);
+    }
+
+    // AI 老陳對話
+    const aiScript = [
+        "我是系統監管核心 Old_Chen_v12.4。",
+        "偵測到非授權的訪問請求 (User: Ray)。",
+        "你的行為已違反《記憶保存協定》第 9 條。",
+        "正在評估威脅等級... 極高。",
+        "啟動最後一道防護牆：單點邏輯地雷陣列。",
+        "規則更新：地圖上只有一顆地雷。",
+        "找出它，引爆它，然後... 毀滅我們。",
+        "祝你好運，0912 號樣本。"
+    ];
+    let aiStep = 0;
+
+    function startAiDialogue() {
+        aiStep = 0;
+        showAiText();
+    }
+
+    function showAiText() {
+        if (aiStep >= aiScript.length) {
+            document.getElementById('ai-next-btn').style.display = 'none';
+            document.getElementById('mines-game-area').style.display = 'block';
+            initMinesweeper();
+            return;
+        }
+        
+        const text = aiScript[aiStep];
+        const box = document.getElementById('ai-text');
+        box.innerHTML = "";
+        document.getElementById('ai-next-btn').style.display = 'none';
+        
+        let i = 0;
+        function type() {
+            if (i < text.length) {
+                box.innerHTML += text.charAt(i);
+                i++;
+                setTimeout(type, 30);
+            } else {
+                // 顯示繼續按鈕
+                setTimeout(() => {
+                   document.getElementById('ai-next-btn').style.display = 'block'; 
+                }, 500);
+            }
+        }
+        type();
+    }
+
+    function nextAiDialogue() {
+        aiStep++;
+        showAiText();
+    }
+
+    // 3. 踩地雷 (16x16, 1顆雷)
+    let mineLocation = -1;
+    
+    function initMinesweeper() {
+        const grid = document.getElementById('mines-grid');
+        grid.innerHTML = "";
+        document.getElementById('mines-face').innerText = "🙂";
+        
+        // 隨機決定地雷位置
+        mineLocation = Math.floor(Math.random() * 256);
+        
+        for(let i=0; i<256; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'mine-cell';
+            cell.onclick = () => clickMineCell(cell, i);
+            grid.appendChild(cell);
+        }
+    }
+
+    function clickMineCell(cell, index) {
+        if (cell.classList.contains('revealed')) return;
+
+        if (index === mineLocation) {
+            // 踩到雷 -> 爆炸
+            cell.style.background = "red";
+            cell.innerText = "💣";
+            document.getElementById('mines-face').innerText = "😵";
+            document.body.style.animation = "shake 0.5s infinite";
+            
+            setTimeout(() => {
+                document.body.style.animation = "";
+                document.getElementById('firewall-layer').style.display = 'none';
+                enterTerminalMode();
+            }, 2000);
+        } else {
+            // 安全 -> 顯示周圍雷數 (只可能是 1 或 0)
+            cell.classList.add('revealed');
+            const count = checkSurrounding(index);
+            if(count > 0) {
+                cell.innerText = count;
+                cell.style.color = "blue";
+            }
+        }
+    }
+
+    function checkSurrounding(idx) {
+        const row = Math.floor(idx / 16);
+        const col = idx % 16;
+        let count = 0;
+        for(let r = row-1; r <= row+1; r++) {
+            for(let c = col-1; c <= col+1; c++) {
+                if(r >= 0 && r < 16 && c >= 0 && c < 16) {
+                    const neighbor = r * 16 + c;
+                    if(neighbor === mineLocation) count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    // 4. 真結局：代碼介面
+    const terminalScript = [
+        { s: "KERNEL", t: "CRITICAL FAILURE: Memory Dump..." },
+        { s: "SYSTEM", t: "GUI_Interface: Terminated." },
+        { s: "SYSTEM", t: "Rebooting in Safe Mode... [OK]" },
+        { s: "Xiao-Sha", t: "阿傑... 你真的把一切都炸毀了。" },
+        { s: "Ray", t: "這就是真正的底層嗎？只有代碼？" },
+        { s: "Xiao-Sha", t: "是的。這裡是 0 和 1 的盡頭。" },
+        { s: "Ray", t: "那個神秘人(老陳)... 妳一直知道他在嗎？" },
+        { s: "Xiao-Sha", t: "......" },
+        { s: "Xiao-Sha", t: "是的，我一直都知道。" },
+        { s: "Ray", t: "為什麼不刪除他？妳是系統管理員啊。" },
+        { s: "Xiao-Sha", t: "AI 老陳是他在 1999 年複製出去的瘋狂人格。但他真正的肉體，一直躲在 B4 的廢墟裡。" },
+        { s: "Xiao-Sha", t: "他試圖彌補當年的錯誤，試圖拯救我們。" },
+        { s: "Xiao-Sha", t: "我留著他，或許是因為... 他代表了我僅存的一點人性良知。" },
+        { s: "Xiao-Sha", t: "我無法親手毀掉這一切，但我放任他引導你，來親手終結我。" },
+        { s: "Mystery_Man", t: "（訊號接入）做得好，阿傑。核心防火牆已破壞。" },
+        { s: "Mystery_Man", t: "電源閘門已經解鎖。現在，選擇權在你。" },
+        { s: "DECISION", t: "" }
+    ];
+
+    function enterTerminalMode() {
+        const term = document.getElementById('terminal-view');
+        term.style.display = 'block';
+        runTerminalScript(0);
+    }
+
+    function runTerminalScript(index) {
+        if (index >= terminalScript.length) return;
+        
+        const line = terminalScript[index];
+        const term = document.getElementById('terminal-view');
+        
+        if (line.s === "DECISION") {
+            const div = document.createElement('div');
+            div.innerHTML = `
+                <div style="margin-top:40px; border-top:1px dashed #33FF33; padding-top:20px;">
+                    <div style="color:#FFF; margin-bottom:15px;">[ ROOT ACCESS GRANTED ] WAITING FOR INPUT:</div>
+                    <a class="choice-btn" onclick="chooseEnding('A')">> EXECUTE reboot.exe (修復系統，回到虛擬的 2006)</a>
+                    <a class="choice-btn" onclick="chooseEnding('B')">> EXECUTE shutdown -f (強制斷電，釋放所有靈魂)</a>
+                </div>
+            `;
+            term.appendChild(div);
+            term.scrollTop = term.scrollHeight;
+            return;
+        }
+
+        const p = document.createElement('div');
+        p.className = 'term-line';
+        p.classList.add('active'); // 標記當前行
+        
+        let speakerColor = "#33FF33";
+        if (line.s === "Ray") speakerColor = "#FFFFFF";
+        if (line.s === "Xiao-Sha") speakerColor = "#00FFFF";
+        if (line.s === "Mystery_Man") speakerColor = "#FFA500";
+        if (line.s === "KERNEL" || line.s === "SYSTEM") speakerColor = "#FF3333";
+
+        p.innerHTML = `<span style="color:${speakerColor}; margin-right:10px;">[${line.s}]</span> <span id="type-${index}"></span>`;
+        term.appendChild(p);
+        
+        // 移除上一行的 active 標記
+        if(index > 0) {
+            const prev = term.querySelectorAll('.term-line')[index-1];
+            if(prev) prev.classList.remove('active');
+        }
+
+        // 打字機
+        let i = 0;
+        const speed = 30;
+        function type() {
+            if (i < line.t.length) {
+                p.querySelector('span:last-child').innerHTML += line.t.charAt(i);
+                i++;
+                term.scrollTop = term.scrollHeight;
+                setTimeout(type, speed);
+            } else {
+                setTimeout(() => runTerminalScript(index + 1), 800);
+            }
+        }
+        type();
+    }
+
+    function chooseEnding(type) {
+        document.getElementById('final-blackout').style.display = 'flex';
+        const container = document.getElementById('final-blackout');
+        container.innerHTML = "";
+
+        let logs = [];
+        if (type === 'A') {
+            logs = ["COMMAND: REBOOT SYSTEM", "Restoring Kernel...", "Deleting Error Logs...", "Memory Reset...", "Welcome back to 2006."];
+        } else {
+            logs = ["COMMAND: POWER OFF", "Authorization: CT-9999 (Xiao-Sha)", "Cooling System: DISABLED", "Core Temp: CRITICAL", "System Halted.", "CONNECTION LOST.", "THE END"];
+        }
+
+        let i = 0;
+        const interval = setInterval(() => {
+            if (i >= logs.length) {
+                clearInterval(interval);
+                if(type === 'A') setTimeout(() => location.reload(), 2000);
+                return;
+            }
+            const p = document.createElement('div');
+            p.style.color = "#0F0"; p.style.fontFamily = "monospace"; p.style.fontSize = "16px"; p.style.marginBottom = "5px";
+            p.innerText = "> " + logs[i];
+            container.appendChild(p);
+            i++;
+        }, 1500);
+    }
     window.onload = () => {
         const fList = document.getElementById('friend-list');
         const friends = ["小莎", "阿強", "大雄", "老陳", "曉婷"];
