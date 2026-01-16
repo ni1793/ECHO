@@ -37,14 +37,14 @@
         .box-title { background: #CFD8DC; padding: 6px; font-weight: bold; font-size: 13px; border-bottom: 1px solid #B0BEC5; }
         .box-body { padding: 10px; font-size: 13px; line-height: 1.6; }
 
-        /* --- MSN Chat Window (修復優先權：移至上方確保載入) --- */
+        /* --- MSN Chat Window (常駐與縮放邏輯) --- */
         #msn-window {
-            display: none; /* 預設隱藏 */
+            display: flex;
             position: fixed;
             bottom: 0;
             right: 20px;
             width: 300px;
-            height: 380px;
+            height: 400px;
             background: var(--msn-blue);
             border: 1px solid var(--msn-border);
             border-top-left-radius: 8px;
@@ -53,12 +53,30 @@
             z-index: 5000;
             font-family: Tahoma, sans-serif;
             flex-direction: column;
-            animation: slideUp 0.5s ease-out;
+            transition: height 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #msn-window.minimized {
+            height: 32px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        /* 新增：MSN 訊息通知綠色閃爍框 */
+        .msn-flash {
+            border: 3px solid #00FF00 !important;
+            box-shadow: 0 0 20px #00FF00 !important;
+            animation: flashBorder 0.8s infinite alternate;
+        }
+        
+        @keyframes flashBorder {
+            from { box-shadow: 0 0 5px #00FF00; border-color: #00AA00; }
+            to { box-shadow: 0 0 25px #00FF00; border-color: #55FF55; }
         }
         
         .msn-header {
             background: linear-gradient(to bottom, #E8F1FC, #BED6F0);
-            padding: 8px;
+            padding: 6px 10px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -66,21 +84,66 @@
             border-top-left-radius: 7px;
             border-top-right-radius: 7px;
             flex-shrink: 0;
+            cursor: pointer;
+            height: 32px;
         }
-        .msn-title { font-weight: bold; color: #224466; font-size: 12px; display: flex; align-items: center; gap: 5px; }
-        
+        .msn-header:hover { background: linear-gradient(to bottom, #f5f9ff, #dbeaf9); }
+
+        .msn-title { font-weight: bold; color: #224466; font-size: 12px; display: flex; align-items: center; gap: 6px; }
+        .msn-controls { display: flex; gap: 5px; }
+        .msn-btn-icon { width: 16px; height: 16px; border: 1px solid #888; background: #fff; text-align: center; line-height: 14px; font-size: 10px; border-radius: 2px; cursor: pointer; color: #444; }
+
         .msn-body {
             flex: 1;
-            min-height: 0; /* 關鍵修復：防止 Flex 子元素溢出 */
+            min-height: 0;
             background: #FFF;
-            border: 1px solid #99BBE8;
-            margin: 5px;
+            border-left: 1px solid #99BBE8;
+            border-right: 1px solid #99BBE8;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* 聯絡人清單樣式 */
+        #msn-contact-list {
+            padding: 10px;
+            overflow-y: auto;
+            height: 100%;
+            background: #FFF;
+        }
+        .contact-group { font-size: 11px; color: #444; font-weight: bold; margin-bottom: 5px; border-bottom: 1px solid #EEE; padding-bottom: 2px; }
+        .contact-item { 
+            display: flex; align-items: center; gap: 8px; padding: 4px; 
+            cursor: default;
+            opacity: 0.6;
+            transition: 0.2s;
+        }
+        .contact-item.online { 
+            opacity: 1; 
+            cursor: pointer; 
+            background-color: #f0f8ff; 
+            border: 1px solid #dceefc;
+        }
+        .contact-item.online:hover { background-color: #dceefc; }
+        .contact-name { font-size: 12px; color: #000; }
+        .contact-status { font-size: 10px; color: #888; margin-left: auto; }
+
+        /* 聊天視窗樣式 */
+        #msn-chat-view {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .chat-content {
+            flex: 1;
             padding: 10px;
             overflow-y: auto;
             font-size: 12px;
             color: #000;
+            background: #FFF;
         }
-        
+
         .msn-msg { margin-bottom: 8px; }
         .msn-sender { color: #0000FF; font-size: 11px; }
         .msn-sender.me { color: #444; }
@@ -89,14 +152,13 @@
         .msn-input-area {
             height: 60px;
             background: #FFF;
-            border: 1px solid #99BBE8;
-            margin: 0 5px 5px 5px;
+            border-top: 1px solid #99BBE8;
+            padding: 5px;
             position: relative;
             flex-shrink: 0;
         }
         .msn-sys { color: gray; font-style: italic; font-size: 11px; margin: 5px 0; text-align: center; }
 
-        @keyframes slideUp { from { bottom: -400px; } to { bottom: 0; } }
         @keyframes shake { 0% { transform: translateX(0); } 25% { transform: translateX(-5px) rotate(-1deg); } 75% { transform: translateX(5px) rotate(1deg); } 100% { transform: translateX(0); } }
         .shake-anim { animation: shake 0.3s ease-in-out; }
 
@@ -184,7 +246,7 @@
 
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- 手機版響應式設計 (2026 排版專用修正) --- */
+        /* --- 手機版響應式設計 --- */
         @media screen and (max-width: 960px) {
             #retro-container { width: 100%; margin: 0; box-shadow: none; border: none; }
             header { height: auto; padding: 20px; flex-direction: column; align-items: flex-start; }
@@ -203,7 +265,6 @@
             .apple-title { font-size: 42px !important; line-height: 1.1; margin-bottom: 16px; }
             .apple-subtitle { font-size: 18px !important; }
             
-            /* 強制單欄排列 */
             .apple-grid { display: flex; flex-direction: column; gap: 24px; margin-top: 40px; }
             .full-width-report { width: 100% !important; margin: 0; } 
             
@@ -214,8 +275,7 @@
             .action-btn { width: 100%; padding: 16px; font-size: 18px; }
             .popup-window { width: 90%; padding: 30px; margin: 0 20px; }
             
-            /* MSN Window Mobile Adjustment */
-            #msn-window { width: 94%; right: 3%; left: 3%; bottom: 10px; height: 350px; }
+            #msn-window { width: 94%; right: 3%; left: 3%; bottom: 10px; }
         }
 
         /* --- 廣告與組件樣式 --- */
@@ -316,18 +376,45 @@
 <audio id="bgm" src="music.mp3" preload="auto"></audio>
 <div id="yt-player-wrapper" style="display:none;"><div id="yt-player"></div></div>
 
-<div id="msn-window" style="display:none;">
-    <div class="msn-header">
+<div id="msn-window" class="minimized">
+    <div class="msn-header" onclick="toggleMSN()">
         <div class="msn-title">
             <div style="width:14px; height:14px; background:#0F0; border-radius:50%; border:1px solid #000;"></div>
-            神秘人 - 對話視窗
+            Messenger
         </div>
-        <div style="font-size:14px; font-weight:bold; cursor:pointer;" onclick="document.getElementById('msn-window').style.display='none'">X</div>
+        <div class="msn-controls">
+            <div class="msn-btn-icon">_</div>
+            <div class="msn-btn-icon">X</div>
+        </div>
     </div>
-    <div class="msn-body" id="msn-content">
+    
+    <div class="msn-body">
+        <div id="msn-contact-list">
+            <div class="contact-group">▼ 好友名單 (0/5)</div>
+            <div class="contact-item"><div style="width:16px;height:16px;background:#ccc;border-radius:50%;"></div><div class="contact-name">小莎</div><div class="contact-status">(離線)</div></div>
+            <div class="contact-item"><div style="width:16px;height:16px;background:#ccc;border-radius:50%;"></div><div class="contact-name">阿強</div><div class="contact-status">(離線)</div></div>
+            <div class="contact-item"><div style="width:16px;height:16px;background:#ccc;border-radius:50%;"></div><div class="contact-name">大雄</div><div class="contact-status">(離線)</div></div>
+            <div class="contact-item"><div style="width:16px;height:16px;background:#ccc;border-radius:50%;"></div><div class="contact-name">曉婷</div><div class="contact-status">(離線)</div></div>
+            <div class="contact-item"><div style="width:16px;height:16px;background:#ccc;border-radius:50%;"></div><div class="contact-name">老陳</div><div class="contact-status">(離線)</div></div>
+            
+            <div id="mystery-group" class="contact-group" style="margin-top:10px; display:none;">▼ 其他聯絡人 (0/1)</div>
+            <div id="mystery-contact" class="contact-item" style="display:none;" onclick="showChat('神秘人')">
+                <div style="width:16px;height:16px;background:#ccc;border-radius:50%;"></div>
+                <div class="contact-name">神秘人</div>
+                <div class="contact-status">(離線)</div>
+            </div>
         </div>
-    <div class="msn-input-area">
-        <div style="padding:5px; color:#AAA; font-size:11px;">(對方似乎已封鎖傳訊功能...)</div>
+
+        <div id="msn-chat-view">
+            <div style="background:#f0f0f0;padding:5px;border-bottom:1px solid #ccc;font-size:11px;">
+                <span style="cursor:pointer;color:blue;" onclick="showContacts()">← 返回聯絡人</span>
+                <span style="float:right;">邀請 | 傳送檔案</span>
+            </div>
+            <div id="msn-content" class="chat-content"></div>
+            <div class="msn-input-area">
+                <div style="padding:5px; color:#AAA; font-size:11px;" id="input-placeholder">(對方似乎已封鎖傳訊功能...)</div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -471,8 +558,9 @@
     let hasReturnedFromFuture = false;
     let dynamicDate = "2026-01-01";
     let isHacked = false; 
+    let chatTriggered = false; // 是否已觸發聊天劇情
 
-    // --- 日誌文章數據 ---
+    // --- 日誌文章數據 (修正補回) ---
     const blogPosts = [
         { id:1, d:"2006-09-01", t:"新工作新氣象！內湖我來了", b:"今天終於去內湖科學園區報到了！\n\n這家公司叫 CerebroTech，中文是大腦科技？名字聽起來很威，但辦公室在地下室有點怪怪的。主管老陳人蠻好的，雖然講話有點慢，眼神一直盯著我看，害我有點害羞哈哈。\n\n發了新制服，寶藍色的，材質摸起來像潛水衣？不管了，薪水不錯最重要！為了買 N93，我要努力存錢！\n\nPS: 內湖風好大。", c:[{u:"小莎", c:"老公加油！晚上煮好料的等你喔~"}, {u:"阿強", c:"外商喔？薪水應該不錯吧，改天請客啦！"}, {u:"老陳", c:"阿傑，歡迎加入。"}] },
         { id:2, d:"2006-09-08", t:"公司的咖啡機也太高級了吧", b:"茶水間那台咖啡機根本是星巴克等級的，而且免費喝到飽！\n\n但我發現一件怪事，這裡的同事都很安靜，真的超安靜，連敲鍵盤的聲音都很小。大家都在戴耳機工作，眼神都很專注。\n\n我問隔壁的曉婷在聽什麼，她只說：「頻率。」然後就繼續盯著螢幕笑了。是怎樣？聽音樂會笑成那樣？", c:[{u:"曉婷", c:"那咖啡不要喝太多，會睡不著。"}, {u:"大雄", c:"真爽，我們公司連水都要錢。羨慕~"}] },
@@ -547,6 +635,34 @@
         {u:"AD", c:"天堂、楓之谷最新外掛，全自動掛機練功、自動喝水，趕快點擊下方連結下載。"},
 
     ];
+
+    // --- MSN 功能函式 ---
+    function toggleMSN() {
+        const msn = document.getElementById('msn-window');
+        msn.classList.toggle('minimized');
+        // 點擊視窗時，移除閃爍通知
+        msn.classList.remove('msn-flash');
+    }
+
+    function showChat(contactName) {
+        // 如果是點擊神秘人，必須要觸發過劇情才有效
+        if (contactName === "神秘人" && !chatTriggered) return;
+        if (contactName !== "神秘人") return; // 其他好友點擊無效
+
+        document.getElementById('msn-contact-list').style.display = 'none';
+        document.getElementById('msn-chat-view').style.display = 'flex';
+        
+        // 進入聊天時，移除閃爍通知
+        document.getElementById('msn-window').classList.remove('msn-flash');
+
+        // 開始對話腳本
+        startDialogueSequence();
+    }
+
+    function showContacts() {
+        document.getElementById('msn-chat-view').style.display = 'none';
+        document.getElementById('msn-contact-list').style.display = 'block';
+    }
 
     function checkPassword() {
         let pass = prompt("播放器是容器，時間已被安排 【請輸入四碼數字密碼】");
@@ -724,15 +840,17 @@
 
     // 新增：觸發超載劇本
     function triggerOverloadScenario() {
-        // 1. 阿傑傳訊
-        const win = document.getElementById('msn-window');
-        win.style.display = 'flex';
-        win.classList.add('shake-anim');
+        // 1. 強制打開並切換到聊天視窗
+        const msn = document.getElementById('msn-window');
+        msn.classList.remove('minimized');
+        showChat("神秘人"); // 強制切換到聊天畫面
+        
+        // 2. 播放訊息
         addMsg("神秘人", "警衛把路封死了！我過不去！");
         setTimeout(() => addMsg("神秘人", "你能不能直接從終端機強制喚醒？"), 2000);
         setTimeout(() => addMsg("神秘人", "快！把溫度升上來！"), 4000);
 
-        // 2. 轉換為溫度控制面板
+        // 3. 轉換為溫度控制面板
         setTimeout(() => {
             const container = document.getElementById('side-ads-container');
             container.innerHTML = `
@@ -793,6 +911,66 @@
                 </div>`;
                 content.scrollTop = content.scrollHeight;
         }, 9000);
+    }
+
+    // --- MSN 聊天機器人邏輯 ---
+    function triggerChat() {
+        chatTriggered = true; // 標記為可觸發狀態
+        
+        // 顯示神祕人分組與聯絡人
+        const group = document.getElementById('mystery-group');
+        const contact = document.getElementById('mystery-contact');
+        if (group && contact) {
+            group.style.display = 'block';
+            contact.style.display = 'flex';
+            
+            setTimeout(() => {
+                contact.classList.add('online');
+                contact.querySelector('.contact-status').innerText = "(線上)";
+                contact.style.backgroundColor = "#ffffe0"; 
+                // 點擊事件由 HTML onclick="showChat('神秘人')" 處理
+                
+                // 新增：觸發綠色閃爍通知
+                document.getElementById('msn-window').classList.add('msn-flash');
+            }, 500);
+        }
+        
+        // 如果視窗是縮小的，稍微閃爍提醒
+        const msn = document.getElementById('msn-window');
+        if(msn.classList.contains('minimized')) {
+            msn.classList.add('shake-anim');
+        }
+    }
+
+    function startDialogueSequence() {
+        // 只有第一次點擊才開始跑對話
+        const content = document.getElementById('msn-content');
+        if(content.innerHTML !== "") return; 
+
+        addMsg("神秘人", "阿傑，是你嗎？");
+        setTimeout(() => addMsg("神秘人", "我看到這篇文章了... 你回來了？"), 3000);
+        setTimeout(() => addMsg("神秘人", "他們一直在監控這裡，我不敢用本名。"), 6000);
+        setTimeout(() => addMsg("神秘人", "B4 的冷卻水槽... 曉婷跟我說過在那裡留了一個備份。"), 10000);
+        
+        setTimeout(() => {
+            addMsg("神秘人", "等等...");
+        }, 13000);
+
+        setTimeout(() => {
+            addMsg("神秘人", "門外有聲音。");
+        }, 15000);
+
+        setTimeout(() => {
+            addMsg("神秘人", "有人來了！阿傑，記得 440Hz... 只有那個能切斷...");
+        }, 18000);
+
+        setTimeout(() => {
+            const div = document.createElement('div');
+            div.className = 'msn-sys';
+            div.innerText = "對方已離線";
+            content.appendChild(div);
+            content.scrollTop = content.scrollHeight;
+        }, 20000);
     }
 
     function addMsg(sender, text) {
@@ -877,51 +1055,6 @@
                 </div>
             `;
         }
-    }
-
-    // --- MSN 聊天機器人邏輯 ---
-    function triggerChat() {
-        const win = document.getElementById('msn-window');
-        const content = document.getElementById('msn-content');
-        
-        setTimeout(() => {
-            win.style.display = 'flex';
-            win.classList.add('shake-anim');
-            addMsg("神秘人", "阿傑，是你嗎？");
-        }, 3000);
-
-        setTimeout(() => addMsg("神秘人", "我看到這篇文章了... 你回來了？"), 6000);
-        setTimeout(() => addMsg("神秘人", "他們一直在監控這裡，我不敢用本名。"), 10000);
-        setTimeout(() => addMsg("神秘人", "B4 的冷卻水槽... 曉婷跟我說過在那裡留了一個備份。"), 15000);
-        
-        setTimeout(() => {
-            addMsg("神秘人", "等等...");
-        }, 20000);
-
-        setTimeout(() => {
-            addMsg("神秘人", "門外有聲音。");
-        }, 23000);
-
-        setTimeout(() => {
-            addMsg("神秘人", "有人來了！阿傑，記得 440Hz... 只有那個能切斷...");
-        }, 26000);
-
-        setTimeout(() => {
-            const div = document.createElement('div');
-            div.className = 'msn-sys';
-            div.innerText = "對方已離線";
-            content.appendChild(div);
-            content.scrollTop = content.scrollHeight;
-        }, 29000);
-    }
-
-    function addMsg(sender, text) {
-        const content = document.getElementById('msn-content');
-        const div = document.createElement('div');
-        div.className = 'msn-msg';
-        div.innerHTML = `<div class="msn-sender">${sender}:</div><div class="msn-text">${text}</div>`;
-        content.appendChild(div);
-        content.scrollTop = content.scrollHeight;
     }
 
     function sysAlert(msg) { alert(msg); }
