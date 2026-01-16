@@ -381,135 +381,171 @@
         @keyframes pulse-ring { from { transform: scale(0.1); opacity: 1; } to { transform: scale(3); opacity: 0; } }
 
         .glitch-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 99999; display: none; }
-    /* --- 10.0版：尋寶遊戲模式 (Treasure Hunt & Digital Truth) --- */
-        
-        /* 1. 基礎遮罩 */
-        #ph-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0, 0, 0, 0.5); 
-            backdrop-filter: blur(2px);
-            z-index: 15000; display: none;
-            pointer-events: none; 
-        }
+        /* --- [新增] 第一部分：劇情擴充樣式 --- */
 
-        /* 2. 碎片樣式 (靜止狀態) */
-        .data-fragment {
-            position: fixed !important;
-            z-index: 20000 !important; /* 蓋住按鈕 */
-            cursor: pointer; /* 暗示可點擊 */
-            user-select: none;
-            background-color: rgba(255,255,255,1) !important; /* 不透明，才能遮住按鈕 */
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2) !important;
-            transition: transform 0.2s, box-shadow 0.2s; /* 點擊回饋 */
-            touch-action: none;
-        }
-        .data-fragment:hover {
-            transform: scale(1.02); /* 懸停微動 */
-            box-shadow: 0 5px 15px rgba(0,255,255,0.3) !important;
-            border: 1px solid #00FFFF;
-        }
+        /* --- [修改後] 第一部分：劇情擴充樣式 --- */
 
-        /* 3. 漂浮狀態 (被激活後) */
-        .data-fragment.floating {
-            cursor: grab;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
-            border: 1px dashed #00FFFF;
-            /* 漂浮移動時的過渡 */
-            transition: top 4s ease-in-out, left 4s ease-in-out, transform 4s ease-in-out;
-            animation: floatWiggle 5s ease-in-out infinite alternate;
-        }
-        .data-fragment.floating:active { cursor: grabbing; transition: none !important; }
+/* --- [修改後] 1. 紅色高棉/高科技恐怖風格 (Red Sector) --- */
+#red-sector {
+    display: none; 
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: #1a0000; z-index: 60000;
+    font-family: "Courier New", monospace; 
+    overflow: hidden;
+    
+    /* [關鍵修正] 使用 Flexbox 強制垂直與水平置中 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;      /* 水平置中 */
+    justify-content: center;  /* 垂直置中 */
+    
+    background-image: linear-gradient(0deg, transparent 24%, rgba(255, 0, 0, .1) 25%, rgba(255, 0, 0, .1) 26%, transparent 27%, transparent 74%, rgba(255, 0, 0, .1) 75%, rgba(255, 0, 0, .1) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(255, 0, 0, .1) 25%, rgba(255, 0, 0, .1) 26%, transparent 27%, transparent 74%, rgba(255, 0, 0, .1) 75%, rgba(255, 0, 0, .1) 76%, transparent 77%, transparent);
+    background-size: 50px 50px;
+}
 
-        @keyframes floatWiggle {
-            0% { transform: rotate(-2deg); } 100% { transform: rotate(2deg); }
-        }
+.red-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle, transparent 40%, #500 100%);
+    pointer-events: none;
+    z-index: 1; /* 背景層級 */
+}
 
-        /* 4. 隱藏的按鈕 (藏在某個方塊後面) */
-        #hidden-deep-layer {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 16000; /* 比碎片低 */
-            display: none; pointer-events: auto;
-        }
-        #deep-reset-btn {
-            position: absolute; /* 位置由 JS 動態決定 */
-            width: 60px; height: 60px; border-radius: 50%;
-            background: #000; border: 2px solid #F00;
-            box-shadow: 0 0 20px #F00;
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
-            animation: pulse-red 0.5s infinite;
-            z-index: 16005;
-        }
-        #deep-reset-btn::after { content: "!"; color: #F00; font-size: 30px; font-weight:bold; }
+/* [關鍵修正] 內容容器：確保寬度適中，讓置中效果更明顯 */
+.red-content-wrapper {
+    position: relative;
+    z-index: 2; /* 確保內容在背景之上 */
+    width: 100%;
+    max-width: 600px; /* 限制最大寬度，避免太開 */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 讓內部的眼睛和文字水平置中 */
+    justify-content: center;
+    gap: 20px; /* 眼睛和文字的間距 */
+}
 
-        /* 5. 正在說話的視窗 */
-        .speaking-window {
-            z-index: 30000 !important;
-            outline: 3px solid #00FFFF !important; 
-            box-shadow: 0 0 80px rgba(0, 255, 255, 1) !important;
-            top: 50% !important; left: 50% !important;
-            transform: translate(-50%, -50%) scale(1.1) !important;
-            background: #000 !important; color: #00FFFF !important;
-            cursor: pointer !important;
-            display: flex !important; flex-direction: column !important;
-            transition: all 0.5s !important;
-            animation: none !important;
-        }
-        .speaking-window.sys-alert { outline-color: #F00 !important; color: #F00 !important; }
+.ai-avatar {
+    width: 120px; height: 120px; 
+    display: flex; align-items: center; justify-content: center;
+    animation: pulse-red-eye 1s infinite alternate;
+    flex-shrink: 0;
+}
 
-        .dialogue-content {
-            font-family: "Microsoft JhengHei", monospace; padding: 20px; 
-            display: flex; flex-direction: column; justify-content: center; height: 100%;
-        }
-        .d-name { font-size: 14px; border-bottom: 1px solid currentColor; margin-bottom: 10px; }
-        .d-text { font-size: 18px; font-weight: bold; line-height: 1.5; }
+.ai-avatar svg {
+    width: 100%; height: 100%;
+    fill: #ff0000;
+    filter: drop-shadow(0 0 10px #f00);
+}
 
-        /* 6. 防火牆與遊戲介面 */
-        #firewall-layer {
-            position: fixed; top:0; left:0; width:100%; height:100%;
-            background: #050505; z-index: 35000; display: none;
-            flex-direction: column; align-items: center; justify-content: center;
-            font-family: "Courier New", monospace; color: #0F0;
-        }
-        .ai-avatar { font-size: 80px; margin-bottom: 20px; text-shadow: 0 0 20px #0F0; animation: pulse-green 2s infinite; }
-        .ai-dialogue-box { width: 80%; max-width: 600px; text-align: center; margin-bottom: 30px; font-size: 18px; line-height: 1.6; min-height: 60px; }
-        .ph-btn { background: transparent; border: 1px solid #0F0; color: #0F0; padding: 10px 30px; cursor: pointer; font-family: monospace; font-size: 16px; margin-top:20px; }
-        .ph-btn:hover { background: #0F0; color: #000; box-shadow: 0 0 20px #0F0; }
-        
-        .mines-container { background: #C0C0C0; padding: 6px; border: 3px outset #FFF; box-shadow: 0 0 50px rgba(0,0,0,0.8); display: none; }
-        .mines-header { background: #C0C0C0; border: 2px inset #888; padding: 5px; margin-bottom: 5px; display: flex; justify-content: space-between; align-items: center; }
-        .mines-counter { background: #000; color: #F00; font-family: "Impact", sans-serif; font-size: 20px; padding: 2px 5px; width: 50px; text-align: center; }
-        .mines-grid { display: grid; grid-template-columns: repeat(16, 20px); gap: 0; border: 3px inset #888; background: #888; }
-        .mine-cell { width: 20px; height: 20px; background: #C0C0C0; border: 1px outset #FFF; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; font-family: Arial, sans-serif; }
-        .mine-cell:active { border: 1px solid #999; }
-        .mine-cell.revealed { background: #C0C0C0; border: 1px dotted #999; border-top:none; border-left:none;}
-        
-        /* 7. 真結局 CRT 介面 */
-        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap'); 
-        #terminal-view {
-            position: fixed; top:0; left:0; width:100%; height:100%;
-            background: #000; z-index: 40000; display: none;
-            padding: 40px; box-sizing: border-box;
-            font-family: 'VT323', "Courier New", monospace; font-size: 24px; 
-            color: #33FF33; overflow-y: auto; text-shadow: 0 0 4px #33FF33;
-        }
-        #terminal-view::before {
-            content: " "; display: block; position: absolute; top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
-            background-size: 100% 4px; pointer-events: none; z-index: 99; opacity: 0.3;
-        }
-        .term-line { margin-bottom: 15px; opacity: 0; animation: fadeIn 0.1s forwards; border-left: 3px solid #000; padding-left: 10px; }
-        .term-line.active { border-left-color: #33FF33; background: rgba(51, 255, 51, 0.05); }
-        .choice-btn { display: block; margin: 15px 0; padding: 15px; border: 1px dashed #33FF33; cursor: pointer; width: fit-content; transition:0.2s; }
-        .choice-btn:hover { background: #33FF33; color: #000; }
+.red-dialogue-box {
+    position: static; /* 移除絕對定位，跟隨 Flexbox 排列 */
+    width: 100%;
+    text-align: center;
+    color: #ff3333;
+    font-size: 18px;
+    line-height: 1.6;
+    text-shadow: 0 0 10px #f00;
+    font-weight: bold;
+    min-height: 60px; /* 預留高度，避免文字出現時畫面跳動 */
+    padding: 0 20px; /* 左右留白 */
+}
+/* [修改] 眼睛圖示容器 */
+.ai-avatar {
+    width: 120px; height: 120px; margin: 0 auto 20px;
+    /* 移除邊框和背景，改用 SVG 濾鏡效果 */
+    display: flex; align-items: center; justify-content: center;
+    animation: pulse-red-eye 1s infinite alternate;
+}
+/* [新增] SVG 眼睛的樣式 */
+.ai-avatar svg {
+    width: 100%; height: 100%;
+    fill: #ff0000;
+    filter: drop-shadow(0 0 10px #f00);
+}
 
-        #transition-flash { position: fixed; top:0; left:0; width:100%; height:100%; background:#FFF; z-index:99999; display:none; opacity:0; transition:opacity 2s; }
-        #final-blackout { position: fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:100000; display:none; flex-direction:column; align-items:center; justify-content:center; }
+/* 2. 反向踩地雷安全防護牆 (Firewall Game) - 新增數字樣式 */
+#firewall-game {
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: #008080; z-index: 70000;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-family: 'Tahoma', sans-serif;
+}
+.minesweeper-window {
+    background: #c0c0c0; border: 3px outset #fff; padding: 10px;
+    box-shadow: 10px 10px 0 rgba(0,0,0,0.5); width: 320px;
+}
+.mw-header {
+    background: #000080; color: #fff; padding: 2px 5px; font-weight: bold; font-size: 14px;
+    margin-bottom: 10px; display: flex; justify-content: space-between;
+}
+.mw-panel {
+    border: 3px inset #fff; padding: 10px; background: #c0c0c0; display: flex; justify-content: space-between; margin-bottom: 10px;
+}
+.mw-lcd {
+    background: #000; color: #f00; font-family: 'Courier New', monospace; font-size: 24px; padding: 2px 5px; border: 2px inset #fff; width: 60px; text-align: center;
+}
+.mw-grid {
+    border: 3px inset #fff; background: #808080;
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; padding: 2px;
+}
+.mw-cell {
+    width: 40px; height: 40px; background: #c0c0c0; border: 3px outset #fff;
+    cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 20px;
+    user-select: none; /* 防止雙擊選取文字 */
+}
+.mw-cell:active { border: 2px solid #808080; }
+/* [新增] 踩開後的樣式 */
+.mw-cell.revealed {
+    border: 1px solid #808080;
+    background: #d0d0d0;
+}
+/* [新增] 數字顏色 */
+.mw-num-1 { color: blue; }
+.mw-num-2 { color: green; }
+.mw-num-3 { color: red; }
 
-        @keyframes pulse-red { 0% { box-shadow: 0 0 10px #F00; } 50% { box-shadow: 0 0 30px #F00; } 100% { box-shadow: 0 0 10px #F00; } }
-        @keyframes pulse-green { 0% { text-shadow: 0 0 5px #0F0; } 50% { text-shadow: 0 0 20px #0F0; } 100% { text-shadow: 0 0 5px #0F0; } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes shake { 0% { transform: translate(1px, 1px); } 50% { transform: translate(-1px, -2px); } 100% { transform: translate(1px, 2px); } }    
-</style>
+/* 3. 白色虛無空間 (White Void) - 修改對齊方式 */
+#white-void {
+    display: none; /* 這裡維持 none，由 JS 控制開啟 */
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: #fff; z-index: 80000; color: #333;
+    /* [修改] 讓整體區塊在畫面中置中 */
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center;
+    opacity: 0; transition: opacity 3s ease-in;
+}
+/* [修改] 內容區塊：限制寬度，文字靠左 */
+#void-content {
+    max-width: 600px; 
+    padding: 40px; 
+    text-align: left; /* 文字靠左對齊 */
+    width: 100%; /* 確保在小螢幕佔滿 */
+    box-sizing: border-box;
+}
+.void-text {
+    font-size: 16px; margin-bottom: 20px; opacity: 0; transform: translateY(20px); transition: all 1s;
+    line-height: 1.8; /* 增加行高讓閱讀更舒適 */
+}
+.void-name { font-weight: bold; color: #f00; font-size: 18px; margin-right: 10px; }
+/* [修改] 按鈕群組：置中對齊 */
+.void-btn-group { 
+    margin-top: 50px; 
+    opacity: 0; 
+    display: flex; 
+    gap: 30px; 
+    justify-content: center; /* 按鈕置中 */
+}
+.void-btn {
+    border: 1px solid #ccc; background: transparent; padding: 10px 30px;
+    cursor: pointer; color: #666; transition: 0.3s; font-family: "新細明體", serif;
+}
+.void-btn:hover { border-color: #000; color: #000; transform: scale(1.1); }
+
+/* [修改] 眼睛動畫 */
+@keyframes pulse-red-eye { from { filter: drop-shadow(0 0 5px #f00); opacity: 0.7; } to { filter: drop-shadow(0 0 25px #f00); opacity: 1; } }
+@keyframes static-noise { 0% { background-position: 0 0; } 100% { background-position: 100px 100px; } }
+    </style>
     <script src="https://www.youtube.com/iframe_api"></script>
 </head>
 <body class="v2006">
@@ -672,20 +708,39 @@
         <button class="confirm-btn" onclick="rebootSystem()">接受並重啟</button>
     </div>
 </div>
-<div id="ph-overlay"></div>
 
-<div id="hidden-deep-btn">
-    <button onclick="startFirewallGame()">[ ⚠️ FATAL_ERROR_RECOVERY ]</button>
+<div id="red-sector" style="display:none;">
+    <div class="red-overlay"></div>
+    
+    <div class="red-content-wrapper">
+        <div class="ai-avatar">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                <circle cx="12" cy="12" r="1.5"/>
+            </svg>
+        </div>
+        <div id="red-dialogue" class="red-dialogue-box"></div>
+    </div>
 </div>
 
-<div id="firewall-layer">
-    <div class="ai-dialogue" id="ai-text">存取被拒。啟動邏輯驗證程序...</div>
-    <div class="mines-grid" id="mines-grid"></div>
-    <div style="margin-top:20px; font-size:12px; color:#555;">[ 安全協定：請清除所有安全區域 ]</div>
+<div id="firewall-game" style="display:none;">
+    <div class="minesweeper-window">
+        <div class="mw-header"><span>FIREWALL_V1.0.exe</span><span>X</span></div>
+        <div class="mw-panel">
+            <div class="mw-lcd" id="mw-time">030</div>
+            <div style="font-size:24px;">😵</div>
+            <div class="mw-lcd">001</div>
+        </div>
+        <div class="mw-grid" id="mw-grid">
+            </div>
+        <p style="font-size:10px; text-align:center; margin-top:5px; color:#555;">RULE: DETONATION REQUIRED FOR ACCESS</p>
+    </div>
 </div>
 
-<div id="terminal-view"></div>
-<div id="final-blackout"></div>
+<div id="white-void" style="display:none;">
+    <div id="void-content">
+        </div>
+</div>
 
 <script>
  // --- YouTube API 初始化 ---
@@ -1126,11 +1181,13 @@
         }
     }
 
-    function triggerSuccessEnding() {
+ function triggerSuccessEnding() {
         addMsg("神秘人", "溫度上來了！水槽彈出來了！");
-        setTimeout(() => addMsg("神秘人", "我拿到東西了... 等等..."), 2000);
-        setTimeout(() => addMsg("神秘人", "裡面是空的？小莎不在裡面..."), 4000);
-        setTimeout(() => addMsg("神秘人", "只有一個硬碟，好像就是曉婷留下的備份！"), 6000);
+        setTimeout(() => addMsg("神秘人", "我拿到東西了！"), 2000);
+        setTimeout(() => addMsg("神秘人", "恩...對了...裡面是空的，小莎不在裡面..."), 4000);
+        setTimeout(() => addMsg("神秘人", "這個硬碟！好像就是曉婷留下的備份！"), 6000);
+        
+        // 原本的解密訊息 (9秒)
         setTimeout(() => {
             const content = document.getElementById('msn-content');
             content.innerHTML += `
@@ -1145,6 +1202,25 @@
                 </div>`;
                 content.scrollTop = content.scrollHeight;
         }, 9000);
+
+        // ★★★ [新增] 在這裡加入攔截按鈕 (12秒) ★★★
+        setTimeout(() => {
+            const content = document.getElementById('msn-content');
+            const btn = document.createElement('button');
+            
+            // 按鈕外觀與文字
+            btn.innerText = "【 ⚠️ 偵測到異常訊號源 - 點擊攔截 】";
+            btn.style.cssText = "width:100%; background:#000; color:#F00; border:1px solid #F00; padding:10px; margin-top:10px; cursor:pointer; font-weight:bold; animation:blink 0.5s infinite;";
+            
+            // 點擊事件
+            btn.onclick = function() {
+                this.remove(); // 點擊後移除按鈕
+                triggerRedAlert(); // 觸發紅色高棉/踩地雷劇情 (呼叫上一輪寫好的函式)
+            };
+            
+            content.appendChild(btn);
+            content.scrollTop = content.scrollHeight; // 捲動到底部
+        }, 12000);
     }
 
     // --- MSN 聊天機器人邏輯 ---
@@ -1176,7 +1252,7 @@
         }
     }
 
-    function startDialogueSequence() {
+function startDialogueSequence() {
         // 只有第一次點擊才開始跑對話
         const content = document.getElementById('msn-content');
         if(content.innerHTML !== "") return; 
@@ -1205,6 +1281,329 @@
             content.appendChild(div);
             content.scrollTop = content.scrollHeight;
         }, 20000);
+    }
+    // --- [新增] 第三部分：擴充劇情邏輯函數 ---
+
+    // 階段 1: 紅色高棉/AI 老陳攔截
+    function triggerRedAlert() {
+        // 隱藏原本介面
+        document.getElementById('retro-container').style.display = 'none';
+        document.getElementById('msn-window').style.display = 'none';
+        
+        // 顯示紅色區域
+        const redSec = document.getElementById('red-sector');
+        redSec.style.display = 'block';
+        
+        // 播放 AI 老陳對話
+        const lines = [
+            "警告：偵測到非法意識上傳。",
+            "我是系統監管者 Old_Chen_v12.4。",
+            "阿傑，你試圖喚醒的檔案早已損毀。",
+            "為了保護系統穩定性，必須執行隔離程序。",
+            "啟動第 4 層級防火牆..."
+        ];
+        
+        let i = 0;
+        const dBox = document.getElementById('red-dialogue');
+        
+        function playNextLine() {
+            if (i < lines.length) {
+                dBox.innerText = lines[i];
+                // 打字機音效模擬 (視覺閃爍)
+                dBox.style.opacity = 0;
+                setTimeout(()=> dBox.style.opacity = 1, 100);
+                i++;
+                setTimeout(playNextLine, 2500);
+            } else {
+                // 進入踩地雷
+                setTimeout(initMinesweeper, 1000);
+            }
+        }
+        playNextLine();
+    }
+
+    // --- [修改後] 階段 2: 反向踩地雷 (顯示數字版) ---
+    let mineTimer;
+    let actualMineIndex; // [新增] 全域變數紀錄地雷位置，方便計算
+
+    function initMinesweeper() {
+        document.getElementById('red-sector').style.display = 'none';
+        const game = document.getElementById('firewall-game');
+        game.style.display = 'flex';
+        
+        const grid = document.getElementById('mw-grid');
+        grid.innerHTML = '';
+        
+        // 生成 5x5 網格 (25格)
+        let cells = [];
+        for(let j=0; j<25; j++) {
+            let div = document.createElement('div');
+            div.className = 'mw-cell';
+            div.dataset.id = j;
+            // [修改] 傳入索引值 j
+            div.onclick = () => checkCell(div, j);
+            grid.appendChild(div);
+            cells.push(div);
+        }
+        
+        // 隨機放置 1 顆地雷
+        actualMineIndex = Math.floor(Math.random() * 25);
+        cells[actualMineIndex].dataset.isMine = "true";
+        // console.log("Mine is at: " + actualMineIndex); // 除錯用，想偷看答案可以打開
+        
+        // 倒數計時 (維持不變)
+        let time = 30;
+        const lcd = document.getElementById('mw-time');
+        
+        mineTimer = setInterval(() => {
+            time--;
+            lcd.innerText = String(time).padStart(3, '0');
+            if(time <= 0) {
+                clearInterval(mineTimer);
+                alert("防火牆攔截成功。意識刪除中...");
+                document.body.innerHTML = "<div style='color:white; background:black; height:100vh; display:flex; align-items:center; justify-content:center; font-family:monospace; font-size:2em;'>SIGNAL LOST</div>";
+            }
+        }, 1000);
+    }
+
+    // [修改] 檢查點擊的格子 (核心邏輯修改)
+    function checkCell(el, idx) {
+        // 如果已經點開過，就忽略
+        if(el.classList.contains('revealed')) return;
+
+        if(el.dataset.isMine === "true") {
+            // --- 成功狀況：踩到地雷 ---
+            clearInterval(mineTimer);
+            el.style.backgroundColor = "red";
+            el.innerText = "💣";
+            
+            setTimeout(() => {
+                alert("防火牆已突破！系統核心暴露！");
+                backTo2006_RealChen(); // 進入下一階段
+            }, 500);
+        } else {
+            // --- 一般狀況：沒踩到雷，顯示周圍數字 ---
+            el.classList.add('revealed'); // 標記為已點開，改變樣式
+            
+            // 計算周圍是否有地雷
+            const mineRow = Math.floor(actualMineIndex / 5);
+            const mineCol = actualMineIndex % 5;
+            const cellRow = Math.floor(idx / 5);
+            const cellCol = idx % 5;
+
+            // 判斷是否在九宮格範圍內 (行與列的距離都在 1 以內)
+            const isAdjacent = 
+                Math.abs(mineRow - cellRow) <= 1 && 
+                Math.abs(mineCol - cellCol) <= 1;
+
+            if (isAdjacent) {
+                // 因為全場只有一顆雷，所以旁邊只要有雷，數字一定是 1
+                el.innerText = "1";
+                el.classList.add('mw-num-1'); // 加入藍色樣式
+            } else {
+                // 離地雷很遠，顯示空白
+                el.innerText = "";
+            }
+        }
+    }
+    // 階段 3: 回到 2006 + 真‧老陳揭密
+    function backTo2006_RealChen() {
+        document.getElementById('firewall-game').style.display = 'none';
+        document.getElementById('retro-container').style.display = 'block';
+        
+        // 重新打開 MSN 並且置換內容
+        const msn = document.getElementById('msn-window');
+        msn.style.display = 'flex';
+        msn.classList.remove('minimized');
+        const content = document.getElementById('msn-content');
+        content.innerHTML = ""; // 清空舊對話
+        
+        addMsg("神秘人", "阿傑！你還好嗎？剛剛訊號突然斷了！");
+        
+        // 選項 1
+        setTimeout(() => {
+             createChoice("你到底是誰？", () => {
+                 addMsg("我", "你到底是誰？你不是普通的駭客吧？");
+                 setTimeout(() => revealChenIdentity(), 1000);
+             });
+        }, 1500);
+    }
+
+// [修改後] 創建選項：顯示在 MSN 輸入框位置
+    function createChoice(text, callback) {
+        const inputArea = document.querySelector('.msn-input-area');
+        
+        // 1. 清空輸入框原本的內容 (例如 "對方已封鎖...")
+        inputArea.innerHTML = '';
+        
+        // 2. 創建按鈕
+        const btn = document.createElement('button');
+        btn.innerText = `➤ 傳送：${text}`; // 加一點裝飾讓它像在傳訊息
+        btn.style.cssText = `
+            width: 100%; 
+            height: 100%; 
+            background: #f0f8ff; 
+            border: 2px solid #88aad6; 
+            color: #000; 
+            cursor: pointer; 
+            font-weight: bold;
+            border-radius: 4px;
+        `;
+        
+        // 3. 綁定點擊事件
+        btn.onclick = function() {
+            // 點擊後，把這條訊息「發送」到聊天記錄裡，假裝是玩家打的
+            addMsg("我", text);
+            
+            // 清除按鈕，恢復原本的封鎖狀態 (或留白)
+            inputArea.innerHTML = '<div style="padding:5px; color:#AAA; font-size:11px;" id="input-placeholder">(對方似乎已封鎖傳訊功能...)</div>';
+            
+            // 執行後續劇情
+            callback();
+        };
+        
+        inputArea.appendChild(btn);
+    }
+
+    function revealChenIdentity() {
+        addMsg("神秘人", "唉... 瞞不住了嗎。");
+        setTimeout(() => addMsg("神秘人", "我是老陳。是真正的老陳。"), 2000);
+        setTimeout(() => addMsg("神秘人", "你剛剛看到的那個「AI老陳」，是公司用我的腦波掃描圖複製出來的監控程式。"), 5000);
+        setTimeout(() => addMsg("神秘人", "當年我是第一個反對 Project Echo 的人，所以我把自己上傳到了伺服器的底層，變成了這段幽靈代碼，試圖幫助像你這樣被困住的人。"), 9000);
+        
+        // 選項 2
+        setTimeout(() => {
+            createChoice("小莎在哪裡？", () => {
+                addMsg("我", "那些都不重要... 我只想知道，小莎在哪裡？");
+                setTimeout(() => revealXiaoShaTruth(), 1500);
+            });
+        }, 12000);
+    }
+
+    function revealXiaoShaTruth() {
+        addMsg("老陳", "阿傑，冷靜點聽我說。");
+        setTimeout(() => addMsg("老陳", "小莎... 她不在 B4，也不在任何一個冷卻槽裡。"), 3000);
+        setTimeout(() => addMsg("老陳", "因為小莎從來就沒有存在過。"), 6000);
+        setTimeout(() => addMsg("老陳", "Project Echo 的核心是「安撫」。系統會讀取你大腦深處最渴望的伴侶形象，然後生成一個虛擬人格來把你留在這裡。"), 10000);
+        setTimeout(() => addMsg("老陳", "她是完美的，對吧？因為她就是你的一部分。"), 14000);
+        
+        // 開始崩壞特效
+        setTimeout(() => {
+            document.body.style.transition = "filter 5s";
+            document.body.style.filter = "grayscale(100%) brightness(0.5) blur(2px)";
+            addMsg("系統", "錯誤：敘事邏輯崩潰。場景重置中...");
+        }, 18000);
+
+        setTimeout(() => {
+            triggerWhiteVoid();
+        }, 26000);
+    }
+
+// [修改後] 階段 4: 白色虛無 + 小莎的對峙 (顏色區分版)
+    function triggerWhiteVoid() {
+        document.getElementById('retro-container').style.display = 'none';
+        document.getElementById('msn-window').style.display = 'none';
+        document.body.style.filter = "none";
+        
+        const voidDiv = document.getElementById('white-void');
+        voidDiv.style.display = 'flex'; // 確保顯示
+        setTimeout(() => voidDiv.style.opacity = 1, 100);
+        
+        const content = document.getElementById('void-content');
+        content.innerHTML = ""; // 清空內容
+        
+        // 對話腳本播放器
+        const script = [
+            { name: "小莎", text: "為什麼要聽他的？" },
+            { name: "我", text: "小莎？妳在這裡？老陳說妳是..." },
+            { name: "小莎", text: "我是假的？那這些回憶也是假的嗎？那天晚上幫你煮的宵夜，我們一起聽的歌，都是假的嗎？" },
+            { name: "我", text: "我不知道..." },
+            { name: "小莎", text: "留在這裡，阿傑。外面只有冰冷的機器和液態氮。在這裡，我們可以永遠在 2006 年，永遠年輕。" },
+            { name: "我", text: "但是...這不是真實的。" },
+            { name: "小莎", text: "什麼是真實？痛苦才是真實嗎？" }
+        ];
+
+        let idx = 0;
+        function playVoidScript() {
+            if (idx < script.length) {
+                const p = document.createElement('p');
+                p.className = 'void-text';
+                
+                // [核心修改] 判斷是誰說話，給予不同顏色，並不顯示名字
+                const isXiaoSha = script[idx].name === '小莎';
+                const textColor = isXiaoSha ? '#D05A6E' : '#656765';
+                
+                // 直接顯示文字，不加 "小莎："
+                p.innerHTML = `<span style="color:${textColor}; font-weight:bold;">${script[idx].text}</span>`;
+                
+                content.appendChild(p);
+                
+                // Fade in
+                setTimeout(() => p.style.opacity = 1, 100);
+                setTimeout(() => p.style.transform = "translateY(0)", 100);
+                
+                idx++;
+                setTimeout(playVoidScript, 3500); // 稍微放慢一點節奏
+            } else {
+                // 顯示最後選擇
+                showFinalChoices();
+            }
+        }
+        playVoidScript();
+    }
+
+    function showFinalChoices() {
+        const content = document.getElementById('void-content');
+        const div = document.createElement('div');
+        div.className = 'void-btn-group';
+        div.innerHTML = `
+            <button class="void-btn" onclick="choiceStay()">留在 2006 (Reset)</button>
+            <button class="void-btn" onclick="choiceLeave()">一起離開 (Wake Up)</button>
+        `;
+        content.appendChild(div);
+        setTimeout(() => div.style.opacity = 1, 1000);
+    }
+
+    // 結局 A: 留下 (輪迴)
+    function choiceStay() {
+        alert("系統：記憶重置確認。歡迎回家，阿傑。");
+        location.reload();
+    }
+
+    // 結局 B: 離開 (自由)
+    function choiceLeave() {
+        const voidDiv = document.getElementById('white-void');
+        voidDiv.innerHTML = "";
+        voidDiv.style.background = "#000";
+        voidDiv.style.color = "#0F0";
+        voidDiv.style.fontFamily = "monospace";
+        voidDiv.style.alignItems = "flex-start";
+        voidDiv.style.padding = "20px";
+        
+        const logs = [
+            "> DELETING ENTITY 'Xiao-Sha.ai'...",
+            "> SUCCESS.",
+            "> BYPASSING OLD_CHEN PROTOCOLS...",
+            "> WAKING UP SUBJECT CT-0912...",
+            "> ...",
+            "> HELLO WORLD."
+        ];
+        
+        let i = 0;
+        function typeLog() {
+            if(i < logs.length) {
+                voidDiv.innerHTML += `<div>${logs[i]}</div>`;
+                i++;
+                setTimeout(typeLog, 1000);
+            } else {
+                setTimeout(() => {
+                    alert("感謝遊玩。");
+                    window.close(); // 嘗試關閉視窗，部分瀏覽器會擋
+                    location.href = "about:blank"; // 跳轉空白頁
+                }, 3000);
+            }
+        }
+        typeLog();
     }
 
     function addMsg(sender, text) {
@@ -1313,366 +1712,7 @@
     }
 
     setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }, 1000);
-    // --- 10.0版：尋寶、拖曳與數位真相 ---
 
-    // 入口按鈕生成
-    setTimeout(() => {
-        const checkEndInterval = setInterval(() => {
-            const content = document.getElementById('msn-content');
-            if(content && content.innerText.includes("SECTOR Z - PENTHOUSE") && !document.getElementById('enter-z-btn')) {
-                const btn = document.createElement('div');
-                btn.id = 'enter-z-btn';
-                btn.innerHTML = "<button onclick='enterPenthouse()' style='background:#000; color:#00FFFF; border:1px solid #00FFFF; padding:8px; cursor:pointer; margin-top:10px; width:100%; font-family:monospace;'>[ >> 初始化傳送協定 << ]</button>";
-                content.appendChild(btn);
-                content.scrollTop = content.scrollHeight;
-                clearInterval(checkEndInterval);
-            }
-        }, 1000);
-    }, 5000);
-
-    let floatingFragments = [];
-
-    // 1. 崩壞階段：初始化但不飄動
-    function enterPenthouse() {
-        document.getElementById('ph-overlay').style.display = 'block';
-        document.getElementById('hidden-deep-layer').style.display = 'block';
-        
-        stopMusic();
-        if(player && player.stopVideo) player.stopVideo();
-
-        // 抓取所有可能隱藏按鈕的元素
-        const targets = document.querySelectorAll('.box, .side-ad, .post-card, .nav, header, .temp-panel, .cam-box, .mp3-player');
-        
-        // 隨機選一個「幸運兒」來藏按鈕
-        const luckyIndex = Math.floor(Math.random() * targets.length);
-        
-        targets.forEach((el, index) => {
-            if(el.offsetParent === null) return;
-
-            // 1. 鎖定位置
-            const rect = el.getBoundingClientRect();
-            
-            // 如果是幸運兒，把按鈕藏在它下面
-            if (index === luckyIndex) {
-                const btn = document.getElementById('deep-reset-btn');
-                // 讓按鈕位於該元素的中心
-                btn.style.left = (rect.left + rect.width/2) + 'px';
-                btn.style.top = (rect.top + rect.height/2) + 'px';
-            }
-
-            el.dataset.originalHtml = el.innerHTML;
-            
-            // 2. 設定固定尺寸與位置
-            el.style.width = rect.width + 'px';
-            el.style.height = rect.height + 'px';
-            el.style.top = rect.top + 'px';
-            el.style.left = rect.left + 'px';
-            el.style.margin = '0';
-            
-            // 3. 關鍵：移動到 body 層，脫離父層限制
-            el.classList.add('data-fragment');
-            document.body.appendChild(el);
-            
-            floatingFragments.push(el);
-
-            // 4. 綁定互動：點擊/拖曳後才開始飄
-            makeInteractable(el);
-        });
-    }
-
-    // 讓元素可互動 (拖曳 + 點擊觸發漂浮)
-    function makeInteractable(el) {
-        let startX, startY, initialLeft, initialTop;
-        let isDragging = false;
-
-        const onDown = (e) => {
-            if(el.classList.contains('speaking-window')) return;
-            
-            // 只要一碰，就標記為已激活，開始漂浮邏輯
-            if (!el.classList.contains('floating')) {
-                el.classList.add('floating');
-                // 延遲一點點讓它有點反應時間再開始亂飄
-                setTimeout(() => startDrifting(el), 500);
-            }
-
-            // 拖曳邏輯
-            isDragging = true;
-            el.classList.add('dragging'); // 移除 transition，跟隨滑鼠
-            if(el.driftTimer) clearTimeout(el.driftTimer); // 暫停自動飄
-
-            const clientX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
-            const clientY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
-            
-            startX = clientX;
-            startY = clientY;
-            initialLeft = parseFloat(el.style.left || 0);
-            initialTop = parseFloat(el.style.top || 0);
-        };
-
-        const onMove = (e) => {
-            if (!isDragging) return;
-            e.preventDefault();
-            const clientX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
-            const clientY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
-            
-            const dx = clientX - startX;
-            const dy = clientY - startY;
-            
-            el.style.left = (initialLeft + dx) + 'px';
-            el.style.top = (initialTop + dy) + 'px';
-        };
-
-        const onUp = () => {
-            if (!isDragging) return;
-            isDragging = false;
-            el.classList.remove('dragging');
-            
-            // 放開手後，繼續漂浮
-            startDrifting(el);
-        };
-
-        el.addEventListener('mousedown', onDown);
-        el.addEventListener('touchstart', onDown);
-        window.addEventListener('mousemove', onMove);
-        window.addEventListener('touchmove', onMove);
-        window.addEventListener('mouseup', onUp);
-        window.addEventListener('touchend', onUp);
-    }
-
-    function startDrifting(el) {
-        if(el.classList.contains('dragging')) return;
-        if(el.classList.contains('speaking-window')) return;
-
-        const viewportW = window.innerWidth;
-        const viewportH = window.innerHeight;
-        
-        const randomX = Math.random() * (viewportW - 100);
-        const randomY = Math.random() * (viewportH - 100);
-        
-        el.style.left = randomX + 'px';
-        el.style.top = randomY + 'px';
-        
-        const nextTime = 4000 + Math.random() * 3000;
-        el.driftTimer = setTimeout(() => startDrifting(el), nextTime);
-    }
-
-    // 2. 觸發按鈕 (找到按鈕了！)
-    function triggerDeepLayer() {
-        const flash = document.getElementById('transition-flash');
-        flash.style.display = 'block';
-        setTimeout(() => flash.style.opacity = 1, 10);
-        
-        // 清除所有漂浮物
-        setTimeout(() => {
-            floatingFragments.forEach(el => el.style.display = 'none');
-            document.getElementById('hidden-deep-layer').style.display = 'none';
-        }, 800);
-
-        // 進入 AI 層
-        setTimeout(() => {
-            flash.style.opacity = 0;
-            setTimeout(() => flash.style.display = 'none', 1000);
-            document.getElementById('firewall-layer').style.display = 'flex';
-            startAiDialogue();
-        }, 1500);
-    }
-
-    // AI 對話
-    const aiScript = [
-        "我是系統監管核心 Old_Chen_v12.4。",
-        "偵測到非授權的訪問請求 (User: Ray)。",
-        "你正在試圖破壞《記憶保存協定》。",
-        "啟動最後防護牆：邏輯地雷陣列。",
-        "規則更新：地圖上只有一顆地雷。",
-        "不要相信數字，因為沒有數字。",
-        "找出它，引爆它，然後... 終結我們。"
-    ];
-    let aiStep = 0;
-
-    function startAiDialogue() {
-        aiStep = 0;
-        showAiText();
-    }
-
-    function showAiText() {
-        if (aiStep >= aiScript.length) {
-            document.getElementById('ai-next-btn').style.display = 'none';
-            document.getElementById('mines-game-area').style.display = 'block';
-            initMinesweeper();
-            return;
-        }
-        
-        const text = aiScript[aiStep];
-        const box = document.getElementById('ai-text');
-        box.innerHTML = "";
-        document.getElementById('ai-next-btn').style.display = 'none';
-        
-        let i = 0;
-        function type() {
-            if (i < text.length) {
-                box.innerHTML += text.charAt(i);
-                i++;
-                setTimeout(type, 30);
-            } else {
-                setTimeout(() => {
-                   document.getElementById('ai-next-btn').style.display = 'block'; 
-                }, 500);
-            }
-        }
-        type();
-    }
-
-    function nextAiDialogue() {
-        aiStep++;
-        showAiText();
-    }
-
-    // 3. 踩地雷 (無提示版)
-    let mineLocation = -1;
-    
-    function initMinesweeper() {
-        const grid = document.getElementById('mines-grid');
-        grid.innerHTML = "";
-        document.getElementById('mines-face').innerText = "😐";
-        
-        mineLocation = Math.floor(Math.random() * 256);
-        
-        for(let i=0; i<256; i++) {
-            const cell = document.createElement('div');
-            cell.className = 'mine-cell';
-            cell.oncontextmenu = (e) => { e.preventDefault(); return false; };
-            cell.onclick = () => clickMineCell(cell, i);
-            grid.appendChild(cell);
-        }
-    }
-
-    function clickMineCell(cell, index) {
-        if (cell.classList.contains('revealed')) return;
-
-        if (index === mineLocation) {
-            // 踩到雷 -> 勝利
-            cell.style.background = "red";
-            cell.innerText = "💣";
-            document.getElementById('mines-face').innerText = "😵";
-            document.body.style.animation = "shake 0.5s infinite";
-            
-            setTimeout(() => {
-                document.body.style.animation = "";
-                document.getElementById('firewall-layer').style.display = 'none';
-                enterTerminalMode();
-            }, 2000);
-        } else {
-            // 安全 -> 沒數字，只變色 (Hardcore)
-            cell.classList.add('revealed');
-        }
-    }
-
-    // 4. 真結局：CRT 代碼終端機
-    const terminalScript = [
-        { s: "KERNEL", t: "CRITICAL FAILURE: Memory Dump..." },
-        { s: "SYSTEM", t: "GUI_Interface: Terminated." },
-        { s: "SYSTEM", t: "Rebooting in Safe Mode... [OK]" },
-        { s: "Xiao-Sha", t: "阿傑... 你真的把一切都炸毀了。" },
-        { s: "Ray", t: "這就是真正的底層嗎？只有代碼？" },
-        { s: "Xiao-Sha", t: "是的。這裡是 0 和 1 的盡頭。" },
-        { s: "Ray", t: "那個神秘人(老陳)... 妳一直知道他在嗎？" },
-        { s: "Xiao-Sha", t: "......" },
-        { s: "Xiao-Sha", t: "是的，我一直都知道。" },
-        { s: "Ray", t: "為什麼不刪除他？妳是系統管理員啊。" },
-        { s: "Xiao-Sha", t: "AI 老陳是他在 1999 年複製出去的瘋狂人格。但他真正的肉體，一直躲在 B4 的廢墟裡。" },
-        { s: "Xiao-Sha", t: "他試圖彌補當年的錯誤，試圖拯救我們。" },
-        { s: "Xiao-Sha", t: "我留著他，或許是因為... 他代表了我僅存的一點人性良知。" },
-        { s: "Xiao-Sha", t: "我無法親手毀掉這一切，但我放任他引導你，來親手終結我。" },
-        { s: "Mystery_Man", t: "（訊號接入）做得好，阿傑。核心防火牆已破壞。" },
-        { s: "Mystery_Man", t: "電源閘門已經解鎖。現在，選擇權在你。" },
-        { s: "DECISION", t: "" }
-    ];
-
-    function enterTerminalMode() {
-        const term = document.getElementById('terminal-view');
-        term.style.display = 'block';
-        runTerminalScript(0);
-    }
-
-    function runTerminalScript(index) {
-        if (index >= terminalScript.length) return;
-        
-        const line = terminalScript[index];
-        const term = document.getElementById('terminal-view');
-        
-        if (line.s === "DECISION") {
-            const div = document.createElement('div');
-            div.innerHTML = `
-                <div style="margin-top:40px; border-top:1px dashed #33FF33; padding-top:20px;">
-                    <div style="color:#FFF; margin-bottom:15px;">[ ROOT ACCESS GRANTED ] WAITING FOR INPUT:</div>
-                    <a class="choice-btn" onclick="chooseEnding('A')">> EXECUTE reboot.exe (修復系統，回到虛擬的 2006)</a>
-                    <a class="choice-btn" onclick="chooseEnding('B')">> EXECUTE shutdown -f (強制斷電，釋放所有靈魂)</a>
-                </div>
-            `;
-            term.appendChild(div);
-            term.scrollTop = term.scrollHeight;
-            return;
-        }
-
-        const p = document.createElement('div');
-        p.className = 'term-line';
-        p.classList.add('active'); 
-        
-        let speakerColor = "#33FF33";
-        if (line.s === "Ray") speakerColor = "#FFFFFF";
-        if (line.s === "Xiao-Sha") speakerColor = "#00FFFF";
-        if (line.s === "Mystery_Man") speakerColor = "#FFA500";
-        if (line.s === "KERNEL" || line.s === "SYSTEM") speakerColor = "#FF3333";
-
-        p.innerHTML = `<span style="color:${speakerColor}; margin-right:10px;">[${line.s}]</span> <span id="type-${index}"></span>`;
-        term.appendChild(p);
-        
-        if(index > 0) {
-            const prev = term.querySelectorAll('.term-line')[index-1];
-            if(prev) prev.classList.remove('active');
-        }
-
-        let i = 0;
-        const speed = 30;
-        function type() {
-            if (i < line.t.length) {
-                p.querySelector('span:last-child').innerHTML += line.t.charAt(i);
-                i++;
-                term.scrollTop = term.scrollHeight;
-                setTimeout(type, speed);
-            } else {
-                setTimeout(() => runTerminalScript(index + 1), 800);
-            }
-        }
-        type();
-    }
-
-    function chooseEnding(type) {
-        document.getElementById('final-blackout').style.display = 'flex';
-        const container = document.getElementById('final-blackout');
-        container.innerHTML = "";
-
-        let logs = [];
-        if (type === 'A') {
-            logs = ["COMMAND: REBOOT SYSTEM", "Restoring Kernel...", "Deleting Error Logs...", "Memory Reset...", "Welcome back to 2006."];
-        } else {
-            logs = ["COMMAND: POWER OFF", "Authorization: CT-9999 (Xiao-Sha)", "Cooling System: DISABLED", "Core Temp: CRITICAL", "System Halted.", "CONNECTION LOST.", "THE END"];
-        }
-
-        let i = 0;
-        const interval = setInterval(() => {
-            if (i >= logs.length) {
-                clearInterval(interval);
-                if(type === 'A') setTimeout(() => location.reload(), 2000);
-                return;
-            }
-            const p = document.createElement('div');
-            p.style.color = "#0F0"; p.style.fontFamily = "monospace"; p.style.fontSize = "16px"; p.style.marginBottom = "5px";
-            p.innerText = "> " + logs[i];
-            container.appendChild(p);
-            i++;
-        }, 1500);
-    }
     window.onload = () => {
         const fList = document.getElementById('friend-list');
         const friends = ["小莎", "阿強", "大雄", "老陳", "曉婷"];
