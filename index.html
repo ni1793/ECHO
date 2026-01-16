@@ -11,14 +11,13 @@
             --apple-black: #000000;
             --apple-text: #f5f5f7;
             --accent-blue: #2997ff;
-            --tech-glow: rgba(41, 151, 255, 0.6);
             --msn-blue: #CEE3F6;
             --msn-border: #6B9DC9;
         }
         * { box-sizing: border-box; }
         body { margin: 0; padding: 0; overflow-x: hidden; transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
 
-        /* --- 2006 復古主題 (完全保留) --- */
+        /* --- 2006 復古主題 (PC 預設) --- */
         body.v2006 { background: #455A64; font-family: "新細明體", "PMingLiU", serif; }
         #retro-container { width: 950px; margin: 20px auto; background: #FFF; border: 1px solid #000; box-shadow: 10px 10px 0 rgba(0,0,0,0.3); position: relative; }
         
@@ -38,13 +37,75 @@
         .box-title { background: #CFD8DC; padding: 6px; font-weight: bold; font-size: 13px; border-bottom: 1px solid #B0BEC5; }
         .box-body { padding: 10px; font-size: 13px; line-height: 1.6; }
 
-        /* --- 2026 現代科技主題 (視覺升級) --- */
+        /* --- MSN Chat Window (修復優先權：移至上方確保載入) --- */
+        #msn-window {
+            display: none; /* 預設隱藏 */
+            position: fixed;
+            bottom: 0;
+            right: 20px;
+            width: 300px;
+            height: 380px;
+            background: var(--msn-blue);
+            border: 1px solid var(--msn-border);
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            box-shadow: -2px -2px 10px rgba(0,0,0,0.2);
+            z-index: 5000;
+            font-family: Tahoma, sans-serif;
+            flex-direction: column;
+            animation: slideUp 0.5s ease-out;
+        }
+        
+        .msn-header {
+            background: linear-gradient(to bottom, #E8F1FC, #BED6F0);
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #99BBE8;
+            border-top-left-radius: 7px;
+            border-top-right-radius: 7px;
+            flex-shrink: 0;
+        }
+        .msn-title { font-weight: bold; color: #224466; font-size: 12px; display: flex; align-items: center; gap: 5px; }
+        
+        .msn-body {
+            flex: 1;
+            min-height: 0; /* 關鍵修復：防止 Flex 子元素溢出 */
+            background: #FFF;
+            border: 1px solid #99BBE8;
+            margin: 5px;
+            padding: 10px;
+            overflow-y: auto;
+            font-size: 12px;
+            color: #000;
+        }
+        
+        .msn-msg { margin-bottom: 8px; }
+        .msn-sender { color: #0000FF; font-size: 11px; }
+        .msn-sender.me { color: #444; }
+        .msn-text { margin-left: 0px; margin-top: 2px; }
+        
+        .msn-input-area {
+            height: 60px;
+            background: #FFF;
+            border: 1px solid #99BBE8;
+            margin: 0 5px 5px 5px;
+            position: relative;
+            flex-shrink: 0;
+        }
+        .msn-sys { color: gray; font-style: italic; font-size: 11px; margin: 5px 0; text-align: center; }
+
+        @keyframes slideUp { from { bottom: -400px; } to { bottom: 0; } }
+        @keyframes shake { 0% { transform: translateX(0); } 25% { transform: translateX(-5px) rotate(-1deg); } 75% { transform: translateX(5px) rotate(1deg); } 100% { transform: translateX(0); } }
+        .shake-anim { animation: shake 0.3s ease-in-out; }
+
+        /* --- 2026 現代科技主題 --- */
         #cyber-container { 
             display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
             background: #050505; color: var(--apple-text); z-index: 10000; 
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
             overflow-y: auto; overflow-x: hidden;
-            /* 背景升級：加入科技感網格與深邃光暈 */
             background-image: 
                 radial-gradient(circle at 50% 0%, #1a1a2e 0%, transparent 60%),
                 linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
@@ -77,7 +138,6 @@
         
         .apple-subtitle { font-size: 24px; color: #a1a1a6; line-height: 1.5; max-width: 700px; font-weight: 400; }
         
-        /* 科技感卡片格線 */
         .apple-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 60px; }
         
         .apple-card { 
@@ -136,41 +196,29 @@
             .content { order: 1; min-height: auto; padding: 15px; width: 100%; }
             .sidebar { order: 2; width: 100%; }
             
-            /* 2026 Apple 風格手機版排版修正 - 確保不擁擠 */
+            /* 2026 Apple 風格手機版排版修正 */
             .apple-main { padding: 80px 24px 60px; max-width: 100%; }
             .apple-nav { padding: 0 20px; font-size: 11px; }
-            
             .apple-hero { margin-bottom: 50px; }
-            /* 標題在手機上適度縮小 */
             .apple-title { font-size: 42px !important; line-height: 1.1; margin-bottom: 16px; }
             .apple-subtitle { font-size: 18px !important; }
             
-            /* 強制單欄排列，去除 grid，改用 flex column 確保順序 */
-            .apple-grid { 
-                display: flex; 
-                flex-direction: column; 
-                gap: 24px; /* 卡片間距 */
-                margin-top: 40px; 
-            }
-            
+            /* 強制單欄排列 */
+            .apple-grid { display: flex; flex-direction: column; gap: 24px; margin-top: 40px; }
             .full-width-report { width: 100% !important; margin: 0; } 
             
-            .apple-card { 
-                padding: 32px 24px; /* 調整內距 */
-                border-radius: 20px;
-                width: 100%;
-            }
-            
+            .apple-card { padding: 32px 24px; border-radius: 20px; width: 100%; }
             .apple-card h3 { font-size: 24px !important; margin-bottom: 12px; }
             .apple-card p { font-size: 16px !important; line-height: 1.6; }
             
             .action-btn { width: 100%; padding: 16px; font-size: 18px; }
             .popup-window { width: 90%; padding: 30px; margin: 0 20px; }
             
+            /* MSN Window Mobile Adjustment */
             #msn-window { width: 94%; right: 3%; left: 3%; bottom: 10px; height: 350px; }
         }
 
-        /* --- 廣告與組件樣式 (保持原樣) --- */
+        /* --- 廣告與組件樣式 --- */
         .side-ad { margin-bottom: 20px; cursor: pointer; display: block; overflow: hidden; position: relative; font-family: "Arial", sans-serif; transition: transform 0.1s; }
         .side-ad:active { transform: scale(0.98); }
 
@@ -268,7 +316,7 @@
 <audio id="bgm" src="music.mp3" preload="auto"></audio>
 <div id="yt-player-wrapper" style="display:none;"><div id="yt-player"></div></div>
 
-<div id="msn-window">
+<div id="msn-window" style="display:none;">
     <div class="msn-header">
         <div class="msn-title">
             <div style="width:14px; height:14px; background:#0F0; border-radius:50%; border:1px solid #000;"></div>
@@ -671,7 +719,7 @@
         container.innerHTML = '';
         container.innerHTML += `<div class="cam-box"><div class="cam-header"><span>CAM 01: B4-CORRIDOR</span><span>REC ●</span></div><div class="cam-content" style="flex-direction:column;"><div style="width:80%; height:2px; background:#333; box-shadow:0 0 5px #0F0;"></div><div style="margin-top:10px;">DOOR: SECURITY LEVEL 5</div></div><div id="cam-lock-status" class="cam-overlay">[🔒 LOCKED]</div></div>`;
         container.innerHTML += `<div class="cam-box"><div class="cam-header"><span>CAM 02: CRYO-BAY-A</span><span>LIVE</span></div><div class="cam-content"><pre style="font-size:8px; line-height:8px;"> ||| ||| |||\n[===] [===] [===]\n | | | | | |</pre></div><div class="cam-overlay" style="top:auto; bottom:5px; right:5px; font-size:9px; color:#0F0;">TEMP: -196°C</div></div>`;
-        container.innerHTML += `<div class="cam-box"><div class="cam-header"><span>CAM 03: SUBJECT-VIEW</span><span>LIVE</span></div><div class="cam-content" style="text-align:left; align-items:flex-start; font-size:9px;">Subject: Xiao-Sha<br>ID: CT-0850<br>Status: SYNC 98%<br>----------------<br>Target: Ray<br>Status: AWAITING...</div></div>`;
+        container.innerHTML += `<div class="cam-box"><div class="cam-header"><span>CAM 03: SUBJECT-VIEW</span><span>LIVE</span></div><div class="cam-content" style="text-align:left; align-items:flex-start; font-size:9px;">Subject: Xiao-Sha<br>ID: CT-999<br>Status: SYNC 98%<br>----------------<br>Target: Ray<br>Status: AWAITING...</div></div>`;
     }
 
     // 新增：觸發超載劇本
@@ -690,7 +738,7 @@
             container.innerHTML = `
                 <div class="temp-panel">
                     <div style="font-size:12px; margin-bottom:10px;">[ CRYO-STASIS CONTROL ]</div>
-                    <div style="font-size:10px;">TARGET: SUBJECT CT-0850</div>
+                    <div style="font-size:10px;">TARGET: SUBJECT CT-9999</div>
                     <div class="temp-display" id="temp-val">-196°C</div>
                     <div style="font-size:10px; color:#999; margin:5px 0;">SYSTEM LOCKED. INPUT OVERRIDE CODE:</div>
                     <input type="text" id="override-code" class="temp-input" placeholder="ENTER CODE...">
@@ -738,7 +786,7 @@
                     <div class="msn-sender" style="color:red;">[SYSTEM DECRYPT]</div>
                     <div class="msn-text" style="font-family:monospace;">
                         BACKUP FOUND.<br>
-                        SUBJECT: CT-0850 (小莎)<br>
+                        SUBJECT: CT-9999 (小莎)<br>
                         LOCATION CHANGED: <br>
                         >> SECTOR Z - PENTHOUSE <<
                     </div>
@@ -778,7 +826,7 @@
                     t: "[時空訊息] 給2006年的阿傑", 
                     d: dynamicDate, 
                     b: `阿傑，如果你能看到這則訊息，代表連結還沒斷。\n\n我是2026年的你。聽好了，現在是 2006 年 12 月 31 日，你還在公司，對吧？\n\n**絕對不要參加今晚的跨年派對。**\n\n那是一個陷阱。老陳準備在倒數時刻啟動「全面同步」，把所有在場員工的意識上傳到 B4 伺服器。一旦開始，就再也回不去了。\n\n現在，立刻離開座位。去找小莎，她有危險！帶她離開內湖，把手機丟進基隆河，斷絕所有聯繫。\n\n這是你最後的機會。不要變成我。快逃！`, 
-                    c: [{u:"系統", c:"[CRITICAL] 偵測到未來數據寫入..."}, {u:"老陳", c:"[連結遭拒] 權限不足。"}]
+                    c: [{u:"系統", c:"偵測到不明數據寫入..."}]
                 });
             }
             list.slice().reverse().forEach(p => {
@@ -790,7 +838,7 @@
                 t: "[時空訊息] 給2006年的阿傑", 
                 d: dynamicDate,
                 b: `阿傑，如果你能看到這則訊息，代表連結還沒斷。\n\n我是2026年的你。聽好了，現在是 2006 年 12 月 31 日，你還在公司，對吧？\n\n**絕對不要參加今晚的跨年派對。**\n\n那是一個陷阱。老陳準備在倒數時刻啟動「全面同步」，把所有在場員工的意識上傳到 B4 伺服器。一旦開始，就再也回不去了。\n\n現在，立刻離開座位。去找小莎，她有危險！帶她離開內湖，把手機丟進基隆河，斷絕所有聯繫。\n\n這是你最後的機會。不要變成我。快逃！`, 
-                c: [{u:"系統", c:"[CRITICAL] 偵測到未來數據寫入..."}, {u:"老陳", c:"[連結遭拒] 權限不足。"}]
+                c: [{u:"系統", c:"偵測到不明數據寫入..."}]
             };
 
             let p = (id === 99) ? newPostContent : blogPosts.find(x => x.id === id) || {t:"系統錯誤", b:"內容損毀", c:[]};
