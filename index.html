@@ -1111,8 +1111,21 @@
         const game = document.getElementById('firewall-game');
         game.style.display = 'flex';
         
+        // 防呆：確保關卡數正確
         if (currentLevel > levelConfig.length) currentLevel = 1; 
-        const config = levelConfig[currentLevel - 1];
+        
+        // 取得預設設定 (電腦版)
+        // Level 1: 5x5, Level 2: 8x8, Level 3: 10x10
+        let config = levelConfig[currentLevel - 1];
+
+        // --- [新增] 手機版自適應邏輯 ---
+        // 如果螢幕寬度小於 768px (手機/平板直立)，且是第三關
+        if (window.innerWidth < 768 && currentLevel === 3) {
+            // 強制改為：寬 8 格 x 高 12 格 (寬度 320px，不會破圖)
+            // 時間維持 20 秒 (格子總數 96，跟原本 100 差不多)
+            config = { cols: 8, rows: 12, time: 20 };
+        }
+        // -----------------------------
 
         // 啟動碎碎念
         startWhispering(currentLevel);
@@ -1122,6 +1135,8 @@
         
         const grid = document.getElementById('mw-grid');
         grid.innerHTML = '';
+        
+        // 設定 CSS Grid 的列數
         grid.style.gridTemplateColumns = `repeat(${config.cols}, 1fr)`;
         
         const totalCells = config.cols * config.rows;
